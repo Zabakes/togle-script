@@ -11,11 +11,14 @@
 
 Thanks /u/GroggyOtter for making it clean
 */
+/*#Include %A_ScriptDir%\Libs\Hash
+#Include Hashes.ahk
+#Include %A_ScriptDir%\Libs\AHKHID
+#Include AHKHID.ahk
 
-
-
+*/
 ; Associative array for mapping the keys
-keysToIndecies := {"1":1 ,"2":2 ,"3":3 ,"4":4 ,"5":5 ,"6":6 ,"7":7 ,"8":8 ,"9":9 ,"0":10 ,"-":11 ,"Delete":12}
+keysToIndecies := {"1":1 ,"2":2 ,"3":3 ,"4":4 ,"5":5 ,"6":6 ,"7":7 ,"8":8 ,"9":9 ,"0":10 ,"-":11 ,"BS":12}
 
 
 /*
@@ -23,7 +26,7 @@ keysToIndecies := {"1":1 ,"2":2 ,"3":3 ,"4":4 ,"5":5 ,"6":6 ,"7":7 ,"8":8 ,"9":9
 		1 -> e for extrude
 		2 -> l for line
 		3 -> d for dimension
-		4 -> c for circle
+		4 -> c for circle...
 		5 -> r for rectangle
 		6 -> Shift+middle mouse for camera controls
 		7 -> p for project
@@ -233,12 +236,51 @@ return
 
 ; F4 toggles alt sending
 $*F4::
-toggle := 1
-KeyWait, F4, T0.15
+	Suspend Permit ;don't suspend this
+	if (togglekeyPresses > 0){ ; SetTimer already started, so we log the keypress instead.
+		togglekeyPresses += 1
+    	return
+	}
+	; Otherwise, this is the first press of a new series. Set count to 1 and start
+	; the timer:
+	togglekeyPresses := 1
+
+	;run this first so a single press is instant
+	toggle := 1 
+	KeyWait, F4, T0.15
     if (ErrorLevel = 0)
         sendInput, . ;tap the toggle key to send a period
-KeyWait, f4
-toggle := 0
-return
+	KeyWait, f4
+	toggle := 0
+
+	SetTimer, Multipress, -600 ; Wait for more presses within a 600 millisecond window then run multipress
+	return
+
+Multipress:
+
+	if (togglekeyPresses = 2){ ; The key was pressed twice.
+		Send {BS} ;delete the period 
+		printHotkeyState() ; tell the user if hotkeys are enabled
+	}else if (togglekeyPresses = 3){
+		Send {BS} ;delete the period 
+    	Suspend, Toggle ; enable or disable hotkeys
+		printHotkeyState() ; tell the user
+	}else if (togglekeyPresses >= 4){
+		if(!A_IsSuspended){
+    		Send {BS}{AltDown}{f4}{AltUp} ;Delete the period and close the window
+		}
+	}
+	; Regardless of which action above was triggered, reset the count to
+	; prepare for the next series of presses:
+	togglekeyPresses := 0
+	return
+
+printHotkeyState(){
+	if(A_IsSuspended){
+		MsgBox Hotkeys Suspended
+	}else{
+		MsgBox Hotkeys Enabled
+	}
+}
 
 
