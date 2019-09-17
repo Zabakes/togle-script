@@ -11,165 +11,160 @@
 
 Thanks /u/GroggyOtter for making it clean
 */
-/*#Include %A_ScriptDir%\Libs\Hash
-#Include Hashes.ahk
-#Include %A_ScriptDir%\Libs\AHKHID
-#Include AHKHID.ahk
 
-*/
-; Associative array for mapping the keys
-keysToIndecies := {"1":1 ,"2":2 ,"3":3 ,"4":4 ,"5":5 ,"6":6 ,"7":7 ,"8":8 ,"9":9 ,"0":10 ,"-":11 ,"BS":12}
+
+; Associative array for mapping the keys to the array
+keysToIndecies := {"1":1 ,"2":2 ,"3":3 ,"4":4 ,"5":5 ,"6":6 ,"7":7 ,"8":8 ,"9":9 ,"0":10 ,"-":11 ,"Delete":12}
 
 
 /*
-	   fusion 360 keys
-		1 -> e for extrude
-		2 -> l for line
-		3 -> d for dimension
-		4 -> c for circle...
-		5 -> r for rectangle
-		6 -> Shift+middle mouse for camera controls
-		7 -> p for project
-		8 -> i for inspect/mesure
-		9 -> x for normal construction
-		0 -> j for joint
-		- -> v for visibility toggle
-		del -> Enter
+	Fusion 360
+		1 -> Extrude		2 -> Line						3 -> Dimension
+		4 -> Circle			5 -> Rectangle					6 -> Camera controls
+		7 -> Project		8 -> Inspect/mesure				9 -> normal/construction line toggle
+		10 -> Joint			11 -> visibility toggle			12 -> Enter
 */
-;fusionWindowName = "Autodesk Fusion 360 (Education License)"
-FusionToggles  :=  ["e"
-,"l"
-,"d"
-,"c"
-,"r"
-,"{Shift down}{MButton down}"
-,"p"
-,"i"
-,"x"
-,"j"
-,"v"
-,"{Enter}"]
+Fusion  :=  ["e"					;1
+,"l"								;2
+,"d"								;3
+,"c"								;4
+,"r"								;5
+,"{Shift down}{MButton down}"		;6
+,"p"								;7
+,"i"								;8
+,"x"								;9
+,"j"								;10
+,"v"								;11
+,"{Enter}"]							;12
+
+/*
+	Maya TODO
+		1 -> Extrude		2 -> Line						3 -> Dimension
+		4 -> Circle			5 -> Rectangle					6 -> Camera controls
+		7 -> Project		8 -> Inspect/mesure				9 -> normal/construction line toggle
+		10 -> Joint			11 -> visibility toggle			12 -> Enter
+*/
+Maya :=  ["e"					;1
+,"l"							;2
+,"d"							;3
+,"c"							;4
+,"r"							;5
+,"{Alt down}{LButton down}"		;6
+,"{}}"							;7
+,"8"							;8
+,"{{}"							;9
+,"j"							;10
+,"v"							;11
+,"{Enter}"]						;12
+
 
 
 /*
-	   firefox keys
-		1 -> Xbutton1 for back
-		2 -> f5 for refresh
-        3 -> Xbutton two for forward
-		4 -> ctrl pgup for next tab
-		5 -> ctrl t for new tab
-		6 -> ctrl pgdwn for previous tab
-		7 -> open google drive in new tab
-		8 -> open gmail in new tab
-		9 -> open pitt in new tab
-		0 -> ctrl f for find in page
-		- -> ctrl p for print
-		del -> Enter
+	  Firefox
+		1 -> Back 								2 -> Refresh 					3 -> Forward
+		4 -> Next tab 							5 -> New tab 					6 -> Previous tab
+		7 -> Open google drive in new tab 		8 -> Open gmail in new tab 		9 -> Open pitt in new tab
+		10 -> Search 							11 -> Print 					12 -> Enter
 */
-;firefoxWindowName = "Mozilla Firefox"
-firefoxToggles := ["{XButton1}"
-, "{f5}"
-,"{XButton2}"
-, "{Control down}{PgUp}{Control up}"
-, "{Control down}{t}{Control up}"
-, "{Control down}{PgDn}{Control up}"
-, "{Control down}{t}{Control up}drive.google.com {enter}"
-, "{Control down}{t}{Control up}gmail.com {enter}"
-, "{Control down}{t}{Control up}my.pitt.edu {enter}"
-, "{Control down}{f}{Control up}"
-, "{Control down}{p}{Control up}"
-, "{Enter}"]
+firefoxToggles := ["{XButton1}"								;1
+, "{f5}"													;2
+,"{XButton2}"												;3
+, "{Control down}{PgUp}{Control up}"						;4
+, "{Control down}{t}{Control up}"							;5
+, "{Control down}{PgDn}{Control up}"						;6
+, "{Control down}{t}{Control up}drive.google.com {enter}"	;7
+, "{Control down}{t}{Control up}gmail.com {enter}"			;8
+, "{Control down}{t}{Control up}my.pitt.edu {enter}"		;9
+, "{Control down}{f}{Control up}"							;10
+, "{Control down}{p}{Control up}"							;11
+, "{Enter}"]												;12
 
 
 /*
-	   firefox keys
-		1 -> Xbutton1 for back
-		2 -> f5 for refresh
-        3 -> Xbutton two for forward
-		4 -> ctrl tab for next tab
-		5 -> ctrl t for new tab
-		6 -> ctrl shift tab for previous tab
-		7 -> open google drive in new tab
-		8 -> open gmail in new tab
-		9 -> open pitt in new tab
-		0 -> ctrl f for find in page
-		- -> ctrl p for print
-		del -> Enter
+	  Chrome
+		1 -> Back 								2 -> Refresh 					3 -> Forward
+		4 -> Next tab 							5 -> New tab 					6 -> Previous tab
+		7 -> Open google drive in new tab 		8 -> Open gmail in new tab 		9 -> Open pitt in new tab
+		10 -> Search 							11 -> Print 					12 -> Enter
 */
-;chromeWindowName = "Google Chrome"
-chromeToggles := ["{XButton1}"
-, "{f5}"
-,"{XButton2}"
-, "{Control down}{Shift down}{Tab}{Shift up}{Control up}"
-, "{Control down}{t}{Control up}"
-, "{Control down}{Tab}{Control up}"
-, "{Control down}{t}{Control up}drive.google.com{enter}"
-, "{Control down}{t}{Control up}gmail.com{enter}"
-, "{Control down}{t}{Control up}my.pitt.edu{enter}"
-, "{Control down}{f}{Control up}"
-, "{Control down}{p}{Control up}"
-, "{Enter}"]
+chromeToggles := ["{XButton1}"									;1
+, "{f5}"														;2
+,"{XButton2}"													;3
+, "{Control down}{Shift down}{Tab}{Shift up}{Control up}"		;4
+, "{Control down}{t}{Control up}"								;5
+, "{Control down}{Tab}{Control up}"								;6
+, "{Control down}{t}{Control up}drive.google.com{enter}"		;7
+, "{Control down}{t}{Control up}gmail.com{enter}"				;8
+, "{Control down}{t}{Control up}my.pitt.edu{enter}"				;9
+, "{Control down}{f}{Control up}"								;10
+, "{Control down}{p}{Control up}"								;11
+, "{Enter}"]													;12
 
 /*
-	   firefox keys
-		1 -> Column (box) selection
-		2 -> save
-        3 -> commands
-		4 -> Select previous
-		5 -> select lines
-		6 -> Select next
-		7 -> move line down
-		8 -> select line
-		9 -> move line up
-		0 -> ctrl f for find in page
-		- -> ctrl p for print
-		del -> Enter
+	   VScode
+		1 -> Column (box) select 	2 -> Save 				3 -> Commands
+		4 -> Select previous 		5 -> select lines 		6 -> Select next
+		7 -> move line down 		8 -> Toggle comment 	9 -> move line up
+		10 -> Search 				11 -> Print 			12 -> Enter
 */
-;chromeWindowName = "Google Chrome"
-VSToggles := ["{Shift down}{Alt down}"
-, "{Control down}{s}{Control up}"
-,"{f1}"
-, "{Shift down}{left}{Shift up}"
-, "{Control down}{l}{Control up}"
-, "{Shift down}{right}{Shift up}"
-, "{Alt down}{down}{Alt up}"
-, "{Shift down}{Alt down}{a}{Shift up}{Alt up}"
-, "{Alt down}{up}{Alt up}"
-, "{Control down}{f}{Control up}"
-, "{Control down}{p}{Control up}"
-, "{Enter}"]
+VSCode := ["{Shift down}{Alt down}{LButton down}"	;1
+, "{Control down}{s}{Control up}"					;2
+,"{f1}"												;3
+, "{Shift down}{left}{Shift up}"					;4
+, "{Control down}{l}{Control up}"					;5
+, "{Shift down}{right}{Shift up}"					;6
+, "{Alt down}{down}{Alt up}"						;7
+, "{Shift down}{Alt down}{a}{Shift up}{Alt up}"		;8
+, "{Alt down}{up}{Alt up}"							;9
+, "{Control down}{f}{Control up}"					;10
+, "{Control down}{p}{Control up}"					;11
+, "{Enter}"]										;12
 
 
 /*
-	   default keys
-		1 -> Alt tab for changing windows
-		2 -> ctrl s for save
-        3 -> play pause
-		4 -> volume down
-		5 -> ctrl t for new tab mute
-		6 -> voulume up
-		7 -> ctrl shift left to seleft the word to the left
-		8 -> windows to open windows key
-		9 -> ctrl shift right to select the word to the right
-		0 -> ctrl f for find in page
-		- -> ctrl p for print
-		del -> Enter
+	   Jupyter lab
+		1 -> New cell	2 -> Save		3 -> ()
+		4 -> = 			5 -> + 			6 -> *
+		7 -> split cell	8 -> /			9 -> ^
+		10 -> Search 	11 -> Sqrt()	12 -> Run
 */
-other :=    ["^!{Tab}"
-, "{Control down}{s}{Control up}"
-, "{Media_Play_Pause}"
-, "{Volume_Down}"
-, "{Volume_Mute}"
-, "{Volume_Up}"
-, "{LWin down}{down}{LWin up}"
-, "{LWin}"
-, "{LWin down}{up}{LWin up}"
-, "{Control down}{f}{Control up}"
-, "{Control down}{p}{Control up}"
-,"{Enter}"]
+Math :=  ["{Escape}b"										;1
+, "{Control down}{s}{Control up}"							;2
+, "{(}"														;3
+, "="														;4
+, "{+}"														;5
+, "{*}"														;6
+, "{Control down}{Shift down}{-}{Shift up}{Control up}" 	;7
+, "{/}"														;8
+, "{^}"														;9
+, "{Control down}{f}{Control up}"							;10
+, "sqrt(){Left}"											;11
+,"{Control down}{Enter}{Control up}"]						;12
 
-; Default toggle stateke
-toggle := 0
+
+/*
+	   Default
+		1 -> change window		2 -> Save			3 -> play pause
+		4 -> volume down		5 -> mute			6 -> voulume up
+		7 -> Minimzie window	8 -> Start menu		9 -> Maximzie window
+		10 -> Search			11 -> print			12 -> Enter
+*/
+Other :=    ["^!{Tab}"					;1
+, "{Control down}{s}{Control up}"		;2
+, "{Media_Play_Pause}"					;3
+, "{Volume_Down}"						;4
+, "{Volume_Mute}"						;5
+, "{Volume_Up}"							;6
+, "{LWin down}{down}{LWin up}"			;7
+, "{LWin}"								;8
+, "{LWin down}{up}{LWin up}"			;9
+, "{Control down}{f}{Control up}"		;10
+, "{Control down}{p}{Control up}"		;11
+,"{Enter}"]								;12
+
+
+; Default toggle state
+toggle := 0 
 
 
 
@@ -189,27 +184,46 @@ ToggleSend:
     WinGet, id, ID, A
     WinGetTitle, windowTitle, ahk_id %id%
 
+
     chopped := StrSplit(windowTitle , "-" , " ")
     windowTitle := chopped[chopped.MaxIndex()]
-    ;MsgBox %windowTitle%
+	
+    ;MsgBox %chopped[2]%
+	;MsgBox %windowTitle%
 
         if(windowTitle = "Autodesk Fusion 360 (Education License)"){
-            hotkeysToUse := FusionToggles
-        }else if(windowTitle = "Mozilla Firefox"){
-            hotkeysToUse := firefoxToggles
-        }else if(windowTitle = "Google Chrome"){
-            hotkeysToUse := chromeToggles
-        }else if(windowTitle = "Visual Studio Code"){
-            hotkeysToUse := VSToggles
-        }else{
-            hotkeysToUse := other
+            hotkeysToUse := Fusion
         }
+		else if(chopped[1] = "JupyterLab"){
+            hotkeysToUse := Math
+        }
+		else if(windowTitle = "Mozilla Firefox"){
+            hotkeysToUse := Firefox
+        }
+		else if(windowTitle = "Google Chrome"){
+            hotkeysToUse := Chrome
+        }
+		else if(windowTitle = "Visual Studio Code"){
+            hotkeysToUse := VSCode
+        }
+		else if(chopped[1] = "Autodesk Maya 2019"){
+            hotkeysToUse := Maya
+        }
+		else{
+            hotkeysToUse := Other
+        }
+
+		
 
         hk  := RegExReplace(A_ThisHotkey, "^\$", "")
 
 
         ; If toggle is turned on...
         if (toggle = 1){
+
+			;mathWorks := hotkeysToUse[keysToIndecies[("" hk "")]]
+			;MsgBox %mathWorks%
+
         ; ...use hka s an index to get it's associated key from the array
             ;MsgBox % hotkeysToUse[keysToIndecies[("" hk "")]]
             SendInput, % hotkeysToUse[keysToIndecies[("" hk "")]]
@@ -220,9 +234,14 @@ ToggleSend:
 		        send, {Shift up}{MButton up}
             }
 
+			if(hk = 6 && hotkeysToUse = MayaToggles){
+                keyWait, 6
+				send, {Alt up}{LButton up}
+            }
+
 			if(hk = 1 && hotkeysToUse = VSToggles){
 				keyWait, 1
-				send, {Shift up}{Alt up}
+				send, {Shift up}{Alt up}{LButton up}
 			}
 
         ; If toggle is turned off...
@@ -236,6 +255,16 @@ return
 
 ; F4 toggles alt sending
 $*F4::
+	;run this first so a single press is instant
+	toggle := 1 
+	KeyWait, F4, T0.15
+    if (ErrorLevel = 0)
+        sendInput, . ;tap the toggle key to send a period
+	KeyWait, f4
+	toggle := 0
+	return
+
+$*F3::
 	Suspend Permit ;don't suspend this
 	if (togglekeyPresses > 0){ ; SetTimer already started, so we log the keypress instead.
 		togglekeyPresses += 1
@@ -245,13 +274,6 @@ $*F4::
 	; the timer:
 	togglekeyPresses := 1
 
-	;run this first so a single press is instant
-	toggle := 1 
-	KeyWait, F4, T0.15
-    if (ErrorLevel = 0)
-        sendInput, . ;tap the toggle key to send a period
-	KeyWait, f4
-	toggle := 0
 
 	SetTimer, Multipress, -600 ; Wait for more presses within a 600 millisecond window then run multipress
 	return
@@ -259,15 +281,13 @@ $*F4::
 Multipress:
 
 	if (togglekeyPresses = 2){ ; The key was pressed twice.
-		Send {BS} ;delete the period 
 		printHotkeyState() ; tell the user if hotkeys are enabled
 	}else if (togglekeyPresses = 3){
-		Send {BS} ;delete the period 
     	Suspend, Toggle ; enable or disable hotkeys
 		printHotkeyState() ; tell the user
 	}else if (togglekeyPresses >= 4){
 		if(!A_IsSuspended){
-    		Send {BS}{AltDown}{f4}{AltUp} ;Delete the period and close the window
+    		Send {AltDown}{f4}{AltUp} ;Delete the period and close the window
 		}
 	}
 	; Regardless of which action above was triggered, reset the count to
