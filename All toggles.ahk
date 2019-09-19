@@ -4,172 +4,55 @@
     a hotkey is set up for each key in the linked list when the hotkey is setup. when the hotkey is pressed the script checks what window is active.
     if there is a set of hotkey array for the active app the script usses that array to define the toggles.
 
-    to add aditional apps create another key in appkeys and array of keys to toggle to assoiated with it.
+	Thanks /u/GroggyOtter for making it clean
 
-Thanks /u/GroggyOtter for making it clean
+	To make a hotkey set run Hotkey setter the top box in on press the bottom is on realease
+
 */
+
+
 
 
 ; Associative array for mapping the keys to indiceis
-keysToIndecies := {"1":1 ,"2":2 ,"3":3 ,"4":4 ,"5":5 ,"6":6 ,"7":7 ,"8":8 ,"9":9 ,"0":10 ,"-":11 ,"Delete":12}
+keysToIndecies := {"1":1 ,"2":2 ,"3":3 ,"4":4 ,"5":5 ,"6":6 ,"7":7 ,"8":8 ,"9":9 ,"0":10 ,"-":11 ,"BS":12}
 
-;initalize the app names as keys in appkeys
-appKeys := {"JupyterLab" : 0, "Mozilla Firefox" : 0, "Google Chrome" : 0, "Visual Studio Code" : 0, "Autodesk Maya 2019" : 0, "Autodesk Fusion 360 (Education License)" : 0, "Default":0}
+;initalize the app names as keys in appkeysDownappkeysDown
+appkeysDown := []
+appkeysUp := []
 
-/*
-	Fusion 360
-		1 -> Extrude		2 -> Line						3 -> Dimension
-		4 -> Circle			5 -> Rectangle					6 -> Camera controls
-		7 -> Project		8 -> Inspect/mesure				9 -> normal/construction line toggle
-		10 -> Joint			11 -> visibility toggle			12 -> Enter
-*/
-appKeys["Autodesk Fusion 360 (Education License)"] :=  ["e"					;1
-,"l"																		;2
-,"d"																		;3
-,"c"																		;4
-,"r"																		;5
-,"{Shift down}{MButton down}"												;6
-,"p"																		;7
-,"i"																		;8
-,"x"																		;9
-,"j"																		;10
-,"v"																		;11
-,"{Enter}"]																	;12
+Loop, Files, %A_ScriptDir%\Hotkeys\*.*, FR
+{
+	FileReadLine, AppName, %A_LoopFilePath%, 1
+	FileReadLine, keysDown, %A_LoopFilePath%, 3
 
-/*
-	Maya TODO
-		1 -> Extrude		2 -> Line						3 -> Dimension
-		4 -> Circle			5 -> Rectangle					6 -> Camera controls
-		7 -> Project		8 -> Inspect/mesure				9 -> normal/construction line toggle
-		10 -> Joint			11 -> visibility toggle			12 -> Enter
-*/
-appKeys["Autodesk Maya 2019"] :=  ["e"					;1
-,"l"													;2
-,"d"													;3
-,"c"													;4
-,"r"													;5
-,"{Alt down}{LButton down}"								;6
-,"{}}"													;7
-,"8"													;8
-,"{{}"													;9
-,"j"													;10
-,"v"													;11
-,"{Enter}"]												;12
+	appkeysDown[("" AppName "")] := StrSplit(keysDown, ",", """")
 
+	FileReadLine, keysUp, %A_LoopFilePath%, 5
+	if (ErrorLevel = 0)
+	{
+		if (InStr(keysUp, ",")){
+			AllKeys := StrSplit(keysUp, ",")
+				for index, value in AllKeys{
+					indexKeytoSend := StrSplit(value, ":")
+					keysUpArray[indexKeytoSend[1]] := indexKeytoSend[2]
+				}
+		}else{
+			indexKeytoSend := StrSplit(keysUp, ":")
+			keysUpArray[indexKeytoSend[1]] := indexKeytoSend[2]
+		}
 
+	}else{
+		keysUpArray := []
+	}
 
-/*
-	  Firefox
-		1 -> Back 								2 -> Refresh 					3 -> Forward
-		4 -> Next tab 							5 -> New tab 					6 -> Previous tab
-		7 -> Open google drive in new tab 		8 -> Open gmail in new tab 		9 -> Open pitt in new tab
-		10 -> Search 							11 -> Print 					12 -> Enter
-*/
-appKeys["Mozilla Firefox"] := ["{XButton1}"								;1
-, "{f5}"																;2
-,"{XButton2}"															;3
-, "{Control down}{PgUp}{Control up}"									;4
-, "{Control down}{t}{Control up}"										;5
-, "{Control down}{PgDn}{Control up}"									;6
-, "{Control down}{t}{Control up}drive.google.com {enter}"				;7
-, "{Control down}{t}{Control up}gmail.com {enter}"						;8
-, "{Control down}{t}{Control up}my.pitt.edu {enter}"					;9
-, "{Control down}{f}{Control up}"										;10
-, "{Control down}{p}{Control up}"										;11
-, "{Enter}"]															;12
+	appkeysUp[("" AppName "")] := keysUpArray
 
-
-/*
-	  Chrome
-		1 -> Back 								2 -> Refresh 					3 -> Forward
-		4 -> Next tab 							5 -> New tab 					6 -> Previous tab
-		7 -> Open google drive in new tab 		8 -> Open gmail in new tab 		9 -> Open pitt in new tab
-		10 -> Search 							11 -> Print 					12 -> Enter
-*/
-appKeys["Google Chrome"] := ["{XButton1}"									;1
-, "{f5}"																	;2
-,"{XButton2}"																;3
-, "{Control down}{Shift down}{Tab}{Shift up}{Control up}"					;4
-, "{Control down}{t}{Control up}"											;5
-, "{Control down}{Tab}{Control up}"											;6
-, "{Control down}{t}{Control up}drive.google.com{enter}"					;7
-, "{Control down}{t}{Control up}gmail.com{enter}"							;8
-, "{Control down}{t}{Control up}my.pitt.edu{enter}"							;9
-, "{Control down}{f}{Control up}"											;10
-, "{Control down}{p}{Control up}"											;11
-, "{Enter}"]																;12
-
-/*
-	   VScode
-		1 -> Column (box) select 	2 -> Save 				3 -> Commands
-		4 -> Select previous 		5 -> select lines 		6 -> Select next
-		7 -> move line down 		8 -> Toggle comment 	9 -> move line up
-		10 -> Search 				11 -> Print 			12 -> Enter
-*/
-appKeys["Visual Studio Code"] := ["{Shift down}{Alt down}{LButton down}"	;1
-, "{Control down}{s}{Control up}"											;2
-,"{f1}"																		;3
-, "{Shift down}{left}{Shift up}"											;4
-, "{Control down}{l}{Control up}"											;5
-, "{Shift down}{right}{Shift up}"											;6
-, "{Alt down}{down}{Alt up}"												;7
-, "{Shift down}{Alt down}{a}{Shift up}{Alt up}"								;8
-, "{Alt down}{up}{Alt up}"													;9
-, "{Control down}{f}{Control up}"											;10
-, "{Control down}{p}{Control up}"											;11
-, "{Enter}"]																;12
-
-
-/*
-	   Jupyter lab
-		1 -> New cell	2 -> Save		3 -> ()
-		4 -> = 			5 -> + 			6 -> *
-		7 -> split cell	8 -> /			9 -> ^
-		10 -> Search 	11 -> Sqrt()	12 -> Run
-*/
-appKeys["JupyterLab"] :=  ["{Escape}b"										;1
-, "{Control down}{s}{Control up}"											;2
-, "{(}"																		;3
-, "="																		;4
-, "{+}"																		;5
-, "{*}"																		;6
-, "{Control down}{Shift down}{-}{Shift up}{Control up}" 					;7
-, "{/}"																		;8
-, "{^}"																		;9
-, "{Control down}{f}{Control up}"											;10
-, "sqrt(){Left}"															;11
-,"{Control down}{Enter}{Control up}"]										;12
-
-
-/*
-	   Default
-		1 -> change window		2 -> Save			3 -> play pause
-		4 -> volume down		5 -> mute			6 -> voulume up
-		7 -> Minimzie window	8 -> Start menu		9 -> Maximzie window
-		10 -> Search			11 -> print			12 -> Enter
-*/
-appKeys["Default"] :=    ["^!{Tab}"					;1
-, "{Control down}{s}{Control up}"					;2
-, "{Media_Play_Pause}"								;3
-, "{Volume_Down}"									;4
-, "{Volume_Mute}"									;5
-, "{Volume_Up}"										;6
-, "{LWin down}{down}{LWin up}"						;7
-, "{LWin}"											;8
-, "{LWin down}{up}{LWin up}"						;9
-, "{Control down}{f}{Control up}"					;10
-, "{Control down}{p}{Control up}"					;11
-,"{Enter}"]											;12
-
+}
 
 
 ; Default toggle state
-toggle := 0 
-
-;assosiative array mapping aplications to their hotkeys
-;appKeys := {"JupyterLab" : Math, "Mozilla Firefox" : Firefox, "Google Chrome" : Chrome, "Visual Studio Code" : VSCode, "Autodesk Maya 2019" : Maya, "Autodesk Fusion 360 (Education License)" : Fusion}
-
-
+toggle := 0
+keypress := False 
 
 ; For loop to loop through keyA
 for index, value in keysToIndecies
@@ -182,23 +65,24 @@ return
 ; Label to run when any key is pressed
 ToggleSend:
    
-	;get the active window
-    WinGet, id, ID, A
-	;get the title from the active window
-    WinGetTitle, windowTitle, ahk_id %id%
-	;break up the window title  - is the delimiter drop spaces
-    chopped := StrSplit(windowTitle , "-" , " ")
+		keypress := True
+
+		;get the window title and split up it's name
+		winTitle := getWinTitle()
+    	chopped := StrSplit(winTitle, "-" , " ")
 
 		;use the hotkeys based on the tab within a browser
-		;this is at the begining of the window title so check that
-		hotkeysToUse := appKeys[("" chopped[1] "")]
+		;this is at the begining of the window title so check that first
+		hotkeysToUse := appkeysDown[("" chopped[1] "")]
+		hotkeysUp := appkeysUp[("" chopped[1] "")]
 
-		; if hotkeys to use is still empty
+		; if hotkeys to use is still empty (No meaningfull tabs have have control)
 		if (hotkeysToUse.MaxIndex() <= 1){
 			;use the hotkey based on the aplication
 			;the aplication name is usualy at the end of the window title so get the last word(s) in the window title
-			hotkeysToUse := appKeys[("" chopped[chopped.MaxIndex()] "")]
-			;MsgBox % appKeys[("" chopped[chopped.MaxIndex()] "")].MaxIndex()
+			hotkeysToUse := appkeysDown[("" chopped[chopped.MaxIndex()] "")]
+			hotkeysUp := appkeysUp[("" chopped[chopped.MaxIndex()] "")]
+			;MsgBox % appkeysDown[("" chopped[chopped.MaxIndex()] "")].MaxIndex()
 			;MsgBox % chopped[chopped.MaxIndex()]
 			;MsgBox % hotkeysToUse.MaxIndex()
 		}
@@ -206,7 +90,8 @@ ToggleSend:
 		; if hotkeys to use is still empty
 		if (hotkeysToUse.MaxIndex() <= 1){
 			;Use default hotkeys
-			hotkeysToUse := appKeys["Default"]
+			hotkeysToUse := appkeysDown["Default"]
+			hotkeysUp := appkeysUp["Default"]
 			;MsgBox using Defaults
 		}
 
@@ -221,22 +106,10 @@ ToggleSend:
             ;MsgBox % hotkeysToUse[keysToIndecies[("" hk "")]]
             SendInput, % hotkeysToUse[keysToIndecies[("" hk "")]]
 
-            ;workaround to have ahk replicate a press and hold
-            if(hk = 6 && hotkeysToUse = appKeys["Autodesk Fusion 360 (Education License)"]){
-                keyWait, 6
-		        send, {Shift up}{MButton up}
-            }
+			KeyWait, %hk%
 
-			if(hk = 6 && hotkeysToUse = appKeys["Autodesk Maya 2019"]){
-                keyWait, 6
-				send, {Alt up}{LButton up}
-            }
-
-			if(hk = 1 && hotkeysToUse = appKeys["Visual Studio Code"]){
-				keyWait, 1
-				send, {Shift up}{Alt up}{LButton up}
-			}
-
+			sendInput, % hotkeysUp[keysToIndecies[("" hk "")]]
+          
         ; If toggle is turned off...
         }Else{
             ; ...send the key you just pressed
@@ -248,10 +121,11 @@ return
 
 ; F4 toggles alt sending
 $*F4::
+	keypress := False
 	;run this first so a single press is instant
-	toggle := 1 
+	toggle := 1
 	KeyWait, F4, T0.15
-    if (ErrorLevel = 0)
+    if (ErrorLevel = 0 && keypress = False)
         sendInput, . ;tap the toggle key to send a period
 	KeyWait, f4
 	toggle := 0
@@ -279,9 +153,7 @@ Multipress:
     	Suspend, Toggle ; enable or disable hotkeys
 		printHotkeyState() ; tell the user
 	}else if (togglekeyPresses >= 4){
-		if(!A_IsSuspended){
-    		Send {AltDown}{f4}{AltUp} ;Delete the period and close the window
-		}
+		MsgBox % getWinTitle()
 	}
 	; Regardless of which action above was triggered, reset the count to
 	; prepare for the next series of presses:
@@ -294,6 +166,15 @@ printHotkeyState(){
 	}else{
 		MsgBox Hotkeys Enabled
 	}
+}
+
+getWinTitle(){
+	;get the active window
+    WinGet, id, ID, A
+	;get the title from the active window
+    WinGetTitle, windowTitle, ahk_id %id%
+	;break up the window title  - is the delimiter drop spaces
+    return windowTitle
 }
 
 
