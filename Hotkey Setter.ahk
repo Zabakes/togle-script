@@ -34,9 +34,48 @@ X = 75
     Y+=175
 } 
         
-Gui, Add, Button, x250 y850 w500 h50 ,Done 
+Gui, Add, Button, x0 y850 w500 h50 ,Done 
+Gui, Add, Button, x500 y850 w500 h50 ,Load
 Gui, Show, h900 w1000, New GUI Window 
 Return 
+
+ButtonLoad:
+    
+    num = 1
+    loop, 12{
+        GuiControl,, B%num%Up, 
+        GuiControl,, B%num%Down,
+        num++ 
+    }
+
+    Gui, Submit, NoHide ;
+    FileReadLine, GotWindowTitle, %A_ScriptDir%\Hotkeys\%FileName%, 1
+    GuiControl,, WindowTitle, %GotWindowTitle%
+
+    FileReadLine, keysDown, %A_ScriptDir%\Hotkeys\%FileName%, 3
+    KeysDownSplit := StrSplit(keysDown, ",", """")
+    
+    for index, keys in KeysDownSplit{
+         GuiControl,, B%index%Down, %keys%
+    }
+
+    FileReadLine, keysUp, %A_ScriptDir%\Hotkeys\%FileName%, 5
+    if (InStr(keysUp, ",")){
+		keysUp := StrSplit(keysUp, ",")
+		for index, keys in keysUp{
+            MsgBox, %keys%
+			keysSplit := StrSplit(keys, ":")
+            keyNum := keysSplit[1]
+            GuiControl,, B%keyNum%Up, % keysSplit[2]
+		}
+	}else{
+		keysSplit := StrSplit(keysUp, ":")
+        keyNum := keysSplit[1]
+        GuiControl,, B%keyNum%Up, % keysSplit[2]
+	}
+*/
+
+Return
 
 ButtonDone:
 Gui, Submit, NoHide ; will get ("refresh") all gui variables
@@ -64,7 +103,7 @@ loop, 12{
 }
 if ( InStr( FileName, ".ini")){
     FileDelete, %A_ScriptDir%\Hotkeys\%FileName%
-    FileAppend, %WindowTitle%`n`n%HKS%, %A_ScriptDir%\Hotkeys\%FileName%
+    FileAppend, %WindowTitle%`n`n%HKS%`n`n%HKSU%, %A_ScriptDir%\Hotkeys\%FileName%
 }Else{
     FileDelete, %A_ScriptDir%\Hotkeys\%FileName%.ini
     FileAppend, %WindowTitle%`n`n%HKS%`n`n%HKSU%, %A_ScriptDir%\Hotkeys\%FileName%.ini
