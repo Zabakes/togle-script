@@ -10,9 +10,6 @@
 
 */
 
-
-
-
 ; Associative array for mapping the keys to indiceis
 keysToIndecies := {"1":1 ,"2":2 ,"3":3 ,"4":4 ,"5":5 ,"6":6 ,"7":7 ,"8":8 ,"9":9 ,"0":10 ,"-":11 ,"BS":12}
 
@@ -30,6 +27,7 @@ Loop, Files, %A_ScriptDir%\Hotkeys\*.*, FR
 	FileReadLine, keysUp, %A_LoopFilePath%, 5
 	if (ErrorLevel = 0)
 	{
+		keysUpArray := []
 		if (InStr(keysUp, ",")){
 			AllKeys := StrSplit(keysUp, ",")
 				for index, value in AllKeys{
@@ -40,12 +38,12 @@ Loop, Files, %A_ScriptDir%\Hotkeys\*.*, FR
 			indexKeytoSend := StrSplit(keysUp, ":")
 			keysUpArray[indexKeytoSend[1]] := indexKeytoSend[2]
 		}
+		
+		appkeysUp[("" AppName "")] := keysUpArray
 
 	}else{
 		keysUpArray := []
 	}
-
-	appkeysUp[("" AppName "")] := keysUpArray
 
 }
 
@@ -66,6 +64,13 @@ return
 ToggleSend:
    
 		keypress := True
+
+		; Remove the $* hotkey prefixes using regex
+    	; This leaves the key that was pressed
+        hk  := RegExReplace(A_ThisHotkey, "^\$", "")
+
+        ; If toggle is turned on...
+        if (toggle = 1){
 
 		;get the window title and split up it's name
 		winTitle := getWinTitle()
@@ -95,20 +100,15 @@ ToggleSend:
 			;MsgBox using Defaults
 		}
 
-		; Remove the $* hotkey prefixes using regex
-    	; This leaves the key that was pressed
-        hk  := RegExReplace(A_ThisHotkey, "^\$", "")
 
-        ; If toggle is turned on...
-        if (toggle = 1){
 
-			; ...use hka s an index to get it's associated key from the array
-            ;MsgBox % hotkeysToUse[keysToIndecies[("" hk "")]]
-            SendInput, % hotkeysToUse[keysToIndecies[("" hk "")]]
+		; ...use hka s an index to get it's associated key from the array
+        ;MsgBox % hotkeysToUse[keysToIndecies[("" hk "")]]
+        SendInput, % hotkeysToUse[keysToIndecies[("" hk "")]]
 
-			KeyWait, %hk%
+		KeyWait, %hk%
 
-			sendInput, % hotkeysUp[keysToIndecies[("" hk "")]]
+		SendInput, % hotkeysUp[keysToIndecies[("" hk "")]]
           
         ; If toggle is turned off...
         }Else{
@@ -147,7 +147,9 @@ $*F3::
 
 Multipress:
 
-	if (togglekeyPresses = 2){ ; The key was pressed twice.
+	if (togglekeyPresses = 1){
+		sendInput, {F3}
+	}else if (togglekeyPresses = 2){ ; The key was pressed twice.
 		printHotkeyState() ; tell the user if hotkeys are enabled
 	}else if (togglekeyPresses = 3){
     	Suspend, Toggle ; enable or disable hotkeys
