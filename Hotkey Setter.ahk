@@ -63,7 +63,6 @@ ButtonLoad:
     if (InStr(keysUp, ",")){
 		keysUp := StrSplit(keysUp, ",")
 		for index, keys in keysUp{
-            MsgBox, %keys%
 			keysSplit := StrSplit(keys, ":")
             keyNum := keysSplit[1]
             GuiControl,, B%keyNum%Up, % keysSplit[2]
@@ -73,7 +72,6 @@ ButtonLoad:
         keyNum := keysSplit[1]
         GuiControl,, B%keyNum%Up, % keysSplit[2]
 	}
-*/
 
 Return
 
