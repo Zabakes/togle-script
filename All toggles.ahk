@@ -75,6 +75,7 @@ ToggleSend:
 		;get the window title and split up it's name
 		winTitle := getWinTitle()
     	chopped := StrSplit(winTitle, "-" , " ")
+		;MsgBox, %chopped% 
 
 		;use the hotkeys based on the tab within a browser
 		;this is at the begining of the window title so check that first
