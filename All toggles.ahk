@@ -10,6 +10,8 @@
 
 */
 
+#SingleInstance, force
+
 ; Associative array for mapping the keys to indiceis
 keysToIndecies := {"1":1 ,"2":2 ,"3":3 ,"4":4 ,"5":5 ,"6":6 ,"7":7 ,"8":8 ,"9":9 ,"0":10 ,"-":11 ,"BS":12}
 
@@ -73,7 +75,9 @@ ToggleSend:
         if (toggle = 1){
 
 		;get the window title and split up it's name
-		winTitle := getWinTitle()
+		MouseGetPos, , , id, control
+		WinGetTitle, winTitle, ahk_id %id%
+		WinActivate, %winTitle%
     	chopped := StrSplit(winTitle, "-" , " ")
 		;MsgBox, %chopped% 
 
