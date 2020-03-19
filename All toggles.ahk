@@ -74,46 +74,46 @@ ToggleSend:
         ; If toggle is turned on...
         if (toggle = 1){
 
-		;get the window title and split up it's name
-		MouseGetPos, , , id, control
-		WinGetTitle, winTitle, ahk_id %id%
-		WinActivate, %winTitle%
-    	chopped := StrSplit(winTitle, "-" , " ")
-		;MsgBox, %chopped% 
+			;get the window title and split up it's name
+			MouseGetPos, , , id, control
+			WinGetTitle, winTitle, ahk_id %id%
+			WinActivate, %winTitle%
+    		chopped := StrSplit(winTitle, "-" , " ")
+			;MsgBox, %chopped% 
 
-		;use the hotkeys based on the tab within a browser
-		;this is at the begining of the window title so check that first
-		hotkeysToUse := appkeysDown[("" chopped[1] "")]
-		hotkeysUp := appkeysUp[("" chopped[1] "")]
+			;use the hotkeys based on the tab within a browser
+			;this is at the begining of the window title so check that first
+			hotkeysToUse := appkeysDown[("" chopped[1] "")]
+			hotkeysUp := appkeysUp[("" chopped[1] "")]
 
-		; if hotkeys to use is still empty (No meaningfull tabs have have control)
-		if (hotkeysToUse.MaxIndex() <= 1){
-			;use the hotkey based on the aplication
-			;the aplication name is usualy at the end of the window title so get the last word(s) in the window title
-			hotkeysToUse := appkeysDown[("" chopped[chopped.MaxIndex()] "")]
-			hotkeysUp := appkeysUp[("" chopped[chopped.MaxIndex()] "")]
-			;MsgBox % appkeysDown[("" chopped[chopped.MaxIndex()] "")].MaxIndex()
-			;MsgBox % chopped[chopped.MaxIndex()]
-			;MsgBox % hotkeysToUse.MaxIndex()
-		}
+			; if hotkeys to use is still empty (No meaningfull tabs have have control)
+			if (hotkeysToUse.MaxIndex() <= 1){
+				;use the hotkey based on the aplication
+				;the aplication name is usualy at the end of the window title so get the last word(s) in the window title
+				hotkeysToUse := appkeysDown[("" chopped[chopped.MaxIndex()] "")]
+				hotkeysUp := appkeysUp[("" chopped[chopped.MaxIndex()] "")]
+				;MsgBox % appkeysDown[("" chopped[chopped.MaxIndex()] "")].MaxIndex()
+				;MsgBox % chopped[chopped.MaxIndex()]
+				;MsgBox % hotkeysToUse.MaxIndex()
+			}
 
-		; if hotkeys to use is still empty
-		if (hotkeysToUse.MaxIndex() <= 1){
-			;Use default hotkeys
-			hotkeysToUse := appkeysDown["Default"]
-			hotkeysUp := appkeysUp["Default"]
-			;MsgBox using Defaults
-		}
+			; if hotkeys to use is still empty
+			if (hotkeysToUse.MaxIndex() <= 1){
+				;Use default hotkeys
+				hotkeysToUse := appkeysDown["Default"]
+				hotkeysUp := appkeysUp["Default"]
+				;MsgBox using Defaults
+			}
 
 
 
-		; ...use hka s an index to get it's associated key from the array
-        ;MsgBox % hotkeysToUse[keysToIndecies[("" hk "")]]
-        SendInput, % hotkeysToUse[keysToIndecies[("" hk "")]]
+			; ...use hka s an index to get it's associated key from the array
+       		;MsgBox % hotkeysToUse[keysToIndecies[("" hk "")]]
+       		SendInput, % hotkeysToUse[keysToIndecies[("" hk "")]]
 
-		KeyWait, %hk%
+			KeyWait, %hk%
 
-		SendInput, % hotkeysUp[keysToIndecies[("" hk "")]]
+			SendInput, % hotkeysUp[keysToIndecies[("" hk "")]]
           
         ; If toggle is turned off...
         }Else{
@@ -130,11 +130,18 @@ $*F4::
 	;run this first so a single press is instant
 	toggle := 1
 	KeyWait, F4, T0.15
-    if (ErrorLevel = 0 && keypress = False)
+    if (ErrorLevel = 0 && keypress = False){
         sendInput, . ;tap the toggle key to send a period
+	}else{
+		KeyWait, F4, T0.15
+		if (ErrorLevel = 1 && keypress = False)
+			run, divvy.exe, C:\Users\zac\AppData\Local\Mizage LLC\Divvy ;tap the toggle key to send a period
+	}
 	KeyWait, f4
 	toggle := 0
 	return
+
+
 
 $*F3::
 	Suspend Permit ;don't suspend this
@@ -147,13 +154,15 @@ $*F3::
 	togglekeyPresses := 1
 
 
-	SetTimer, Multipress, -600 ; Wait for more presses within a 600 millisecond window then run multipress
+	SetTimer, Multipressf3, -600 ; Wait for more presses within a 600 millisecond window then run multipress
 	return
 
-Multipress:
+Multipressf3:
 
 	if (togglekeyPresses = 1){
 		sendInput, {F3}
+		SysGet, OutputVar, MonitorName
+		MsgBox, %OutputVar%
 	}else if (togglekeyPresses = 2){ ; The key was pressed twice.
 		printHotkeyState() ; tell the user if hotkeys are enabled
 	}else if (togglekeyPresses = 3){
