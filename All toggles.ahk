@@ -133,9 +133,11 @@ $*F4::
     if (ErrorLevel = 0 && keypress = False){
         sendInput, . ;tap the toggle key to send a period
 	}else{
-		KeyWait, F4, T0.15
-		if (ErrorLevel = 1 && keypress = False)
-			run, divvy.exe, C:\Users\zac\AppData\Local\Mizage LLC\Divvy ;tap the toggle key to send a period
+		if (FileExist("C:\Users\zac\AppData\Local\Mizage LLC\Divvy\divvy.exe")){
+			KeyWait, F4, T0.15
+			if (ErrorLevel = 1 && keypress = False)
+				run, divvy.exe, C:\Users\zac\AppData\Local\Mizage LLC\Divvy ;tap the toggle key to send a period
+		}
 	}
 	KeyWait, f4
 	toggle := 0
