@@ -137,7 +137,7 @@ $*F4::
 		if (FileExist(LCLAPPDATA "\Mizage LLC\Divvy\divvy.exe")){
 			KeyWait, F4, T0.15
 			if (ErrorLevel = 1 && keypress = False)
-				run, divvy.exe, %LCLAPPDATA%\\Mizage LLC\Divvy ;tap the toggle key to send a period
+				run, divvy.exe, %LCLAPPDATA%\Mizage LLC\Divvy ;tap the toggle key to send a period
 		}
 	}
 	KeyWait, f4
