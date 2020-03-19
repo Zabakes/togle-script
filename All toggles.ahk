@@ -11,7 +11,8 @@
 */
 
 #SingleInstance, force
-
+;Divvy path
+EnvGet, LCLAPPDATA, LOCALAPPDATA
 ; Associative array for mapping the keys to indiceis
 keysToIndecies := {"1":1 ,"2":2 ,"3":3 ,"4":4 ,"5":5 ,"6":6 ,"7":7 ,"8":8 ,"9":9 ,"0":10 ,"-":11 ,"BS":12}
 
@@ -133,10 +134,10 @@ $*F4::
     if (ErrorLevel = 0 && keypress = False){
         sendInput, . ;tap the toggle key to send a period
 	}else{
-		if (FileExist("C:\Users\zac\AppData\Local\Mizage LLC\Divvy\divvy.exe")){
+		if (FileExist(LCLAPPDATA "\Mizage LLC\Divvy\divvy.exe")){
 			KeyWait, F4, T0.15
 			if (ErrorLevel = 1 && keypress = False)
-				run, divvy.exe, C:\Users\zac\AppData\Local\Mizage LLC\Divvy ;tap the toggle key to send a period
+				run, divvy.exe, %LCLAPPDATA%\\Mizage LLC\Divvy ;tap the toggle key to send a period
 		}
 	}
 	KeyWait, f4
@@ -163,8 +164,6 @@ Multipressf3:
 
 	if (togglekeyPresses = 1){
 		sendInput, {F3}
-		SysGet, OutputVar, MonitorName
-		MsgBox, %OutputVar%
 	}else if (togglekeyPresses = 2){ ; The key was pressed twice.
 		printHotkeyState() ; tell the user if hotkeys are enabled
 	}else if (togglekeyPresses = 3){
