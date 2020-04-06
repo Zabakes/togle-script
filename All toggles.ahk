@@ -66,26 +66,33 @@ return
 ; Label to run when any key is pressed
 ToggleSend:
    
-		keypress := True
 
 		; Remove the $* hotkey prefixes using regex
     	; This leaves the key that was pressed
         hk  := RegExReplace(A_ThisHotkey, "^\$", "")
 
         ; If toggle is turned on...
-        if (toggle = 1){
+        if (toggle = 1){ 
+
+			keypress := True
 
 			;get the window title and split up it's name
 			MouseGetPos, , , id, control
 			WinGetTitle, winTitle, ahk_id %id%
 			WinActivate, %winTitle%
     		chopped := StrSplit(winTitle, "-" , " ")
-			;MsgBox, %chopped% 
+			
 
+			if (InStr(chopped[1], ".ipynb")){
+				hotkeysToUse := appkeysDown["JupyterLab"]
+				hotkeysUp := appkeysUp["JupyterLab"]
+			}else{
 			;use the hotkeys based on the tab within a browser
 			;this is at the begining of the window title so check that first
 			hotkeysToUse := appkeysDown[("" chopped[1] "")]
 			hotkeysUp := appkeysUp[("" chopped[1] "")]
+			}
+
 
 			; if hotkeys to use is still empty (No meaningfull tabs have have control)
 			if (hotkeysToUse.MaxIndex() <= 1){
@@ -132,15 +139,18 @@ $*F4::
 	toggle := 1
 	KeyWait, F4, T0.15
     if (ErrorLevel = 0 && keypress = False){
-        sendInput, . ;tap the toggle key to send a period
-	}else{
-		if (FileExist(LCLAPPDATA "\Mizage LLC\Divvy\divvy.exe")){
-			KeyWait, F4, T0.15
-			if (ErrorLevel = 1 && keypress = False)
-				run, divvy.exe, %LCLAPPDATA%\Mizage LLC\Divvy ;tap the toggle key to send a period
+		KeyWait, F4, D T0.075
+		if (ErrorLevel = 1){
+        	sendInput, . ;tap the toggle key to send a period
+		}else{
+			if (FileExist(LCLAPPDATA "\Mizage LLC\Divvy\divvy.exe") && getWinTitle() != ""){
+				if (keypress = False){
+					run, tilingManagerTest.exe
+				}
+			}
 		}
 	}
-	KeyWait, f4
+	KeyWait, F4
 	toggle := 0
 	return
 
