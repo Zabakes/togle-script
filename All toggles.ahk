@@ -143,7 +143,7 @@ $*F4::
 		if (ErrorLevel = 1){
         	sendInput, . ;tap the toggle key to send a period
 		}else{
-			if (FileExist(LCLAPPDATA "\Mizage LLC\Divvy\divvy.exe") && getWinTitle() != ""){
+			if (getWinTitle() != ""){
 				if (keypress = False){
 					run, tilingManagerTest.exe
 				}
