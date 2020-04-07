@@ -4,7 +4,7 @@ SendMode Input  ; Recommended for new scripts due to its superior speed and reli
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 vertCells := 2
-horCells := 3
+horCells := 6
 
 CoordMode, Mouse, Screen
 
@@ -22,7 +22,7 @@ monSizeY := monBottom - monTop
 cellSizeX := floor(monSizeX/horCells)
 cellSizeY := floor(monSizeY/vertCells)
 
-Gui Color, Blue
+Gui Color, Black
 Gui, +LastFound
 Gui, +AlwaysOnTop
 WinSet, Transparent, 100
@@ -30,62 +30,53 @@ Gui, -Caption
 Gui Show, w%monSizeX% h%monSizeY% X%monLeft% Y%monTop%
 WinSet, Region, 0-0 W0 H0
 
-MouseGetPos, initX, initY
-
 while getkeystate("LButton", "P") == 0{
+	MouseGetPos, x, y
 
-    MouseGetPos, x, y
+    x -= monLeft
+    y -= monTop
 
-    boxX := x-initX
-    boxY := y-initY
+	downXcell := x // cellSizeX
+	downYcell := y // cellSizeY
 
-    startCellX := (floor(boxX/(monSizeX/20)))
-    startCellY := (floor(boxY/(monSizeY/10)))
+	ToolTip, %downXcell% %downYcell% , 10, 10
 
-    startCellX := max(startCellX, 0)
-    startCellY := max(startCellY, 0)
+	winStartX := downXcell*cellSizeX
+	winStartY := downYcell*cellSizeY
 
-    startCellX := min(startCellX, horCells-1)
-    startCellY := min(startCellY, vertCells-1)
+	WinSet, Region, %winStartX%-%winStartY% W%cellSizeX% H%cellSizeY%
 
-    ToolTip, %startCellX% %startCellY% , 10, 10
-
-    winStartX := startCellX*cellSizeX
-    winStartY := startCellY*cellSizeY
-
-    WinSet, Region, %winStartX%-%winStartY% W%cellSizeX% H%cellSizeY%
-    
-    Sleep, 100
+ 	Sleep, 100
 }
 
 KeyWait, LButton, D
 
-MouseGetPos, initX, initY
-
 while getkeystate("LButton", "P") == 1{
+	MouseGetPos, x, y
 
-    MouseGetPos, x, y
+    x -= monLeft
+    y -= monTop
 
-    boxX := x-initX
-    boxY := y-initY
+	upXcell := x // cellSizeX
+	upYcell := y // cellSizeY
 
-    cellsX := (floor(boxX/(monSizeX/20))+1)
-    cellsY := (floor(boxY/(monSizeY/10))+1)
+	startXcell := Min(downXcell, upXcell)
+	startYcell := Min(downYcell, upYcell)
 
-    cellsX := max(cellsX, 1)
-    cellsY := max(cellsY, 1)
+	spanX := Abs(downXcell - upXcell) + 1
+	spanY := Abs(downYcell - upYcell) + 1
 
-    cellsX := min(cellsX, horCells)
-    cellsY := min(cellsY, vertCells)
+	winStartX := startXcell*cellSizeX
+	winStartY := startYcell*cellSizeY
 
-    ToolTip, %cellsX% %cellsY% , 10, 10
+	ToolTip, %spanX% %spanY% , 10, 10
 
-    winRegionX := cellsX*cellSizeX
-    winRegionY := cellsY*cellSizeY
+	winRegionX := spanX*cellSizeX
+	winRegionY := spanY*cellSizeY
 
-    WinSet, Region, %winStartX%-%winStartY% W%winRegionX% H%winRegionY%
+	WinSet, Region, %winStartX%-%winStartY% W%winRegionX% H%winRegionY%
 
-    Sleep, 100
+	Sleep, 100
 }
 winStartX += monLeft
 winStartY += monTop
@@ -99,37 +90,42 @@ ToolTip
 ExitApp
 
 GetMonitorMouse()
-{
-    MouseGetPos, x, y
+	{
+	MouseGetPos, x, y
 
-    SysGet, numOfMonitors, 80
+	SysGet, numOfMonitors, 80
 
-    i:= 1
-    
-    while i <= numOfMonitors{
-        SysGet, mon, MonitorWorkArea, %i%
-        if (x < monRight && x > monLeft && y < monBottom && y > monTop){
-            Return %i%
-        }
-        i++
-    }
-    Return -1
-}
+	i := 1
 
-getWinTitle(){
+	while i <= numOfMonitors
+		{
+		SysGet, mon, MonitorWorkArea, %i%
+		if (x < monRight && x > monLeft && y < monBottom && y > monTop)
+			{
+			Return %i%
+			}
+		i++
+		}
+	Return -1
+	}
+
+getWinTitle()
+	{
 	;get the active window
-    WinGet, id, ID, A
+	WinGet, id, ID, A
 	;get the title from the active window
-    WinGetTitle, windowTitle, ahk_id %id%
+	WinGetTitle, windowTitle, ahk_id %id%
 	;break up the window title  - is the delimiter drop spaces
-    return windowTitle
-}
+	return windowTitle
+	}
 
 $Escape:: 
-mode = 0
-Gui, Destroy
-ToolTip
-ExitApp
+	mode = 0
+	Gui, Destroy
+	ToolTip
+	ExitApp
+Return
 
 #If mode ; All hotkeys below this line will only work if mode is TRUE
-    LButton::Return
+	LButton::Return
+#If
