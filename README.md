@@ -12,4 +12,4 @@ line 5 of this file has all the keys to send on key release
 to add applications run the hotkey setter script and fill in the values for each input. this will generate an .ini file for you. The top box is keys to send on press and the lower is on release.
 run this same script and pick from the dropdown to re-write an existing file **THIS WILL OVERWRITE THE ENTIRE FILE** so make sure to fill in all your hotkeys. you can load hotkeys by selecting the file from the dropdown and hitting load.
 
-If you double click f4 (the toggle key) you'll see a blue box on the monitor containing your mouse. moving the mouse will move this box clicking and dragging will expand this box. When you release the mouse the active window will resize into that box.
+If you hold f4 (the toggle key) without pressing anything else for 100ms you'll see a blue box on the monitor containing your mouse. moving the mouse will move this box clicking and dragging will expand this box. When you release the mouse the active window will resize into that box.

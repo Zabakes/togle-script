@@ -125,5 +125,11 @@ getWinTitle(){
     return windowTitle
 }
 
+$Escape:: 
+mode = 0
+Gui, Destroy
+ToolTip
+ExitApp
+
 #If mode ; All hotkeys below this line will only work if mode is TRUE
     LButton::Return

@@ -139,14 +139,12 @@ $*F4::
 	toggle := 1
 	KeyWait, F4, T0.15
     if (ErrorLevel = 0 && keypress = False){
-		KeyWait, F4, D T0.075
-		if (ErrorLevel = 1){
-        	sendInput, . ;tap the toggle key to send a period
-		}else{
-			if (getWinTitle() != ""){
-				if (keypress = False){
-					run, tilingManagerTest.exe
-				}
+        sendInput, . ;tap the toggle key to send a period
+	}else{
+		Sleep, 100
+		if (getWinTitle() != ""){
+			if (keypress = False){
+				run, tilingManagerTest.exe
 			}
 		}
 	}
