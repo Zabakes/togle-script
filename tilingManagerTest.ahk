@@ -1,4 +1,4 @@
-﻿#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 #SingleInstance, force
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
@@ -33,7 +33,8 @@ WinSet, Region, 0-0 W0 H0
 while getkeystate("LButton", "P") == 0{
 	MouseGetPos, x, y
 
-    
+    x -= monLeft
+    y -= monTop
 
 	downXcell := x // cellSizeX
 	downYcell := y // cellSizeY
