@@ -33,8 +33,7 @@ WinSet, Region, 0-0 W0 H0
 while getkeystate("LButton", "P") == 0{
 	MouseGetPos, x, y
 
-    x -= monLeft
-    y -= monTop
+    
 
 	downXcell := x // cellSizeX
 	downYcell := y // cellSizeY

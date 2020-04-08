@@ -14,7 +14,8 @@
 ;Divvy path
 EnvGet, LCLAPPDATA, LOCALAPPDATA
 ; Associative array for mapping the keys to indiceis
-keysToIndecies := {"1":1 ,"2":2 ,"3":3 ,"4":4 ,"5":5 ,"6":6 ,"7":7 ,"8":8 ,"9":9 ,"0":10 ,"-":11 ,"BS":12}
+keysToIndecies := {"F13":1 ,"F14":2 ,"F15":3 ,"F16":4 ,"F17":5 ,"F18":6 ,"F19":7 ,"F20":8 ,"F21":9 ,"F22":10 ,"F23":11 ,"F24":12}
+defaults := ["1","2","3","4","5","6","7","8","9","0","-", "{BS}"]
 
 ;initalize the app names as keys in appkeysDownappkeysDown
 appkeysDown := []
@@ -72,7 +73,7 @@ ToggleSend:
         hk  := RegExReplace(A_ThisHotkey, "^\$", "")
 
         ; If toggle is turned on...
-        if (toggle = 1){ 
+        if (toggle = 1){
 
 			keypress := True
 
@@ -125,14 +126,14 @@ ToggleSend:
           
         ; If toggle is turned off...
         }Else{
-            ; ...send the key you just pressed
-            Send, % "{" hk "}"
+            ; ...send default of the key you pressed
+            SendInput, % defaults[keysToIndecies[("" hk "")]]
 		}
 
 
 return
 
-; F4 toggles alt sending
+; Browser_Forward toggles alt sending
 $*F4::
 	keypress := False
 	;run this first so a single press is instant
