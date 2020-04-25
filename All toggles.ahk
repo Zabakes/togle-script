@@ -11,13 +11,8 @@
 */
 
 #SingleInstance, force
-;Divvy path
-EnvGet, LCLAPPDATA, LOCALAPPDATA
-; Associative array for mapping the keys to indiceis
-keysToIndecies := {"F13":1 ,"F14":2 ,"F15":3 ,"F16":4 ,"F17":5 ,"F18":6 ,"F19":7 ,"F20":8 ,"F21":9 ,"F22":10 ,"F23":11 ,"F24":12}
-defaults := ["1","2","3","4","5","6","7","8","9","0","-", "{BS}"]
 
-;initalize the app names as keys in appkeysDownappkeysDown
+;initalize the app names as keys in appkeysDown
 appkeysDown := []
 appkeysUp := []
 
@@ -56,18 +51,24 @@ Loop, Files, %A_ScriptDir%\Hotkeys\*.*, FR
 toggle := 0
 keypress := False 
 
+keysToIndices := {}
+
+for index, value in appkeysDown["Keys"]{
+	keysToIndices[value] := index
+}
 ; For loop to loop through keyA
-for index, value in keysToIndecies
+for index, value in keysToIndices{
+	msgbox %value% - %index%
     ; Create hotkeys using the index from the loop
     Hotkey, % "$" index, ToggleSend, On
+
+}
 ; End Auto-Execute Section
 return
 
 
 ; Label to run when any key is pressed
 ToggleSend:
-   
-
 		; Remove the $* hotkey prefixes using regex
     	; This leaves the key that was pressed
         hk  := RegExReplace(A_ThisHotkey, "^\$", "")
@@ -88,17 +89,17 @@ ToggleSend:
 				hotkeysToUse := appkeysDown["JupyterLab"]
 				hotkeysUp := appkeysUp["JupyterLab"]
 			}else{
-			;use the hotkeys based on the tab within a browser
-			;this is at the begining of the window title so check that first
-			hotkeysToUse := appkeysDown[("" chopped[1] "")]
-			hotkeysUp := appkeysUp[("" chopped[1] "")]
+				;use the hotkeys based on the tab within a browser
+				;this is at the begining of the window title so check that first
+				hotkeysToUse := appkeysDown[("" chopped[1] "")]
+				hotkeysUp := appkeysUp[("" chopped[1] "")]
 			}
 
 
 			; if hotkeys to use is still empty (No meaningfull tabs have have control)
 			if (hotkeysToUse.MaxIndex() <= 1){
-				;use the hotkey based on the aplication
-				;the aplication name is usualy at the end of the window title so get the last word(s) in the window title
+				;use the hotkey based on the application
+				;the application name is usually at the end of the window title so get the last word(s) in the window title
 				hotkeysToUse := appkeysDown[("" chopped[chopped.MaxIndex()] "")]
 				hotkeysUp := appkeysUp[("" chopped[chopped.MaxIndex()] "")]
 				;MsgBox % appkeysDown[("" chopped[chopped.MaxIndex()] "")].MaxIndex()
@@ -113,43 +114,48 @@ ToggleSend:
 				hotkeysUp := appkeysUp["Default"]
 				;MsgBox using Defaults
 			}
-
-
-
-			; ...use hka s an index to get it's associated key from the array
-       		;MsgBox % hotkeysToUse[keysToIndecies[("" hk "")]]
-       		SendInput, % hotkeysToUse[keysToIndecies[("" hk "")]]
-
-			KeyWait, %hk%
-
-			SendInput, % hotkeysUp[keysToIndecies[("" hk "")]]
           
         ; If toggle is turned off...
         }Else{
+
             ; ...send default of the key you pressed
-            SendInput, % defaults[keysToIndecies[("" hk "")]]
+			hotkeysToUse := appkeysDown["Untoggled"]
+			hotkeysUp := appkeysUp["Untoggled"]
+
 		}
 
+			; ...use hka s an index to get it's associated key from the array
+       		;MsgBox % hotkeysToUse[keysToIndecies[("" hk "")]]
+		    SendInput, % hotkeysToUse[keysToIndices[("" hk "")]]
+
+			if (hotkeysUp.MaxIndex() >= 1){
+
+				KeyWait, %hk%, U
+
+				SendInput, % hotkeysUp[keysToIndices[("" hk "")]]
+			}
 
 return
 
-; Browser_Forward toggles alt sending
-$*F4::
+; F4 toggles alt sending
+$*Home::
 	keypress := False
 	;run this first so a single press is instant
 	toggle := 1
-	KeyWait, F4, T0.15
+	KeyWait, Home, T0.15
     if (ErrorLevel = 0 && keypress = False){
         sendInput, . ;tap the toggle key to send a period
 	}else{
-		Sleep, 100
-		if (getWinTitle() != ""){
+		KeyWait, Home, U
+		if (getWinTitle() != "" ){
 			if (keypress = False){
 				run, tilingManagerTest.exe
+				toggle := 0
+				return
 			}
 		}
 	}
-	KeyWait, F4
+	KeyWait, Home
 	toggle := 0
 	return
 

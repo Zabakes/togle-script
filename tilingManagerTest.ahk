@@ -1,4 +1,4 @@
-#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+﻿#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 #SingleInstance, force
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
@@ -11,7 +11,9 @@ CoordMode, Mouse, Screen
 mode = 1
 
 toResize := getWinTitle()
+Goto, start
 
+start:
 mon := GetMonitorMouse()
 
 SysGet, mon, MonitorWorkArea, %mon%
@@ -44,9 +46,11 @@ while getkeystate("LButton", "P") == 0{
 	winStartX := downXcell*cellSizeX
 	winStartY := downYcell*cellSizeY
 
-	WinSet, Region, %winStartX%-%winStartY% W%cellSizeX% H%cellSizeY%
+	if (mon != GetMonitorMouse()){
+		Goto, start
+	}
 
- 	Sleep, 100
+	WinSet, Region, %winStartX%-%winStartY% W%cellSizeX% H%cellSizeY%
 }
 
 KeyWait, LButton, D
@@ -75,8 +79,6 @@ while getkeystate("LButton", "P") == 1{
 	winRegionY := spanY*cellSizeY
 
 	WinSet, Region, %winStartX%-%winStartY% W%winRegionX% H%winRegionY%
-
-	Sleep, 100
 }
 winStartX += monLeft
 winStartY += monTop
@@ -89,28 +91,26 @@ ToolTip
 
 ExitApp
 
-GetMonitorMouse()
-	{
+GetMonitorMouse(){
 	MouseGetPos, x, y
 
 	SysGet, numOfMonitors, 80
 
 	i := 1
 
-	while i <= numOfMonitors
-		{
+	while (i <= numOfMonitors){
 		SysGet, mon, MonitorWorkArea, %i%
-		if (x < monRight && x > monLeft && y < monBottom && y > monTop)
+		if (x <= monRight && x >= monLeft && y <= monBottom && y >= monTop)
 			{
 			Return %i%
 			}
 		i++
 		}
-	Return -1
+	MsgBox,16,,Your mouse isn't on a monitor???????? quiting, 2
+	ExitApp
 	}
 
-getWinTitle()
-	{
+getWinTitle(){
 	;get the active window
 	WinGet, id, ID, A
 	;get the title from the active window
