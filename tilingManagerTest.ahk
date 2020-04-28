@@ -3,6 +3,10 @@
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
+Menu, Tray, Icon, toggleScriptRed.ico
+
+
+
 vertCells := 2
 horCells := 6
 
@@ -54,6 +58,8 @@ while getkeystate("LButton", "P") == 0{
 }
 
 KeyWait, LButton, D
+
+Menu, Tray, Icon, toggleScriptGreen.ico
 
 while getkeystate("LButton", "P") == 1{
 	MouseGetPos, x, y

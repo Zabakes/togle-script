@@ -15,63 +15,22 @@
 ;initalize the app names as keys in appkeysDown
 appkeysDown := []
 appkeysUp := []
-
-Loop, Files, %A_ScriptDir%\Hotkeys\*.*, FR
-{
-	FileReadLine, AppName, %A_LoopFilePath%, 1
-	FileReadLine, keysDown, %A_LoopFilePath%, 3
-
-	appkeysDown[("" AppName "")] := StrSplit(keysDown, ",", """")
-
-	FileReadLine, keysUp, %A_LoopFilePath%, 5
-	if (ErrorLevel = 0)
-	{
-		keysUpArray := []
-		if (InStr(keysUp, ",")){
-			AllKeys := StrSplit(keysUp, ",")
-				for index, value in AllKeys{
-					indexKeytoSend := StrSplit(value, ":")
-					keysUpArray[indexKeytoSend[1]] := indexKeytoSend[2]
-				}
-		}else{
-			indexKeytoSend := StrSplit(keysUp, ":")
-			keysUpArray[indexKeytoSend[1]] := indexKeytoSend[2]
-		}
-		
-		appkeysUp[("" AppName "")] := keysUpArray
-
-	}else{
-		keysUpArray := []
-	}
-
-}
-
+keysToIndices := {}
 
 ; Default toggle state
 toggle := 0
 keypress := False 
 
-keysToIndices := {}
+goSub, updateConfig
 
-for index, value in appkeysDown["Keys"]{
-	keysToIndices[value] := index
-}
-; For loop to loop through keyA
-for index, value in keysToIndices{
-	msgbox %value% - %index%
-    ; Create hotkeys using the index from the loop
-    Hotkey, % "$" index, ToggleSend, On
-
-}
 ; End Auto-Execute Section
 return
-
 
 ; Label to run when any key is pressed
 ToggleSend:
 		; Remove the $* hotkey prefixes using regex
     	; This leaves the key that was pressed
-        hk  := RegExReplace(A_ThisHotkey, "^\$", "")
+        hk  := RegExReplace(A_ThisHotkey, "^\$\*", "")
 
         ; If toggle is turned on...
         if (toggle = 1){
@@ -114,18 +73,17 @@ ToggleSend:
 				hotkeysUp := appkeysUp["Default"]
 				;MsgBox using Defaults
 			}
-          
+        
         ; If toggle is turned off...
         }Else{
 
             ; ...send default of the key you pressed
-			hotkeysToUse := appkeysDown["Untoggled"]
-			hotkeysUp := appkeysUp["Untoggled"]
-
+			hotkeysToUse := appkeysUp["Config"]
+			hotkeysUp := []
 		}
 
 			; ...use hka s an index to get it's associated key from the array
-       		;MsgBox % hotkeysToUse[keysToIndecies[("" hk "")]]
+			
 		    SendInput, % hotkeysToUse[keysToIndices[("" hk "")]]
 
 			if (hotkeysUp.MaxIndex() >= 1){
@@ -138,15 +96,16 @@ ToggleSend:
 return
 
 ; F4 toggles alt sending
-$*Home::
+ToggleKey:
+	ToggleKey  := RegExReplace(A_ThisHotkey, "^\$\*", "")
 	keypress := False
 	;run this first so a single press is instant
 	toggle := 1
-	KeyWait, Home, T0.15
+	KeyWait, %ToggleKey%, T0.15
     if (ErrorLevel = 0 && keypress = False){
         sendInput, . ;tap the toggle key to send a period
 	}else{
-		KeyWait, Home, U
+		KeyWait, %ToggleKey%, U
 		if (getWinTitle() != "" ){
 			if (keypress = False){
 				run, tilingManagerTest.exe
@@ -155,7 +114,7 @@ $*Home::
 			}
 		}
 	}
-	KeyWait, Home
+	KeyWait, %ToggleKey%
 	toggle := 0
 	return
 
@@ -186,6 +145,7 @@ Multipressf3:
 		printHotkeyState() ; tell the user
 	}else if (togglekeyPresses >= 4){
 		MsgBox % getWinTitle()
+		goSub, updateConfig
 	}
 	; Regardless of which action above was triggered, reset the count to
 	; prepare for the next series of presses:
@@ -208,5 +168,58 @@ getWinTitle(){
 	;break up the window title  - is the delimiter drop spaces
     return windowTitle
 }
+
+updateConfig:
+
+	Loop, Files, %A_ScriptDir%\Hotkeys\*.*, FR
+	{
+
+		FileReadLine, AppName, %A_LoopFilePath%, 1
+		FileReadLine, keysDown, %A_LoopFilePath%, 3
+
+		if (AppName == "Config"){
+			FileReadLine, toggleKey, %A_LoopFilePath%, 7
+		}
+
+		appkeysDown[("" AppName "")] := StrSplit(keysDown, ",", """")
+
+		FileReadLine, keysUp, %A_LoopFilePath%, 5
+		if (ErrorLevel = 0)
+		{
+			if (AppName != "Config"){
+				keysUpArray := []
+				if (InStr(keysUp, ",")){
+					AllKeys := StrSplit(keysUp, ",")
+						for index, value in AllKeys{
+							indexKeytoSend := StrSplit(value, ":")
+							keysUpArray[indexKeytoSend[1]] := indexKeytoSend[2]
+						}
+				}else{
+					indexKeytoSend := StrSplit(keysUp, ":")
+					keysUpArray[indexKeytoSend[1]] := indexKeytoSend[2]
+				}
+			appkeysUp[("" AppName "")] := keysUpArray
+			}else{
+				appkeysUp[("" AppName "")] := StrSplit(keysUp, ",", """")
+			}
+
+		}else{
+			keysUpArray := []
+		}
+	}
+
+		for index, value in appkeysDown["Config"]{
+			keysToIndices[value] := index
+		}
+
+		; For loop to loop through key
+		for index, value in keysToIndices{
+		    ; Create hotkeys using the index from the loop
+		    Hotkey, % "$*" index, ToggleSend, On
+		}
+
+		Hotkey, % "$*" toggleKey, ToggleKey, On
+
+	return
 
 
