@@ -1,12 +1,12 @@
 /*
-	This script uses the F4 key to toggle bettween numbers and hotkeys for use on a MM0 mouse.
+	This script uses the F4 key to toggle between numbers and hotkeys for use on a MM0 mouse.
     each set of toggled keys is stored in an array in order. the keypresses on the mouse are mapped to the inicies of the array with the "keysToIndecies" linked list.
     a hotkey is set up for each key in the linked list when the hotkey is setup. when the hotkey is pressed the script checks what window is active.
-    if there is a set of hotkey array for the active app the script usses that array to define the toggles.
+    if there is a set of hotkey array for the active app the script uses that array to define the toggles.
 
 	Thanks /u/GroggyOtter for making it clean
 
-	To make a hotkey set run Hotkey setter the top box in on press the bottom is on realease
+	To make a hotkey set run Hotkey setter the top box in on press the bottom is on release
 
 */
 
@@ -35,7 +35,7 @@ ToggleSend:
         ; If toggle is turned on...
         if (toggle = 1){
 
-			keypress := True
+			keyPress := True
 
 			;get the window title and split up it's name
 			MouseGetPos, , , id, control
@@ -55,7 +55,7 @@ ToggleSend:
 			}
 
 
-			; if hotkeys to use is still empty (No meaningfull tabs have have control)
+			; if hotkeys to use is still empty (No meaningful tabs have have control)
 			if (hotkeysToUse.MaxIndex() <= 1){
 				;use the hotkey based on the application
 				;the application name is usually at the end of the window title so get the last word(s) in the window title
@@ -95,20 +95,20 @@ ToggleSend:
 
 return
 
-; F4 toggles alt sending
+; toggles alt sending
 ToggleKey:
 	ToggleKey  := RegExReplace(A_ThisHotkey, "^\$\*", "")
-	keypress := False
+	keyPress := False
 	;run this first so a single press is instant
 	toggle := 1
 	KeyWait, %ToggleKey%, T0.15
-    if (ErrorLevel = 0 && keypress = False){
+    if (ErrorLevel = 0 && keyPress = False){
         sendInput, . ;tap the toggle key to send a period
 	}else{
 		KeyWait, %ToggleKey%, U
 		if (getWinTitle() != "" ){
-			if (keypress = False){
-				run, tilingManagerTest.exe
+			if (keyPress = False){
+				run, tilingManagerTest.exe ;press hold and release without pressing a hotkey to run the tiling manager
 				toggle := 0
 				return
 			}
@@ -214,8 +214,8 @@ updateConfig:
 
 		; For loop to loop through key
 		for index, value in keysToIndices{
-		    ; Create hotkeys using the index from the loop
-		    Hotkey, % "$*" index, ToggleSend, On
+			; Create hotkeys using the index from the loop
+			Hotkey, % "$*" index, ToggleSend, On
 		}
 
 		Hotkey, % "$*" toggleKey, ToggleKey, On

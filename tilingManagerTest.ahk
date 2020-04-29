@@ -15,87 +15,94 @@ CoordMode, Mouse, Screen
 mode = 1
 
 toResize := getWinTitle()
-Goto, start
+Done := 0
+GoSub, start
+ExitApp
 
 start:
-mon := GetMonitorMouse()
 
-SysGet, mon, MonitorWorkArea, %mon%
+	mon := GetMonitorMouse()
 
-monSizeX := monRight - monLeft
-monSizeY := monBottom - monTop
+	SysGet, mon, MonitorWorkArea, %mon%
 
-cellSizeX := floor(monSizeX/horCells)
-cellSizeY := floor(monSizeY/vertCells)
+	monSizeX := monRight - monLeft
+	monSizeY := monBottom - monTop
 
-Gui Color, Black
-Gui, +LastFound
-Gui, +AlwaysOnTop
-WinSet, Transparent, 100
-Gui, -Caption
-Gui Show, w%monSizeX% h%monSizeY% X%monLeft% Y%monTop%
-WinSet, Region, 0-0 W0 H0
+	cellSizeX := floor(monSizeX/horCells)
+	cellSizeY := floor(monSizeY/vertCells)
 
-while getkeystate("LButton", "P") == 0{
-	MouseGetPos, x, y
+	Gui Color, Black
+	Gui, +LastFound
+	Gui, +AlwaysOnTop
+	WinSet, Transparent, 100
+	Gui, -Caption
+	Gui Show, w%monSizeX% h%monSizeY% X%monLeft% Y%monTop%
+	WinSet, Region, 0-0 W0 H0
 
-    x -= monLeft
-    y -= monTop
+	while getkeystate("LButton", "P") == 0{
+		MouseGetPos, x, y
 
-	downXcell := x // cellSizeX
-	downYcell := y // cellSizeY
+	    x -= monLeft
+	    y -= monTop
 
-	ToolTip, %downXcell% %downYcell% , 10, 10
+		downXcell := x // cellSizeX
+		downYcell := y // cellSizeY
 
-	winStartX := downXcell*cellSizeX
-	winStartY := downYcell*cellSizeY
+		ToolTip, %downXcell% %downYcell% , 10, 10
 
-	if (mon != GetMonitorMouse()){
-		Goto, start
+		winStartX := downXcell*cellSizeX
+		winStartY := downYcell*cellSizeY
+
+		if (mon != GetMonitorMouse()){
+			Goto, start
+		}
+
+		WinSet, Region, %winStartX%-%winStartY% W%cellSizeX% H%cellSizeY%
 	}
 
-	WinSet, Region, %winStartX%-%winStartY% W%cellSizeX% H%cellSizeY%
-}
+	KeyWait, LButton, D
+	if (mode != 1){
+		goSub, $Escape
+	}
 
-KeyWait, LButton, D
+	Menu, Tray, Icon, toggleScriptGreen.ico
 
-Menu, Tray, Icon, toggleScriptGreen.ico
+	while getkeystate("LButton", "P") == 1{
+		MouseGetPos, x, y
 
-while getkeystate("LButton", "P") == 1{
-	MouseGetPos, x, y
+	    x -= monLeft
+	    y -= monTop
 
-    x -= monLeft
-    y -= monTop
+		upXcell := x // cellSizeX
+		upYcell := y // cellSizeY
 
-	upXcell := x // cellSizeX
-	upYcell := y // cellSizeY
+		startXcell := Min(downXcell, upXcell)
+		startYcell := Min(downYcell, upYcell)
 
-	startXcell := Min(downXcell, upXcell)
-	startYcell := Min(downYcell, upYcell)
+		spanX := Abs(downXcell - upXcell) + 1
+		spanY := Abs(downYcell - upYcell) + 1
 
-	spanX := Abs(downXcell - upXcell) + 1
-	spanY := Abs(downYcell - upYcell) + 1
+		winStartX := startXcell*cellSizeX
+		winStartY := startYcell*cellSizeY
 
-	winStartX := startXcell*cellSizeX
-	winStartY := startYcell*cellSizeY
+		ToolTip, %spanX% %spanY% , 10, 10
 
-	ToolTip, %spanX% %spanY% , 10, 10
+		winRegionX := spanX*cellSizeX
+		winRegionY := spanY*cellSizeY
 
-	winRegionX := spanX*cellSizeX
-	winRegionY := spanY*cellSizeY
+		WinSet, Region, %winStartX%-%winStartY% W%winRegionX% H%winRegionY%
+	}
+	winStartX += monLeft
+	winStartY += monTop
+	WinRestore, %toResize%
+	WinMove, %toResize%,, %winStartX%, %winStartY%, %winRegionX%, %winRegionY%
+	WinActivate, %toResize%
 
-	WinSet, Region, %winStartX%-%winStartY% W%winRegionX% H%winRegionY%
-}
-winStartX += monLeft
-winStartY += monTop
-WinMove, %toResize%,, %winStartX%, %winStartY%, %winRegionX%, %winRegionY%
-WinActivate, %toResize%
+	mode = 0
+	Gui, Destroy
+	ToolTip
 
-mode = 0
-Gui, Destroy
-ToolTip
-
-ExitApp
+	return
 
 GetMonitorMouse(){
 	MouseGetPos, x, y
@@ -133,5 +140,68 @@ $Escape::
 Return
 
 #If mode ; All hotkeys below this line will only work if mode is TRUE
-	LButton::Return
+	LButton:: 
+	if (mode == 1){
+		Return
+	}
+	if (mode > 1){
+		ExitApp
+	}
+	return
 #If
+
+$RButton::
+	mode := 2
+	if (Done == 0){
+		Menu, Windows, Add
+		Menu, Windows, deleteAll
+		WinGet windows, List
+		Menu, Windows, Add, Done, $Escape
+		Menu, Windows, Default, Done
+
+		Loop %windows%
+		{
+			id := windows%A_Index%
+			WinGetTitle title, ahk_id %id%
+			If (title = "")
+				continue
+			WinGetClass class, ahk_id %id%	
+			If (class = "ApplicationFrameWindow") 
+			{
+				WinGetText, text, ahk_id %id%
+				If (text = "")
+					continue
+			} 
+			WinGet, style, style, ahk_id %id%
+			if !(style & 0xC00000) ; if the window doesn't have a title bar
+			{
+				; If title not contains ...  ; add exceptions
+					continue
+			}
+			WinGet, Path, ProcessPath, ahk_id %id%
+			Menu, Windows, Add, %title%, Activate_Window
+			Try 
+				Menu, Windows, Icon, %title%, %Path%,, 0
+			Catch 
+				Menu, Windows, Icon, %title%, %A_WinDir%\System32\SHELL32.dll, 3, 0
+		}
+		Done := 1
+	}Else{
+		Menu, Windows, Disable, %Done%
+	}
+
+	Menu, Windows, Show
+return
+
+Activate_Window:
+	mode := 1
+	SetTitleMatchMode, 3
+	toResize := A_ThisMenuItem
+	Done := A_ThisMenuItem
+	GoSub, start
+	GoSub, $RButton
+return
+
+$MButton::
+	WinMinimizeAll
+	return
