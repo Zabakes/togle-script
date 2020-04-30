@@ -209,7 +209,7 @@ updateConfig:
 	}
 
 		for index, value in appkeysDown["Config"]{
-			keysToIndices[value] := index
+			keysToIndices[("" value "")] := index
 		}
 
 		; For loop to loop through key
