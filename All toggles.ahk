@@ -12,7 +12,7 @@
 
 #SingleInstance, force
 
-;initalize the app names as keys in appkeysDown
+;initialize the app names as keys in appkeysDown
 appkeysDown := []
 appkeysUp := []
 keysToIndices := {}
@@ -42,8 +42,8 @@ ToggleSend:
 			WinGetTitle, winTitle, ahk_id %id%
 			WinActivate, %winTitle%
     		chopped := StrSplit(winTitle, "-" , " ")
-			
 
+			
 			if (InStr(chopped[1], ".ipynb")){
 				hotkeysToUse := appkeysDown["JupyterLab"]
 				hotkeysUp := appkeysUp["JupyterLab"]
@@ -83,8 +83,17 @@ ToggleSend:
 		}
 
 			; ...use hka s an index to get it's associated key from the array
-			
-		    SendInput, % hotkeysToUse[keysToIndices[("" hk "")]]
+			ran = 0
+			for indicator, command in commands{
+				if InStr(hotkeysToUse[keysToIndices[("" hk "")]], indicator){
+					ran = 1
+					%command%(RegExReplace(hotkeysToUse[keysToIndices[("" hk "")]], indicator, ""))
+				}
+			}
+
+			if(ran = 0){
+				SendInput, % hotkeysToUse[keysToIndices[("" hk "")]]
+			}
 
 			if (hotkeysUp.MaxIndex() >= 1){
 
@@ -152,6 +161,15 @@ Multipressf3:
 	togglekeyPresses := 0
 	return
 
+run(exe){
+
+	run, % exe
+}
+
+MsgBox(txt){
+	MsgBox, % txt
+}
+
 printHotkeyState(){
 	if(A_IsSuspended){
 		MsgBox Hotkeys Suspended
@@ -179,6 +197,14 @@ updateConfig:
 
 		if (AppName == "Config"){
 			FileReadLine, toggleKey, %A_LoopFilePath%, 7
+
+			FileReadLine, AllReplacements, %A_LoopFilePath%, 9
+			AllReplacements := StrSplit(AllReplacements, ",", """")
+			commands := []
+			for index,val in AllReplacements{
+				temp := StrSplit(val, ":", """")
+				commands[temp[1]] := temp[2]
+			}
 		}
 
 		appkeysDown[("" AppName "")] := StrSplit(keysDown, ",", """")
