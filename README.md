@@ -1,4 +1,4 @@
-# togle-script
+# toggle-script
 
 
 ## What is this script
@@ -29,7 +29,7 @@ Taping the toggle key is currently set to send a period this is hard coded but i
 # Tiling manager
 
 ## Use
-This tilling manager is very similar to winDivy. The program in designed to be run on a keypress. When the program starts a black box appears, this is one corner of the area that the application will fill. Left clicking and holding locks this in place and allows you to select the other corner of the area for your application to fill releasing left click resizes the window and closes the application. Basically you click and drag to select a target area. ![Image](Images/TilingManagerExample.gif)
+This tilling manager is very similar to winDivy. The program in designed to be run on a keypress. When the program starts a black box appears, this is one corner of the area that the application will fill. Left clicking and holding <\b>locks this in place<\b> and allows you to select the other corner of the area for your application to fill releasing left click resizes the window and closes the application. Basically you click and drag to select a target area. ![Image](Images/TilingManagerExample.gif)
 
 ## Secondary mode
 Right clicking with the script running brings up a list of all the applications currently running and allows you to repetitively resize windows. by selecting them from teh dropdown then resizing normally. Left clicking away from the list or hitting escape closes the script.![Image](Images/Tiling_manger_re.gif)

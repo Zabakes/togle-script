@@ -1,15 +1,3 @@
-/*
-	This script uses the F4 key to toggle between numbers and hotkeys for use on a MM0 mouse.
-    each set of toggled keys is stored in an array in order. the keypresses on the mouse are mapped to the inicies of the array with the "keysToIndecies" linked list.
-    a hotkey is set up for each key in the linked list when the hotkey is setup. when the hotkey is pressed the script checks what window is active.
-    if there is a set of hotkey array for the active app the script uses that array to define the toggles.
-
-	Thanks /u/GroggyOtter for making it clean
-
-	To make a hotkey set run Hotkey setter the top box in on press the bottom is on release
-
-*/
-
 #SingleInstance, force
 
 ;initialize the app names as keys in appkeysDown
@@ -22,8 +10,8 @@ toggle := 0
 keypress := False 
 
 goSub, updateConfig
-
 ; End Auto-Execute Section
+
 return
 
 ; Label to run when any key is pressed
@@ -41,10 +29,10 @@ ToggleSend:
 			MouseGetPos, , , id, control
 			WinGetTitle, winTitle, ahk_id %id%
 			WinActivate, %winTitle%
-    		chopped := StrSplit(winTitle, "-" , " ")
+			chopped := StrSplit(winTitle, [Chr( 0x2014 ), "-"] , " ")
 
 			
-			if (InStr(chopped[1], ".ipynb")){
+			if (InStr(winTitle, ".ipynb")){
 				hotkeysToUse := appkeysDown["JupyterLab"]
 				hotkeysUp := appkeysUp["JupyterLab"]
 			}else{
@@ -115,13 +103,11 @@ ToggleKey:
         sendInput, . ;tap the toggle key to send a period
 	}else{
 		KeyWait, %ToggleKey%, U
-		if (getWinTitle() != "" ){
 			if (keyPress = False){
 				run, tilingManagerTest.exe ;press hold and release without pressing a hotkey to run the tiling manager
 				toggle := 0
 				return
 			}
-		}
 	}
 	KeyWait, %ToggleKey%
 	toggle := 0
