@@ -134,14 +134,15 @@ def toggleFunc(key):
     keyReleaseEvents[key] = Event()
 
     hotKeyUsed = False
-    
+    toggle = True
+
     waitStart = time()
-    if keyReleaseEvents[key].wait(timeout=.045):
-        keyboard.send(".")
-        toggleThread.release()
-        return
-    else:
-        toggle = True
+    if keyReleaseEvents[key].wait(timeout=.15):
+        if not hotKeyUsed:
+            toggle = False
+            keyboard.send(".")
+            toggleThread.release()
+            return
 
     keyReleaseEvents[key].wait()
 
