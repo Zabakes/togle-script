@@ -17,9 +17,14 @@ class command():
     
     def __init__(self, press, prefixToFunc={}, release="") -> None:
 
-        
         self.runFuncs = self.getFuncsListFromString(press, prefixToFunc)
         self.releaseFuncs = self.getFuncsListFromString(release, prefixToFunc)
+
+    def __str__(self) -> str:
+        return "\n".join([f"press : {run[1]}, rel : {rel[1]}" for run, rel in zip(self.runFuncs, self.releaseFuncs)])
+
+    def __repr__(self) -> str:
+        return self.__str__()
 
     def getFuncsListFromString(self, s, prefixToFunc={}):
         funcs = []
@@ -69,8 +74,8 @@ class command():
 
 if system() == 'Windows':
     import win32gui
-
     def getWindowName() -> str:
+        print(win32gui.GetWindowText(win32gui.GetForegroundWindow()))
         return win32gui.GetWindowText(win32gui.GetForegroundWindow())
 elif system() == 'Linux':
     def getWindowName() -> str:
@@ -101,7 +106,10 @@ def updateConfig():
                 lines = [l.strip() for l in file.readlines()]
 
                 appName = lines[0].strip("")
-                
+
+                if not appName:
+                    continue
+
                 release = {}
 
                 if len(lines) > 4 and lines[4]:
@@ -173,7 +181,6 @@ def keyPress(key):
             for ptrn, title in regexToAppName.items():
                 if re.search(ptrn, winName):
                     toSend = appToKeys.get(title, None)
-
         if toSend is None or key not in toSend:
             toSend = appToKeys["Default"]
 
