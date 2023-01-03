@@ -13,7 +13,7 @@ toggle = False
 
 class command():
     
-    fmtString = re.compile(r"{(?P<cmd>.*?)((?P<down> down)|(?P<up> up))?}|(?P<str>[^\{]+)")
+    fmtString = re.compile(r"(?<!\\){(?P<cmd>.*?)((?P<down> down)|(?P<up> up))?(?<!\\)}|(?P<str>[^\{]+)")
     
     def __init__(self, press, prefixToFunc={}, release="") -> None:
 
@@ -32,7 +32,7 @@ class command():
             if sendStr := match.group("str"):
                 funcs.append(self.sendStrFactory(sendStr))
             elif cmd := match.group("cmd"):
-                cmd[0]
+                cmd = re.sub(r"\\+({|})", r"\g<1>", cmd)
                 if cmd[0] in prefixToFunc.keys():
                     print(f"{prefixToFunc[cmd[0]].__name__}({cmd[1:]})")
                     funcs.append((lambda : prefixToFunc[cmd[0]](cmd[1:]),  f"{prefixToFunc[cmd[0]].__name__}({cmd[1:]})"))
@@ -114,7 +114,7 @@ def updateConfig():
 
                 if len(lines) > 4 and lines[4]:
                     for key in lines[4].split(","):
-                        key, toSend = key.split(":")
+                        key, toSend = re.match(r"(\w+):(.+)", key).groups()
                         release[toRemap[int(key)-1]] = toSend
 
                 keys = {key : command(target.strip("\" "), prefixToFunc, release.get(key, "")) for key, target in zip(toRemap, lines[2].split(","))}
