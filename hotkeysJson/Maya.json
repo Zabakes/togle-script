@@ -1,0 +1,41 @@
+{
+    "appName": "Autodesk Maya 2019",
+    "hks": [
+         {
+            "press": "e"
+        },
+         {
+            "press": "l"
+        },
+         {
+            "press": "d"
+        },
+         {
+            "press": "c"
+        },
+         {
+            "press": "r"
+        },
+         {
+            "press": "{Alt down}{LButton down}"
+        },
+         {
+            "press": "{}}"
+        },
+         {
+            "press": "8"
+        },
+         {
+            "press": "{{}"
+        },
+         {
+            "press": "j"
+        },
+         {
+            "press": "v"
+        },
+         {
+            "press": "{Enter}"
+        }
+    ]
+}

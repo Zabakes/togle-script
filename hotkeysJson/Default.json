@@ -1,0 +1,41 @@
+{
+    "appName": "Default",
+    "hks": [
+         {
+            "press": "left ctrl+alt+Tab"
+        },
+         {
+            "press": "left ctrl+s"
+        },
+         {
+            "press": "{~C:\\Users\\zeusa\\Downloads\\commandPreview\\commandPreview\\bin\\Debug\\net6.0-windows10.0.17763.0\\commandPreview.exe alt+tab}"
+        },
+         {
+            "press": "Volume Down"
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": "Volume Up"
+        },
+         {
+            "press": "{~\"C:\\Program Files (x86)\\iRotate\\irotate.exe\" /2:rotate=90 /exit}"
+        },
+         {
+            "press": "{~\"C:\\Program Files\\ShareX\\ShareX.exe\" -RectangleRegion -s}"
+        },
+         {
+            "press": "{~\"C:\\Program Files (x86)\\iRotate\\irotate.exe\" /2:rotate=0 /exit}"
+        },
+         {
+            "press": "left ctrl+f"
+        },
+         {
+            "press": "left ctrl+p"
+        },
+         {
+            "press": "Enter"
+        }
+    ]
+}

@@ -1,0 +1,42 @@
+{
+    "appName": "Blender",
+    "hks": [
+         {
+            "press": "{space}"
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": "{Shift down}{MButton down}",
+            "rel": "{Shift up}{Mbutton up}"
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": ""
+        }
+    ]
+}

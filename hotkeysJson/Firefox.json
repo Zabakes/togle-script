@@ -1,0 +1,41 @@
+{
+    "appName": "Mozilla Firefox",
+    "hks": [
+         {
+            "press": "{~\"C:\\Users\\zeusa\\OneDrive\\Documents\\Code\\AHK Scripts\\togle-script\\runAhk.ahk\" \"{XButton1}\"}"
+        },
+         {
+            "press": "{f5}"
+        },
+         {
+            "press": "{~\"C:\\Users\\zeusa\\OneDrive\\Documents\\Code\\AHK Scripts\\togle-script\\runAhk.ahk\" \"{XButton2}\"}"
+        },
+         {
+            "press": "Control+page up"
+        },
+         {
+            "press": "Control+t"
+        },
+         {
+            "press": "Control+page down"
+        },
+         {
+            "press": "{Control+t} drive.google.com {enter}"
+        },
+         {
+            "press": "{Control+t} gmail.com {enter}"
+        },
+         {
+            "press": "{Control+t} my.pitt.edu {enter}"
+        },
+         {
+            "press": "{Control down}{f}{Control up}"
+        },
+         {
+            "press": "{Control down}{p}{Control up}"
+        },
+         {
+            "press": "{Enter}"
+        }
+    ]
+}

@@ -1,0 +1,43 @@
+{
+    "appName": "VsCode",
+    "hks": [
+         {
+            "press": "{Control down}{.}{Control up}"
+        },
+         {
+            "press": "{Control down}{s}{Control up}"
+        },
+         {
+            "press": "{f1}"
+        },
+         {
+            "press": "{Shift down}{Left down}{Shift up}"
+        },
+         {
+            "press": "{Control down}{l}{Control up}"
+        },
+         {
+            "press": "{Shift down}{Right down}{Shift up}"
+        },
+         {
+            "press": "alt+down+backspace"
+        },
+         {
+            "press": "{Shift down}{Alt down}{a}{Shift up}{Alt up}"
+        },
+         {
+            "press": "alt+up+backspace"
+        },
+         {
+            "press": "{Control down}{f}{Control up}"
+        },
+         {
+            "press": "{Control down}{p}{Control up}"
+        },
+         {
+            "press": "{Enter}"
+        }
+    ],
+    "regex": ".*Visual Studio Code",
+    "priority": 0
+}

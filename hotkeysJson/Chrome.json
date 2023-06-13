@@ -1,0 +1,42 @@
+{
+    "appName": "Google Chrome",
+    "hks": [
+         {
+            "press": "e"
+        },
+         {
+            "press": "l"
+        },
+         {
+            "press": "d"
+        },
+         {
+            "press": "c"
+        },
+         {
+            "press": "r"
+        },
+         {
+            "press": "Shift down",
+            "rel": "Shift up"
+        },
+         {
+            "press": "p"
+        },
+         {
+            "press": "i"
+        },
+         {
+            "press": "x"
+        },
+         {
+            "press": "j"
+        },
+         {
+            "press": "v"
+        },
+         {
+            "press": "{Enter}"
+        }
+    ]
+}

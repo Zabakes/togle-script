@@ -1,0 +1,43 @@
+{
+    "appName": "JupyterLab",
+    "hks": [
+         {
+            "press": "{Escape}b"
+        },
+         {
+            "press": "{Control down}{s}{Control up}"
+        },
+         {
+            "press": "{~\"C:\\Users\\zeusa\\OneDrive\\Documents\\Code\\AHK Scripts\\togle-script\\runAhk.ahk\" \"(\"}"
+        },
+         {
+            "press": "="
+        },
+         {
+            "press": "+"
+        },
+         {
+            "press": "*"
+        },
+         {
+            "press": "{Control down}{Shift down}{-}{Shift up}{Control up}"
+        },
+         {
+            "press": "{/}"
+        },
+         {
+            "press": "**"
+        },
+         {
+            "press": "{Control down}{f}{Control up}"
+        },
+         {
+            "press": "sp.sqrt("
+        },
+         {
+            "press": "{Control down}{Enter}{Control up}"
+        }
+    ],
+    "regex": ".*\\.ipynb.*",
+    "priority": 0
+}

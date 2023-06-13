@@ -1,0 +1,44 @@
+{
+    "appName": "PortalWars",
+    "hks": [
+         {
+            "press": "{Q down}",
+            "rel": "{Q up}"
+        },
+         {
+            "press": "{V Down}",
+            "rel": "{V Up}"
+        },
+         {
+            "press": "{E down}",
+            "rel": "{E up}"
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": ""
+        }
+    ]
+}

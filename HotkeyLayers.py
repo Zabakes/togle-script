@@ -5,6 +5,8 @@ from time import sleep, time
 import keyboard
 import re
 from customFuncs import *
+import json
+import tkinter as tk
 
 appToKeys = {}
 regexToAppName = {}
@@ -13,15 +15,16 @@ toggle = False
 
 class command():
     
-    fmtString = re.compile(r"(?<!\\){(?P<cmd>.*?)((?P<down> down)|(?P<up> up))?(?<!\\)}|(?P<str>[^\{]+)")
+    fmtString = re.compile(r"(?<!\\){(?P<cmd>.*?)((?P<down> down)|(?P<up> up))?(?<!\\)}$|(?P<str>[^\{]+)")
     
     def __init__(self, press, prefixToFunc={}, release="") -> None:
-
+        self.pressS = press
+        self.releaseS = release
         self.runFuncs = self.getFuncsListFromString(press, prefixToFunc)
         self.releaseFuncs = self.getFuncsListFromString(release, prefixToFunc)
 
     def __str__(self) -> str:
-        return "\n".join([f"press : {run[1]}, rel : {rel[1]}" for run, rel in zip(self.runFuncs, self.releaseFuncs)])
+        return f"{{\"press\" : \"{self.pressS}\", \"rel\" : \"{self.releaseS}\"}}"
 
     def __repr__(self) -> str:
         return self.__str__()
@@ -64,18 +67,20 @@ class command():
 
     def press(self):
         for f in self.runFuncs:
+            print(f[1])
             f[0]()
             sleep(.1)
 
     def release(self):
         for f in self.releaseFuncs:
+            print(f[1])
             f[0]()
             sleep(.1)
 
 if system() == 'Windows':
     import win32gui
     def getWindowName() -> str:
-        print(win32gui.GetWindowText(win32gui.GetForegroundWindow()))
+        #print(win32gui.GetWindowText(win32gui.GetForegroundWindow()))
         return win32gui.GetWindowText(win32gui.GetForegroundWindow())
 elif system() == 'Linux':
     def getWindowName() -> str:
@@ -100,38 +105,43 @@ def updateConfig():
             prefix, cmd = val.split(":")
             prefixToFunc[prefix] = globals()[cmd]
 
-    for fileName in os.listdir(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Hotkeys")):
-        if fileName.endswith(".ini") and fileName != "config.ini":
-            with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Hotkeys", fileName), "r") as file:
-                lines = [l.strip() for l in file.readlines()]
+    for fileName in os.listdir(os.path.join(os.path.dirname(os.path.abspath(__file__)), "hotkeysJson")):
+        if fileName.endswith(".json") and fileName != "config.ini":
+            with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "hotkeysJson", fileName), "r") as file:
+                conf = json.load(file)
 
-                appName = lines[0].strip("")
+                keys = {}
+                appName = conf["appName"]
 
-                if not appName:
-                    continue
+                for key, target in enumerate(conf["hks"]):
+                    if "rel" in target:
+                        rel = target["rel"]
+                    else:
+                        rel = ""
 
-                release = {}
+                    keys[toRemap[key]] = command(target["press"], prefixToFunc, rel)
+                
+                appToKeys[appName] = keys
 
-                if len(lines) > 4 and lines[4]:
-                    for key in lines[4].split(","):
-                        key, toSend = re.match(r"(\w+):(.+)", key).groups()
-                        release[toRemap[int(key)-1]] = toSend
+                if "regex" in conf:
+                    if "priority" in conf:
+                        priority = conf["priority"]
+                    else:
+                        priority = 0
 
-                keys = {key : command(target.strip("\" "), prefixToFunc, release.get(key, "")) for key, target in zip(toRemap, lines[2].split(","))}
-
-                if len(lines) > 6 and lines[6]:
-                    regexToAppName[re.compile(lines[6])] = appName
-
-            appToKeys[appName] = keys
-    
+                    regex = conf["regex"]
+                    regexToAppName[re.compile(regex)] = (appName, int(priority))
     keyboard.unhook_all()
 
     keyboard.hook_key(toggleKey, hook, suppress=True)
     for key in toRemap:
+        #print(key)
         keyboard.hook_key(key, hook, suppress=True)
 
 def MsgBox(s):
     print(s)
+
+
 
 toggleThread = Lock()
 def toggleFunc(key):
@@ -155,6 +165,7 @@ def toggleFunc(key):
     keyReleaseEvents[key].wait()
 
     toggle = False
+    
     toggleThread.release()
 
     if not hotKeyUsed:
@@ -178,21 +189,24 @@ def keyPress(key):
         appName = re.split(winTitleSplitter, winName).pop().strip()
 
         if not (toSend := appToKeys.get(appName, None)):
-            for ptrn, title in regexToAppName.items():
-                if re.search(ptrn, winName):
+            p = None
+            for ptrn, (title, pr) in regexToAppName.items():
+                if re.search(ptrn, winName) and (p is None or p < pr):
+                    #print("This", winName, ptrn, title, pr, p)
                     toSend = appToKeys.get(title, None)
+                    p = pr
+    
         if toSend is None or key not in toSend:
             toSend = appToKeys["Default"]
-
     else:
         toSend = appToKeys["Untoggled"]
 
+    
     processCmd(toSend.get(key, None), keyReleaseEvents.get(key, None))
 
     keyReleaseEvents.pop(key)
 
 def triggerKeyReleaseEvent(key):
-
     if event := keyReleaseEvents.get(key, None):
         event.set()
 

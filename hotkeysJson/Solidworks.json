@@ -1,0 +1,42 @@
+{
+    "appName": "SOLIDWORKS Student Edition",
+    "hks": [
+         {
+            "press": "{s}"
+        },
+         {
+            "press": "{l}"
+        },
+         {
+            "press": "!{d}"
+        },
+         {
+            "press": "!{c}"
+        },
+         {
+            "press": "!{r}"
+        },
+         {
+            "press": "{Ctrl down}{Mbutton down}",
+            "rel": "{Ctrl up}{Mbutton up}"
+        },
+         {
+            "press": "{Ctrl down}{b}{Ctrl up}"
+        },
+         {
+            "press": "!{m}"
+        },
+         {
+            "press": "{Ctrl down}{s}{Ctrl up}"
+        },
+         {
+            "press": "{Ctrl down}"
+        },
+         {
+            "press": "{Ctrl up}"
+        },
+         {
+            "press": "{Enter}"
+        }
+    ]
+}
