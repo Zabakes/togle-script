@@ -271,6 +271,7 @@ class htmlFrameWithTextBox(tk.Frame):
             other.saveConfig(e)
         
         isEditing = False
+        hideGUI()
 
     def discardConfig(self, e):
         global isEditing
