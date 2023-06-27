@@ -252,9 +252,14 @@ class htmlFrameWithTextBox(tk.Frame):
         try:
             self.conf["hks"][self.keyIndex] = json.loads(input)
             target = json.loads(input)
-            appToKeys[self.titleMatch][self.key] = command(target["press"], prefixToFunc, target.get("rel", ""), description = target.get("description", None))
+            if "press" in target or "rel" in target:
+                appToKeys[self.titleMatch][self.key] = command(target.get("press", ""), prefixToFunc, target.get("rel", ""), description = target.get("description", None))
+            else:
+                appToKeys[self.titleMatch][self.key] = None
+
             with open(fname, "w") as f:
                 f.write(json.dumps(self.conf, indent=4))
+
         except json.JSONDecodeError:
             pass
 
@@ -426,23 +431,25 @@ def keyPress(key):
 
     hideGUI()
 
-    keyReleaseEvents[key] = Event()
+    keyRelEvent = Event()
+    keyReleaseEvents[key] = keyRelEvent
 
     if toggle and not isEditing:
 
         hotKeyUsed = True
         toSend = appToKeys.get(getToSend(), None)
 
-        if key not in toSend:
-            toSend = appToKeys["Default"]
+        if (c := toSend.get(key, None)) is None:
+            c = appToKeys["Default"].get(key, None)
 
     else:
-        toSend = appToKeys["Untoggled"]
+        c = appToKeys["Untoggled"][key]
 
 
-    processCmd(toSend.get(key, None), keyReleaseEvents.get(key, None))
+    processCmd(c, keyRelEvent)
 
     keyReleaseEvents.pop(key)
+
     if toggleThread.locked():
         showGUI.set()
 
