@@ -7,6 +7,8 @@ import re
 from customFuncs import *
 import json
 import tkinter as tk
+from typing import Callable, Union, List, Dict
+from PIL import Image, ImageTk
 
 appToKeys = {}
 regexToAppName = {}
@@ -18,12 +20,17 @@ class command():
     
     fmtString = re.compile(r"(?<!\\){(?P<cmd>.*?)((?P<down> down)|(?P<up> up))?(?<!\\)}|(?P<str>[^\{]+)")
     
-    def __init__(self, press, prefixToFunc={}, release="", description = None) -> None:
+    def __init__(self, press, prefixToFunc={}, release="", description = None, imgPath = None) -> None:
         self.description = description
+        self.imgPath = imgPath
         self.pressS = press
         self.releaseS = release
+        self.waitForRel =  False
+        self.hideGUIBeforeRun = False
         self.runFuncs = self.getFuncsListFromString(press, prefixToFunc)
         self.releaseFuncs = self.getFuncsListFromString(release, prefixToFunc)
+
+
         if self.description is None:
             self.description = self.__str__()
 
@@ -37,25 +44,23 @@ class command():
         funcs = []
         for match in re.finditer(self.fmtString, s):
             if sendStr := match.group("str"):
+                self.hideGUIBeforeRun = True
                 funcs.append(self.sendStrFactory(sendStr))
             elif cmd := match.group("cmd"):
                 cmd = re.sub(r"\\+({|})", r"\g<1>", cmd)
                 if cmd[0] in prefixToFunc.keys():
                     #print(f"{prefixToFunc[cmd[0]].__name__}({cmd[1:]})")
+                    if prefixToFunc[cmd[0]] != setLayer:
+                        self.hideGUIBeforeRun = True
+
                     funcs.append((lambda : prefixToFunc[cmd[0]](cmd[1:]),  f"{prefixToFunc[cmd[0]].__name__}({cmd[1:]})"))
                 else:
+                    self.hideGUIBeforeRun = True
                     if match.group("down"):
+                        funcs.append((wrapFunc(keyboard.press, cmd), f"down {cmd}"))
 
-                        def down():
-                            keyboard.press(cmd)
-
-                        funcs.append((down, f"down {cmd}"))
                     elif match.group("up"):
-                        
-                        def up():
-                            keyboard.release(cmd)
-
-                        funcs.append((up, f"up {cmd}"))
+                        funcs.append((wrapFunc(keyboard.release, cmd), f"up {cmd}"))
 
                     else:
                         funcs.append(self.sendStrFactory(cmd))
@@ -71,18 +76,24 @@ class command():
 
     def press(self):
         for f in self.runFuncs:
-            #print(f[1])
+            print(f[1], f[0])
             f[0]()
-            sleep(.1)
+            sleep(.001)
 
     def release(self):
         for f in self.releaseFuncs:
-            #print(f[1])
+            print(f[1])
             f[0]()
-            sleep(.1)
+            sleep(.001)
 
     def getDescription(self):
         return self.description
+
+def wrapFunc(f, *args, **kwargs):
+    def func():
+        print(locals())
+        f(*args, **kwargs)
+    return func
 
 windowTitle = ""
 if system() == 'Windows':
@@ -97,28 +108,50 @@ elif system() == 'Linux':
     def getWindowName() -> str:
         print("TODO IMPLEMENT LINUX")
 
+def parseKeyConfig(conf : Union[Dict[str, str], List[Dict[str, str]]]) -> Union[command, List[command], None]:
+    if type(conf) is dict:
+        if "press" in conf or "rel" in conf:
+            return command(conf.get("press", ""), prefixToFunc, conf.get("rel", ""), imgPath=conf.get("icon path", None), description = conf.get("description", None))
+        else:
+            return None
+    elif type(conf) is list:
+        retVal = []
+        for c in conf:
+            retVal.append( parseKeyConfig(c))
+
+        if retVal:
+            return retVal
+        else:
+            return None
+
+    else:
+        return None
+
 prefixToFunc = {}
 def updateConfig():
 
-    global regexToAppName, appToKeys, toggleKey, toRemap, prefixToFunc
+    global regexToAppName, appToKeys, toggleKey, toRemap, prefixToFunc, doRemapping, layout
 
     toRemap = []
 
-    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Hotkeys", "config.ini"), "r") as file:
-        lines = [l.strip() for l in file.readlines()]
-        appName = lines[0]
+    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "hotkeysJson", "config.json"), "r") as file:
+        conf = json.load(file)
 
-        toggleKey = lines[6].lower()
-        cmds = lines[8]
+        doRemapping = conf.get("layout", True)
+        layout = conf.get("layout", None)
 
-        toRemap = [l.strip("\" ").lower() for l in lines[2].split(",")]
+        toggleKey = conf["toggleKey"].lower()
 
-        for val in cmds.split(","):
-            prefix, cmd = val.split(":")
+        toRemap = [key["remap"].lower() for key in conf["keys"]]
+        appToKeys["Untoggled"] = [key["baseLayer"] for key in conf["keys"]]
+
+        for val in conf["actions"]:
+            prefix = val["prefix"]
+            cmd = val["function"]
             prefixToFunc[prefix] = globals()[cmd]
 
     for fileName in os.listdir(os.path.join(os.path.dirname(os.path.abspath(__file__)), "hotkeysJson")):
-        if fileName.endswith(".json") and fileName != "config.ini":
+        if fileName.endswith(".json") and fileName != "config.json":
             fullFileName = os.path.join(os.path.dirname(os.path.abspath(__file__)), "hotkeysJson", fileName)
             with open(fullFileName, "r") as file:
                 conf = json.load(file)
@@ -128,10 +161,8 @@ def updateConfig():
                 titleMatchToConfigFile[appName] = fullFileName
 
                 for key, target in enumerate(conf["hks"]):
-                    if "press" in target or "rel" in target:
-                        keys[toRemap[key]] = command(target.get("press", ""), prefixToFunc, target.get("rel", ""), description = target.get("description", None))
-                    else:
-                        keys[toRemap[key]] = None
+                    keys[toRemap[key]] = parseKeyConfig(target)
+
                 appToKeys[appName] = keys
 
                 if "regex" in conf:
@@ -153,44 +184,101 @@ def updateConfig():
 def MsgBox(s):
     print(s)
 
+layer = 0
+def setLayer(s):
+    global layer, redrawGui, stickyLayer
+    if isEditing:
+        return
+
+    kwargs = json.loads(s)
+    print(kwargs)
+    if kwargs["type"] == "inc":
+        layer += 1
+        if "max" in kwargs and layer > kwargs["max"]:
+            layer = kwargs["max"]
+    elif kwargs["type"] == "dec":
+        layer -= 1
+        layer = max(layer, 0) 
+    elif kwargs["type"] == "set":
+        layer = kwargs["val"]
+
+    redrawGui = True
+
 from tkinterweb import HtmlFrame #import the HtmlFrame widget
 import tkinter as tk
 import pyautogui
+from tktooltip import ToolTip as ToolTip_base
+
 kill = False
 isEditing = False
+
+class ToolTip(ToolTip_base):
+
+    liveToolTips = set()
+    
+    def __init__(self, widget, msg = None, delay = 0, follow = True, refresh = 1, x_offset=+10, y_offset=+10, parent_kwargs = {"bg": "black", "padx": 1, "pady": 1}, **message_kwargs):
+        super().__init__(widget, msg, delay, follow, refresh, x_offset, y_offset, parent_kwargs, **message_kwargs)
+        self.wm_attributes('-topmost', 1)
+
+    def _show(self) -> None:
+        self.liveToolTips.add(self)
+        return super()._show()
+
+    def on_leave(self, discard=True):
+        if discard:
+            self.liveToolTips.discard(self)
+        return super().on_leave()
 
 def hideGUI():
     if not isEditing:
         showGUI.clear()
 
-class htmlFrameWithTextBox(tk.Frame):
-    
+class keyBox(tk.Frame):
     allBeingEdited = set()
+    bgimg = None
     
     def __init__(self, 
-                 master = None, 
+                 master = None,
+                 index = None,
                  *args, **kwargs) -> None:
         super().__init__(master, *args, **kwargs)
+        
         self.htmlFrame = HtmlFrame(self, messages_enabled = False) #create HTML browser
+        self.img = None
         self.textBox = tk.Text(self, height=WIDGET_HEIGHT//4, width=WIDGET_WIDTH//3, wrap=tk.WORD)
         
-        self.textBox.grid(row=0, column=0, sticky="nsew")
-        self.htmlFrame.grid(row=0, column=0, sticky="nsew")
+        self.index = index
+        if self.index is not None:
+            print(self.index)
+            self.keyIndexLabel = tk.Label(self, text=self.index+1, justify=tk.CENTER)
+            self.keyIndexLabel.grid(row=0, column=0, sticky="nsew")
+            self.rowconfigure(0, minsize=WIDGET_HEIGHT//30, weight=1)
+        
+        
+        self.imgFrame = tk.Label(self)
+        self.textBox.grid(row=1, column=0, sticky="nsew")
+        self.htmlFrame.grid(row=1, column=0, sticky="nsew")
+        self.imgFrame.grid(row=1, column=0, sticky="nsew")
         self.columnconfigure(0, weight=1) 
-        self.rowconfigure(0, weight=1)
+        self.rowconfigure(1, weight=1)
 
         self.textBox.bind("<Control-Return>", self.saveConfig)
         self.textBox.bind("<Control-s>", self.saveConfig)
         self.textBox.bind("<Escape>", self.discardConfig)
-        
-        self.key = self.titleMatch = self.keyIndex = self.newWindow = None
-        
+
+        self.toolTip = ToolTip(self.imgFrame)
+
+        self.key = self.titleMatch = self.newWindow = None
+
     def showText(self):
         self.textBox.tkraise()
 
-    def showHTML(self):
-        self.htmlFrame.tkraise()
-        
+    def showDescription(self):
+        if self.img:
+            self.imgFrame.tkraise()
+        else:
+            self.htmlFrame.tkraise()
+
     def updateConfigFile(self, event):
         global isEditing
         isEditing = True
@@ -200,7 +288,7 @@ class htmlFrameWithTextBox(tk.Frame):
         fname = titleMatchToConfigFile[self.titleMatch]
         with open(fname, "r") as f:
             self.conf = json.load(f)
-            rawConfData = self.conf["hks"][self.keyIndex]
+            rawConfData = self.conf["hks"][self.index]
         
         self.textBox.config(state=tk.NORMAL)
         self.textBox.delete("1.0",tk.END)
@@ -250,12 +338,10 @@ class htmlFrameWithTextBox(tk.Frame):
             input = self.textBox.get("1.0",tk.END)
 
         try:
-            self.conf["hks"][self.keyIndex] = json.loads(input)
+            self.conf["hks"][self.index] = json.loads(input)
             target = json.loads(input)
-            if "press" in target or "rel" in target:
-                appToKeys[self.titleMatch][self.key] = command(target.get("press", ""), prefixToFunc, target.get("rel", ""), description = target.get("description", None))
-            else:
-                appToKeys[self.titleMatch][self.key] = None
+
+            appToKeys[self.titleMatch][self.key] = parseKeyConfig(target)
 
             with open(fname, "w") as f:
                 f.write(json.dumps(self.conf, indent=4))
@@ -284,6 +370,23 @@ class htmlFrameWithTextBox(tk.Frame):
         isEditing = False
         hideGUI()
 
+    def updateKeyBox(self, cmd) -> None:
+        if cmd.imgPath:
+            try:
+                i = Image.open(cmd.imgPath)
+                self.img = ImageTk.PhotoImage(i)
+                self.imgFrame.configure(image=self.img)
+                self.imgFrame.tkraise()
+                self.toolTip.msg = cmd.getDescription()
+            except FileNotFoundError:
+                self.img = None
+                pass
+        else:
+            self.htmlFrame.tkraise()
+
+        self.htmlFrame.load_html(f"""<p>{cmd.getDescription()}</p>""")
+
+
 WIDGET_WIDTH = 400
 WIDGET_HEIGHT = 750
 
@@ -292,7 +395,7 @@ def findWidgetAndUpdateConf(event):
     isEditing = True
     w = event.widget
     
-    while type(w) != htmlFrameWithTextBox:
+    while type(w) != keyBox:
         w = w.master
         if type(w) == tk.Tk:
             return
@@ -300,30 +403,30 @@ def findWidgetAndUpdateConf(event):
     w.updateConfigFile(event)
 
 def makeWidget():
-    global isEditing
-    root = tk.Tk()
+    global isEditing, redrawGui
+    root = tk.Tk(className="ZMAC_OVERLAY", baseName="ZMAC_POP_UP")
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
-    WIDGET_HEIGHT = int(screen_height//2.5)
-    WIDGET_WIDTH = int(WIDGET_HEIGHT/1.5)
-        
+    WIDGET_HEIGHT = int(screen_height//2.75)
+    WIDGET_WIDTH = int(WIDGET_HEIGHT/1.75)
     root.call('wm', 'attributes', '.', '-topmost', '1')
     root.overrideredirect(True)
     abs_coord_x, abs_coord_y = pyautogui.position()
-    root.config(bg="black")
     root.geometry(f"{WIDGET_WIDTH}x{WIDGET_HEIGHT}+{abs_coord_x}+{abs_coord_y}")
     
     buttonElements = []
+
     for i, button in enumerate(toRemap):
         tk.Grid.rowconfigure(root,i//3,weight=1)
         tk.Grid.columnconfigure(root,i%3,weight=1)
-        myhtmlframe = htmlFrameWithTextBox(root) #create HTML browser
-        myhtmlframe.keyIndex = i
-        myhtmlframe.grid(row = i//3, column = i%3, sticky="NSEW", padx=(5, 5), pady=(5, 5)) #attach the HtmlFrame widget to the parent window
-        buttonElements.append(myhtmlframe)
-    cont = 0
-    root.bind("<Button-3>", findWidgetAndUpdateConf)
+        keyFrame = keyBox(master=root, index=i) #create HTML browser
 
+
+        keyFrame.grid(row = i//3, column = i%3, sticky="NSEW", padx=(5, 5), pady=(5, 5)) #attach the HtmlFrame widget to the parent window
+        buttonElements.append(keyFrame)
+
+    root.bind("<Button-3>", findWidgetAndUpdateConf)
+        
     while True:
         abs_coord_x, abs_coord_y = pyautogui.position()
 
@@ -335,41 +438,51 @@ def makeWidget():
 
         root.geometry(f"{WIDGET_WIDTH}x{WIDGET_HEIGHT}+{abs_coord_x}+{abs_coord_y}")
         
-        titleMatch = getToSend()
-        toSend = appToKeys.get(titleMatch, None)
-        for i, (key, element) in enumerate(zip(toRemap, buttonElements)):
-            element.key = key
-            element.titleMatch = titleMatch
-            if not toSend.get(key, None):
-                element.htmlFrame.load_html(f"""<h3>{i+1}</h3><br><p>{appToKeys["Default"].get(key).getDescription()}</p>""")
-            else:
-                element.htmlFrame.load_html(f"""<h3>{i+1}</h3><br><p>{toSend.get(key).getDescription()}</p>""")
+        redrawGui = True
+        titleMatch = getTitleMatch()
 
         while showGUI.isSet():
-            root.lift()
+            if redrawGui:
+                for i, (key, element) in enumerate(zip(toRemap, buttonElements)):
+                    cmd = getCmd(key, titleMatch)
+                    element.key = key
+                    element.titleMatch = titleMatch
+                    element.updateKeyBox(cmd)
+                    redrawGui = False
+            #root.lift()
+            for tt in ToolTip.liveToolTips:
+                #print("raise tt", ToolTip.liveToolTips)
+                tt.lift()
             root.update_idletasks()
             root.update()
+            sleep(.05)
 
+        for tt in ToolTip.liveToolTips:
+            tt.on_leave(discard=False)
+        ToolTip.liveToolTips = set()
 
         root.withdraw()
+
+        for element in buttonElements:
+            element.showDescription()
+
         showGUI.wait()
+        
         if kill:
             root.destroy()
             return
-        root.deiconify()
-        for element in buttonElements:
-            element.showHTML()
         isEditing = False
-        cont += 1
-        
-    
+
+        sleep(.125)
+        if showGUI.isSet():
+            root.deiconify()
 
 
 toggleThread = Lock()
 
 showGUI = Event()
 def toggleFunc(key):
-    global hotKeyUsed, toggleThread, toggle, showGUI, windowTitle
+    global hotKeyUsed, toggleThread, toggle, showGUI, windowTitle, layer
     if not toggleThread.acquire(blocking=False):
         return
     
@@ -380,7 +493,6 @@ def toggleFunc(key):
     hotKeyUsed = False
     toggle = True
 
-    waitStart = time()
     if keyReleaseEvents[key].wait(timeout=.15):
         if not hotKeyUsed:
             toggle = False
@@ -394,42 +506,75 @@ def toggleFunc(key):
     hideGUI()
 
     toggle = False
+    layer = 0
     
     toggleThread.release()
 
     if (not hotKeyUsed) and (not isEditing):
         run("C:\\Users\\zeusa\\OneDrive\\Documents\\Code\\AHK Scripts\\togle-script\\tilingManagerTest.exe")
 
-
-def getToSend():
+winTitleSplitter =  re.compile(u'[\u2014\-\*]')
+def getTitleMatch():
     winName = getWindowName()
-    #print(winName)
-    toSend = None
+
+    print(winName)
+    titleMatch = None
     appName = re.split(winTitleSplitter, winName).pop().strip()
+    print(appName)
     if not appName in appToKeys:
         p = None
         for ptrn, (title, pr) in regexToAppName.items():
             if re.search(ptrn, winName) and (p is None or p < pr):
                 #print("This", winName, ptrn, title, pr, p)
-                toSend = title
+                titleMatch = title
                 p = pr
     else:
-        toSend = appName
+        titleMatch = appName
 
-    if toSend is None:
-            toSend = "Default"
+    if titleMatch is None:
+            titleMatch = "Default"
 
-    return toSend
+    return titleMatch
 
-winTitleSplitter =  re.compile(u'[\u2014\-\*]')
+layerApp = ""
+layer = 0
+def getLayer(titleMatch = None):
+    if titleMatch is None:
+        titleMatch = getTitleMatch()
+
+    global layer, layerApp
+    
+    if titleMatch != layerApp:
+        layer = 0
+        layerApp = titleMatch
+
+    return layer
+
+def getCmd(key, titleMatch = None):
+
+    if titleMatch is None:
+        titleMatch = getTitleMatch()
+    
+    toSend = appToKeys.get(titleMatch, None)
+    if not(cmd := toSend.get(key, None)):
+        cmd = appToKeys["Default"].get(key)
+
+    if type(cmd) is list:
+        l = min(len(cmd)-1, getLayer())
+        cmd = cmd[l]
+        if cmd is None:
+            cmd = appToKeys["Default"].get(key)
+
+    return cmd
+
 
 def keyPress(key):
-    global regexToAppName, hotKeyUsed, toggle, keyReleaseEvents, isEditing
+    global regexToAppName, hotKeyUsed, toggle, keyReleaseEvents, isEditing, layer, redrawGui
 
     if key in keyReleaseEvents:
         return
 
-    hideGUI()
+    resetLayer = layer != 0
 
     keyRelEvent = Event()
     keyReleaseEvents[key] = keyRelEvent
@@ -437,18 +582,21 @@ def keyPress(key):
     if toggle and not isEditing:
 
         hotKeyUsed = True
-        toSend = appToKeys.get(getToSend(), None)
-
-        if (c := toSend.get(key, None)) is None:
-            c = appToKeys["Default"].get(key, None)
+        c = getCmd(key)
 
     else:
-        c = appToKeys["Untoggled"][key]
+        c = getCmd(key, "Untoggled")
 
+    if c.hideGUIBeforeRun:
+        hideGUI()
 
     processCmd(c, keyRelEvent)
 
     keyReleaseEvents.pop(key)
+    
+    if resetLayer:
+        layer = 0
+        redrawGui = True
 
     if toggleThread.locked():
         showGUI.set()
@@ -460,13 +608,16 @@ def triggerKeyReleaseEvent(key):
 def processCmd(c : command, event=None):
     if c is not None:
         c.press()
-        if event is not None:
+        if c.releaseFuncs or c.waitForRel:
             event.wait()
             c.release()
 
 
 def on_press(key):
-    if key == toggleKey:
+    global doRemapping
+    if not doRemapping:
+        return
+    elif key == toggleKey:
         t = Thread(target=toggleFunc, args=[key])
     elif key in toRemap:
         t = Thread(target=keyPress, args=[key])
