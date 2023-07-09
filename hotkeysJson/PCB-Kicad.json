@@ -11,13 +11,16 @@
             "press": ""
         },
          {
-            "press": "+"
+            "press": "+",
+            "description" : "Layer up"
         },
          {
-            "press": "u"
+            "press": "u",
+            "description" : "Expand selection"
         },
          {
-            "press": "-"
+            "press": "-",
+            "description" : "Layer down"
         },
          {
             "press": ""

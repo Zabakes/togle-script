@@ -2,7 +2,8 @@
     "appName": "Blender",
     "hks": [
          {
-            "press": "{space}"
+            "press": "{space}",
+            "description" : "Play animation"
         },
          {
             "press": ""
@@ -18,7 +19,8 @@
         },
          {
             "press": "{Shift down}{MButton down}",
-            "rel": "{Shift up}{Mbutton up}"
+            "rel": "{Shift up}{Mbutton up}",
+            "description" : "rotate camera"
         },
          {
             "press": ""

@@ -2,40 +2,52 @@
     "appName": "Mozilla Firefox",
     "hks": [
          {
-            "press": "{~\"C:\\Users\\zeusa\\OneDrive\\Documents\\Code\\AHK Scripts\\togle-script\\runAhk.ahk\" \"{XButton1}\"}"
+            "press": "{~\"C:\\Users\\zeusa\\OneDrive\\Documents\\Code\\AHK Scripts\\togle-script\\runAhk.ahk\" \"{XButton1\\}\"}",
+            "description" : "Previous page"
         },
          {
-            "press": "{f5}"
+            "press": "{f5}",
+            "description" : "refresh"
         },
          {
-            "press": "{~\"C:\\Users\\zeusa\\OneDrive\\Documents\\Code\\AHK Scripts\\togle-script\\runAhk.ahk\" \"{XButton2}\"}"
+            "press": "{~\"C:\\Users\\zeusa\\OneDrive\\Documents\\Code\\AHK Scripts\\togle-script\\runAhk.ahk\" \"{XButton2\\}\"}",
+            "description" : "Next page"
         },
          {
-            "press": "Control+page up"
+            "press": "Control+page up",
+            "description" : "Next tab"
         },
          {
-            "press": "Control+t"
+            "press": "Control+t",
+            "description" : "New tab"
+         },
+         {
+            "press": "Control+page down",
+            "description" : "Previous tab"
         },
          {
-            "press": "Control+page down"
+            "press": "{Control+t} drive.google.com {enter}",
+            "description" : "google drive"
+        },
+        {
+           "press": "{Control+w}",
+           "description" : "close tab"
         },
          {
-            "press": "{Control+t} drive.google.com {enter}"
+            "press": "{Control+} gmail.com {enter}",
+            "description" : "Gmail"
         },
          {
-            "press": "{Control+t} gmail.com {enter}"
+            "press": "{Control down}{f}{Control up}",
+            "description" : "find"
         },
          {
-            "press": "{Control+t} my.pitt.edu {enter}"
+            "press": "{Control down}{p}{Control up}",
+            "description" : "print"
         },
          {
-            "press": "{Control down}{f}{Control up}"
-        },
-         {
-            "press": "{Control down}{p}{Control up}"
-        },
-         {
-            "press": "{Enter}"
+            "press": "{Enter}",
+            "description" : "enter"
         }
     ]
 }

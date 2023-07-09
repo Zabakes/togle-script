@@ -2,40 +2,50 @@
     "appName": "Default",
     "hks": [
          {
-            "press": "left ctrl+alt+Tab"
+            "press": "left ctrl+alt+Tab",
+            "description" : "change windows"
         },
          {
-            "press": "left ctrl+s"
-        },
-         {
-            "press": "{~C:\\Users\\zeusa\\Downloads\\commandPreview\\commandPreview\\bin\\Debug\\net6.0-windows10.0.17763.0\\commandPreview.exe alt+tab}"
-        },
-         {
-            "press": "Volume Down"
+            "press": "left ctrl+s",
+            "description" : "save"
         },
          {
             "press": ""
         },
          {
-            "press": "Volume Up"
+            "press": "Volume Down",
+            "description" : "Volume down"
         },
          {
-            "press": "{~\"C:\\Program Files (x86)\\iRotate\\irotate.exe\" /2:rotate=90 /exit}"
+            "press": ""
         },
          {
-            "press": "{~\"C:\\Program Files\\ShareX\\ShareX.exe\" -RectangleRegion -s}"
+            "press": "Volume Up",
+            "description" : "Volume up"
         },
          {
-            "press": "{~\"C:\\Program Files (x86)\\iRotate\\irotate.exe\" /2:rotate=0 /exit}"
+            "press": "{~\"C:\\Program Files (x86)\\iRotate\\irotate.exe\" /2:rotate=90 /exit}",
+            "description" : "rotate display left"
         },
          {
-            "press": "left ctrl+f"
+            "press": "{~\"C:\\Program Files\\ShareX\\ShareX.exe\" -RectangleRegion -s}",
+            "description" : "screenshot"
         },
          {
-            "press": "left ctrl+p"
+            "press": "{~\"C:\\Program Files (x86)\\iRotate\\irotate.exe\" /2:rotate=0 /exit}",
+            "description" : "rotate display right"
         },
          {
-            "press": "Enter"
+            "press": "left ctrl+f",
+            "description":"find"
+        },
+         {
+            "press": "left ctrl+p",
+            "description":"print"
+        },
+         {
+            "press": "Enter",
+            "description": "enter"
         }
     ]
 }

@@ -1,0 +1,488 @@
+{
+    "appName" : "zmac learning curve sim",
+    
+    
+    "hks": [
+        [
+            {
+                "press": "{!{\"type\":\"set\",\"val\":1\\\\}}",
+                "description": "animals  commands"
+            },
+            {
+                "press": "{z down}{e down}{b down}{r down}{a down}",
+                "rel": "{z up}{e up}{b up}{r up}{a up}",
+                "description": "zebra",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\zebra.tga"
+            },
+            {
+                "press": "{w down}{a down}{t down}{e down}{r down}{m down}{e down}{l down}{o down}{n down}",
+                "rel": "{w up}{a up}{t up}{e up}{r up}{m up}{e up}{l up}{o up}{n up}",
+                "description": "watermelon",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\watermelon.tga"
+            },
+            {
+                "press": "{p down}{u down}{m down}{p down}{k down}{i down}{n down}",
+                "rel": "{p up}{u up}{m up}{p up}{k up}{i up}{n up}",
+                "description": "pumpkin",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\pumpkin.tga"
+            },
+            null,
+            {
+                "press": "{b down}{o down}{o down}{t down}",
+                "rel": "{b up}{o up}{o up}{t up}",
+                "description": "boot",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\boot.tga"
+            },
+            {
+                "press": "{b down}{a down}{s down}{e down}{b down}{a down}{l down}{l down}",
+                "rel": "{b up}{a up}{s up}{e up}{b up}{a up}{l up}{l up}",
+                "description": "baseball",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\baseball.tga"
+            }
+        ],
+        [
+            {
+                "press": "{!{\"type\":\"set\",\"val\":2\\\\}}",
+                "description": "fruits  commands"
+            },
+            {
+                "press": "{b down}{a down}{t down}",
+                "rel": "{b up}{a up}{t up}",
+                "description": "bat",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\bat.tga"
+            },
+            {
+                "press": "{a down}{p down}{p down}{l down}{e down}",
+                "rel": "{a up}{p up}{p up}{l up}{e up}",
+                "description": "apple",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\apple.tga"
+            },
+            {
+                "press": "{a down}{r down}{t down}{i down}{c down}{h down}{o down}{k down}{e down}",
+                "rel": "{a up}{r up}{t up}{i up}{c up}{h up}{o up}{k up}{e up}",
+                "description": "artichoke",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\artichoke.tga"
+            },
+            {
+                "press": "{c down}{h down}{a down}{i down}{r down}",
+                "rel": "{c up}{h up}{a up}{i up}{r up}",
+                "description": "chair",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\chair.tga"
+            },
+            {
+                "press": "{b down}{o down}{w down}{t down}{i down}{e down}",
+                "rel": "{b up}{o up}{w up}{t up}{i up}{e up}",
+                "description": "bowtie",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\bowtie.tga"
+            },
+            {
+                "press": "{b down}{a down}{s down}{k down}{e down}{t down}{b down}{a down}{l down}{l down}",
+                "rel": "{b up}{a up}{s up}{k up}{e up}{t up}{b up}{a up}{l up}{l up}",
+                "description": "basketball",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\basketball.tga"
+            }
+        ],
+        [
+            {
+                "press": "{!{\"type\":\"set\",\"val\":3\\\\}}",
+                "description": "vegetables  commands"
+            },
+            {
+                "press": "{c down}{a down}{m down}{e down}{l down}",
+                "rel": "{c up}{a up}{m up}{e up}{l up}",
+                "description": "camel",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\camel.tga"
+            },
+            {
+                "press": "{b down}{a down}{n down}{a down}{n down}{a down}",
+                "rel": "{b up}{a up}{n up}{a up}{n up}{a up}",
+                "description": "banana",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\banana.tga"
+            },
+            {
+                "press": "{b down}{r down}{o down}{c down}{c down}{o down}{l down}{i down}",
+                "rel": "{b up}{r up}{o up}{c up}{c up}{o up}{l up}{i up}",
+                "description": "broccoli",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\broccoli.tga"
+            },
+            {
+                "press": "{c down}{l down}{o down}{c down}{k down}",
+                "rel": "{c up}{l up}{o up}{c up}{k up}",
+                "description": "clock",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\clock.tga"
+            },
+            {
+                "press": "{b down}{u down}{t down}{t down}{o down}{n down}",
+                "rel": "{b up}{u up}{t up}{t up}{o up}{n up}",
+                "description": "button",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\button.tga"
+            },
+            {
+                "press": "{b down}{o down}{w down}{l down}{i down}{n down}{g down}",
+                "rel": "{b up}{o up}{w up}{l up}{i up}{n up}{g up}",
+                "description": "bowling",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\bowling.tga"
+            }
+        ],
+        [
+            {
+                "press": "{!{\"type\":\"set\",\"val\":4\\\\}}",
+                "description": "office  commands"
+            },
+            {
+                "press": "{c down}{a down}{t down}",
+                "rel": "{c up}{a up}{t up}",
+                "description": "cat",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\cat.tga"
+            },
+            {
+                "press": "{c down}{h down}{e down}{r down}{r down}{y down}",
+                "rel": "{c up}{h up}{e up}{r up}{r up}{y up}",
+                "description": "cherry",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\cherry.tga"
+            },
+            {
+                "press": "{c down}{a down}{r down}{r down}{o down}{t down}",
+                "rel": "{c up}{a up}{r up}{r up}{o up}{t up}",
+                "description": "carrot",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\carrot.tga"
+            },
+            {
+                "press": "{e down}{n down}{v down}{e down}{l down}{o down}{p down}{e down}",
+                "rel": "{e up}{n up}{v up}{e up}{l up}{o up}{p up}{e up}",
+                "description": "envelope",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\envelope.tga"
+            },
+            {
+                "press": "{c down}{o down}{a down}{t down}",
+                "rel": "{c up}{o up}{a up}{t up}",
+                "description": "coat",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\coat.tga"
+            },
+            {
+                "press": "{c down}{a down}{r down}{d down}{s down}",
+                "rel": "{c up}{a up}{r up}{d up}{s up}",
+                "description": "cards",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\cards.tga"
+            }
+        ],
+        [
+            {
+                "press": "{!{\"type\":\"set\",\"val\":5\\\\}}",
+                "description": "clothing  commands"
+            },
+            {
+                "press": "{d down}{i down}{n down}{o down}{s down}{a down}{u down}{r down}",
+                "rel": "{d up}{i up}{n up}{o up}{s up}{a up}{u up}{r up}",
+                "description": "dinosaur",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\dinosaur.tga"
+            },
+            {
+                "press": "{g down}{r down}{a down}{p down}{e down}{s down}",
+                "rel": "{g up}{r up}{a up}{p up}{e up}{s up}",
+                "description": "grapes",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\grapes.tga"
+            },
+            {
+                "press": "{c down}{o down}{r down}{n down}",
+                "rel": "{c up}{o up}{r up}{n up}",
+                "description": "corn",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\corn.tga"
+            },
+            {
+                "press": "{k down}{e down}{y down}{b down}{o down}{a down}{r down}{d down}",
+                "rel": "{k up}{e up}{y up}{b up}{o up}{a up}{r up}{d up}",
+                "description": "keyboard",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\keyboard.tga"
+            },
+            {
+                "press": "{d down}{r down}{e down}{s down}{s down}{_ down}{s down}{h down}{i down}{r down}{t down}",
+                "rel": "{d up}{r up}{e up}{s up}{s up}{_ up}{s up}{h up}{i up}{r up}{t up}",
+                "description": "dress_shirt",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\dress_shirt.tga"
+            },
+            {
+                "press": "{c down}{h down}{e down}{s down}{s down}",
+                "rel": "{c up}{h up}{e up}{s up}{s up}",
+                "description": "chess",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\chess.tga"
+            }
+        ],
+        [
+            {
+                "press": "{!{\"type\":\"set\",\"val\":6\\\\}}",
+                "description": "recreation  commands"
+            },
+            {
+                "press": "{d down}{o down}{g down}",
+                "rel": "{d up}{o up}{g up}",
+                "description": "dog",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\dog.tga"
+            },
+            {
+                "press": "{k down}{i down}{w down}{i down}",
+                "rel": "{k up}{i up}{w up}{i up}",
+                "description": "kiwi",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\kiwi.tga"
+            },
+            {
+                "press": "{c down}{u down}{c down}{u down}{m down}{b down}{e down}{r down}",
+                "rel": "{c up}{u up}{c up}{u up}{m up}{b up}{e up}{r up}",
+                "description": "cucumber",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\cucumber.tga"
+            },
+            {
+                "press": "{p down}{a down}{p down}{e down}{r down}{c down}{l down}{i down}{p down}",
+                "rel": "{p up}{a up}{p up}{e up}{r up}{c up}{l up}{i up}{p up}",
+                "description": "paperclip",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\paperclip.tga"
+            },
+            {
+                "press": "{g down}{l down}{o down}{v down}{e down}{s down}",
+                "rel": "{g up}{l up}{o up}{v up}{e up}{s up}",
+                "description": "gloves",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\gloves.tga"
+            },
+            {
+                "press": "{d down}{a down}{r down}{t down}{s down}",
+                "rel": "{d up}{a up}{r up}{t up}{s up}",
+                "description": "darts",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\darts.tga"
+            }
+        ],
+        [
+            {},
+            {
+                "press": "{d down}{o down}{l down}{p down}{h down}{i down}{n down}",
+                "rel": "{d up}{o up}{l up}{p up}{h up}{i up}{n up}",
+                "description": "dolphin",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\dolphin.tga"
+            },
+            {
+                "press": "{l down}{e down}{m down}{o down}{n down}",
+                "rel": "{l up}{e up}{m up}{o up}{n up}",
+                "description": "lemon",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\lemon.tga"
+            },
+            {
+                "press": "{g down}{a down}{r down}{l down}{i down}{c down}",
+                "rel": "{g up}{a up}{r up}{l up}{i up}{c up}",
+                "description": "garlic",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\garlic.tga"
+            },
+            {
+                "press": "{p down}{e down}{n down}{c down}{i down}{l down}",
+                "rel": "{p up}{e up}{n up}{c up}{i up}{l up}",
+                "description": "pencil",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\pencil.tga"
+            },
+            {
+                "press": "{h down}{a down}{t down}",
+                "rel": "{h up}{a up}{t up}",
+                "description": "hat",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\hat.tga"
+            },
+            {
+                "press": "{d down}{i down}{c down}{e down}",
+                "rel": "{d up}{i up}{c up}{e up}",
+                "description": "dice",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\dice.tga"
+            }
+        ],
+        [
+            {},
+            {
+                "press": "{d down}{u down}{c down}{k down}",
+                "rel": "{d up}{u up}{c up}{k up}",
+                "description": "duck",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\duck.tga"
+            },
+            {
+                "press": "{p down}{e down}{a down}{c down}{h down}",
+                "rel": "{p up}{e up}{a up}{c up}{h up}",
+                "description": "peach",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\peach.tga"
+            },
+            {
+                "press": "{l down}{e down}{t down}{t down}{u down}{c down}{e down}",
+                "rel": "{l up}{e up}{t up}{t up}{u up}{c up}{e up}",
+                "description": "lettuce",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\lettuce.tga"
+            },
+            {
+                "press": "{p down}{r down}{i down}{n down}{t down}{e down}{r down}",
+                "rel": "{p up}{r up}{i up}{n up}{t up}{e up}{r up}",
+                "description": "printer",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\printer.tga"
+            },
+            {
+                "press": "{s down}{k down}{i down}{r down}{t down}",
+                "rel": "{s up}{k up}{i up}{r up}{t up}",
+                "description": "skirt",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\skirt.tga"
+            },
+            {
+                "press": "{h down}{o down}{c down}{k down}{e down}{y down}",
+                "rel": "{h up}{o up}{c up}{k up}{e up}{y up}",
+                "description": "hockey",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\hockey.tga"
+            }
+        ],
+        [
+            {},
+            {
+                "press": "{f down}{i down}{s down}{h down}",
+                "rel": "{f up}{i up}{s up}{h up}",
+                "description": "fish",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\fish.tga"
+            },
+            {
+                "press": "{p down}{e down}{a down}{r down}",
+                "rel": "{p up}{e up}{a up}{r up}",
+                "description": "pear",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\pear.tga"
+            },
+            {
+                "press": "{m down}{u down}{s down}{h down}{r down}{o down}{o down}{m down}",
+                "rel": "{m up}{u up}{s up}{h up}{r up}{o up}{o up}{m up}",
+                "description": "mushroom",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\mushroom.tga"
+            },
+            {
+                "press": "{s down}{t down}{a down}{m down}{p down}",
+                "rel": "{s up}{t up}{a up}{m up}{p up}",
+                "description": "stamp",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\stamp.tga"
+            },
+            {
+                "press": "{s down}{o down}{c down}{k down}{s down}",
+                "rel": "{s up}{o up}{c up}{k up}{s up}",
+                "description": "socks",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\socks.tga"
+            },
+            {
+                "press": "{k down}{a down}{r down}{a down}{t down}{e down}",
+                "rel": "{k up}{a up}{r up}{a up}{t up}{e up}",
+                "description": "karate",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\karate.tga"
+            }
+        ],
+        [
+            {},
+            {
+                "press": "{f down}{r down}{o down}{g down}",
+                "rel": "{f up}{r up}{o up}{g up}",
+                "description": "frog",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\frog.tga"
+            },
+            {
+                "press": "{p down}{i down}{n down}{e down}{a down}{p down}{p down}{l down}{e down}",
+                "rel": "{p up}{i up}{n up}{e up}{a up}{p up}{p up}{l up}{e up}",
+                "description": "pineapple",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\pineapple.tga"
+            },
+            {
+                "press": "{o down}{n down}{i down}{o down}{n down}",
+                "rel": "{o up}{n up}{i up}{o up}{n up}",
+                "description": "onion",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\onion.tga"
+            },
+            {
+                "press": "{s down}{t down}{a down}{p down}{l down}{e down}{r down}",
+                "rel": "{s up}{t up}{a up}{p up}{l up}{e up}{r up}",
+                "description": "stapler",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\stapler.tga"
+            },
+            {
+                "press": "{s down}{w down}{e down}{a down}{t down}{e down}{r down}",
+                "rel": "{s up}{w up}{e up}{a up}{t up}{e up}{r up}",
+                "description": "sweater",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\sweater.tga"
+            },
+            {
+                "press": "{p down}{o down}{o down}{l down}",
+                "rel": "{p up}{o up}{o up}{l up}",
+                "description": "pool",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\pool.tga"
+            }
+        ],
+        [
+            {},
+            {
+                "press": "{p down}{e down}{n down}{g down}{u down}{i down}{n down}",
+                "rel": "{p up}{e up}{n up}{g up}{u up}{i up}{n up}",
+                "description": "penguin",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\penguin.tga"
+            },
+            {
+                "press": "{p down}{r down}{u down}{n down}{e down}",
+                "rel": "{p up}{r up}{u up}{n up}{e up}",
+                "description": "prune",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\prune.tga"
+            },
+            {
+                "press": "{p down}{e down}{p down}{p down}{e down}{r down}",
+                "rel": "{p up}{e up}{p up}{p up}{e up}{r up}",
+                "description": "pepper",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\pepper.tga"
+            },
+            {
+                "press": "{t down}{e down}{l down}{e down}{p down}{h down}{o down}{n down}{e down}",
+                "rel": "{t up}{e up}{l up}{e up}{p up}{h up}{o up}{n up}{e up}",
+                "description": "telephone",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\telephone.tga"
+            },
+            {
+                "press": "{t down}{- down}{s down}{h down}{i down}{r down}{t down}",
+                "rel": "{t up}{- up}{s up}{h up}{i up}{r up}{t up}",
+                "description": "t-shirt",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\t-shirt.tga"
+            },
+            {
+                "press": "{r down}{u down}{b down}{i down}{k down}{s down}{c down}{u down}{b down}{e down}",
+                "rel": "{r up}{u up}{b up}{i up}{k up}{s up}{c up}{u up}{b up}{e up}",
+                "description": "rubikscube",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\rubikscube.tga"
+            }
+        ],
+        [
+            {},
+            {
+                "press": "{p down}{i down}{g down}{e down}{o down}{n down}",
+                "rel": "{p up}{i up}{g up}{e up}{o up}{n up}",
+                "description": "pigeon",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\pigeon.tga"
+            },
+            {
+                "press": "{s down}{t down}{r down}{a down}{w down}{b down}{e down}{r down}{r down}{y down}",
+                "rel": "{s up}{t up}{r up}{a up}{w up}{b up}{e up}{r up}{r up}{y up}",
+                "description": "strawberry",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\strawberry.tga"
+            },
+            {
+                "press": "{p down}{o down}{t down}{a down}{t down}{o down}",
+                "rel": "{p up}{o up}{t up}{a up}{t up}{o up}",
+                "description": "potato",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\potato.tga"
+            },
+            {
+                "press": "{t down}{r down}{a down}{s down}{h down}",
+                "rel": "{t up}{r up}{a up}{s up}{h up}",
+                "description": "trash",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\trash.tga"
+            },
+            {
+                "press": "{t down}{r down}{o down}{u down}{s down}{e down}{r down}{s down}",
+                "rel": "{t up}{r up}{o up}{u up}{s up}{e up}{r up}{s up}",
+                "description": "trousers",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\trousers.tga"
+            },
+            {
+                "press": "{t down}{e down}{n down}{n down}{i down}{s down}",
+                "rel": "{t up}{e up}{n up}{n up}{i up}{s up}",
+                "description": "tennis",
+                "icon path": "C:\\Users\\zeusa\\OneDrive\\Documents\\Zmac\\TestingApp\\hotkey-experiment-icons\\images\\tennis.tga"
+            }
+        ]
+    ]
+}

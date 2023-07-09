@@ -2,40 +2,52 @@
     "appName": "VsCode",
     "hks": [
          {
-            "press": "{Control down}{.}{Control up}"
+            "press": "{Control down}{.}{Control up}",
+            "description" : "Quick fix"
         },
          {
-            "press": "{Control down}{s}{Control up}"
+            "press": "{Control down}{s}{Control up}",
+            "description" : "Save"
         },
          {
-            "press": "{f1}"
+            "press": "{f1}",
+            "description":"Open toolbar"
         },
          {
-            "press": "{Shift down}{Left down}{Shift up}"
+            "press": "{Shift down}{Left down}{Shift up}",
+            "description":"Select left"
         },
          {
-            "press": "{Control down}{l}{Control up}"
+            "press": "{Control down}{l}{Control up}",
+            "description" : "select line"
         },
          {
-            "press": "{Shift down}{Right down}{Shift up}"
+            "press": "{Shift down}{Right down}{Shift up}",
+            "description" : "Select right"
         },
          {
-            "press": "alt+down+backspace"
+             "press": "alt+down+backspace",
+             "description" : "move line up"
         },
          {
-            "press": "{Shift down}{Alt down}{a}{Shift up}{Alt up}"
+            "press": "{Shift down}{Alt down}{a}{Shift up}{Alt up}",
+            "description": "toggle block comment"
         },
          {
-            "press": "alt+up+backspace"
+            "press": "alt+up+backspace",
+            "description" : "move line down"
         },
          {
-            "press": "{Control down}{f}{Control up}"
+            "press": "{Control down}{f}{Control up}",
+            "description" : "find"
+         },
+         {
+            "press": "{Control down}{p}{Control up}",
+            "description":"print"
         },
          {
-            "press": "{Control down}{p}{Control up}"
-        },
-         {
-            "press": "{Enter}"
+            "press": "{Enter}",
+            "description":"Enter"
         }
     ],
     "regex": ".*Visual Studio Code",

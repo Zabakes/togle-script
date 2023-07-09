@@ -24,3 +24,6 @@ def run(s):
         pass
     
     print("Done")
+
+def MsgBox(s):
+    print(s)

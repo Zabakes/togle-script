@@ -1,0 +1,70 @@
+{
+    "keys":[
+        {
+            "remap": "F13", 
+            "baseLayer" : "1"
+        },
+        {
+            "remap": "F14", 
+            "baseLayer" : "2"
+        },
+        {
+            "remap": "F15", 
+            "baseLayer" : "3"
+        },
+        {
+            "remap": "F16", 
+            "baseLayer" : "4"
+        },
+        {
+            "remap": "F17", 
+            "baseLayer" : "5"
+        },
+        {
+            "remap": "F18", 
+            "baseLayer" : "6"
+        },
+        {
+            "remap": "F19", 
+            "baseLayer" : "7"
+        },
+        {
+            "remap": "F20", 
+            "baseLayer" : "8"
+        },
+        {
+            "remap": "F21", 
+            "baseLayer" : "9"
+        },
+        {
+            "remap": "F22", 
+            "baseLayer" : "0"
+        },
+        {
+            "remap": "F23", 
+            "baseLayer" : "-"
+        },
+        {
+            "remap": "F24", 
+            "baseLayer" : "{BS}"
+        }
+    ],
+
+    "toggleKey" : "Home",
+    "doRemaping" : true,
+
+    "actions" : [
+        {
+            "prefix" : "~",
+            "function" : "run"
+        },
+        {
+            "prefix" : "#",
+            "function" : "MsgBox"
+        },
+        {
+            "prefix" : "!",
+            "function" : "setLayer"
+        }
+    ]
+}

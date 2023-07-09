@@ -2,40 +2,52 @@
     "appName": "JupyterLab",
     "hks": [
          {
-            "press": "{Escape}b"
+            "press": "{Escape}b",
+            "description" : "new cell"
         },
          {
-            "press": "{Control down}{s}{Control up}"
+            "press": "{Control down}{s}{Control up}",
+            "description" : "save"
         },
          {
-            "press": "{~\"C:\\Users\\zeusa\\OneDrive\\Documents\\Code\\AHK Scripts\\togle-script\\runAhk.ahk\" \"(\"}"
+            "press": "{~\"C:\\Users\\zeusa\\OneDrive\\Documents\\Code\\AHK Scripts\\togle-script\\runAhk.ahk\" \"(\"}",
+            "description" : "()"
         },
          {
-            "press": "="
+            "press": "=",
+            "description" : "="
         },
          {
-            "press": "+"
+            "press": "+",
+            "description" : "+"
         },
          {
-            "press": "*"
+            "press": "*",
+            "description" : "*"
         },
          {
-            "press": "{Control down}{Shift down}{-}{Shift up}{Control up}"
+            "press": "{Control down}{Shift down}{-}{Shift up}{Control up}",
+            "description" : "Zoom out?"
         },
          {
-            "press": "{/}"
+            "press": "{/}",
+            "description" : "/"
         },
          {
-            "press": "**"
+            "press": "**",
+            "description" : "**"
         },
          {
-            "press": "{Control down}{f}{Control up}"
+            "press": "{Control down}{f}{Control up}",
+            "description" : "find"
         },
          {
-            "press": "sp.sqrt("
+            "press": "sp.sqrt(",
+            "description" : "sp.sqrt("
         },
          {
-            "press": "{Control down}{Enter}{Control up}"
+            "press": "{Control down}{Enter}{Control up}",
+            "description" : "run cell"
         }
     ],
     "regex": ".*\\.ipynb.*",

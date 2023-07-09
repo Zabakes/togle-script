@@ -2,41 +2,53 @@
     "appName": "Fusion 360",
     "hks": [
          {
-            "press": "e"
+            "press": "e",
+            "description" : "extrude"
         },
          {
-            "press": "l"
+            "press": "l",
+            "description":"line"
         },
          {
-            "press": "d"
+            "press": "d",
+            "description" : "dimension"
         },
          {
-            "press": "c"
+            "press": "c",
+            "description":"circle"
         },
          {
-            "press": "r"
+            "press": "r",
+            "description":"rectangle"
         },
          {
             "press": "{~\"C:\\Users\\zeusa\\OneDrive\\Documents\\Code\\AHK Scripts\\togle-script\\runAhk.ahk\" \"{Shift down}{MButton down}\"}",
-            "rel": "{~\"C:\\Users\\zeusa\\OneDrive\\Documents\\Code\\AHK Scripts\\togle-script\\runAhk.ahk\" \"{Shift up}{Mbutton up}\"}"
+            "rel": "{~\"C:\\Users\\zeusa\\OneDrive\\Documents\\Code\\AHK Scripts\\togle-script\\runAhk.ahk\" \"{Shift up}{Mbutton up}\"}",
+            "description": "rotate camera"
         },
          {
-            "press": "p"
+            "press": "p",
+            "description" : "project geometry"
         },
          {
-            "press": "i"
+            "press": "i",
+            "description" : "measure"
         },
          {
-            "press": "x"
+            "press": "x",
+            "description":"toggle construction"
         },
          {
-            "press": "j"
+            "press": "j",
+            "description" : "joint"
         },
          {
-            "press": "v"
+            "press": "v",
+            "description" : "toggle visibility"
         },
          {
-            "press": "{Enter}"
+            "press": "{Enter}",
+            "description" : "enter"
         }
     ],
     "regex": "Fusion.*360",
