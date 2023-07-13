@@ -43,11 +43,11 @@
         [
             {
                 "press": {
-                    "function" : "setLayer",
-                    "args" : {
-                        "type" :"set",
-                        "val": 2
-                        }
+                        "function" : "setLayer",
+                        "args" : {
+                            "type" :"set",
+                            "val": 2
+                            }
                     },
                 "description": "fruits  commands"
             },

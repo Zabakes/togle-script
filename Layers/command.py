@@ -4,6 +4,7 @@ import keyboard
 from time import sleep
 import json
 from collections.abc import Iterable
+from customFuncs import *
 
 def setLayer(s=None, *args, **kwargs):
     
@@ -84,8 +85,8 @@ class command():
             if "function" in config.keys():
                 try:
                     funcs.append((wrapFunc(globals()[config["function"]], **config.get("args", {})), f"""{config["function"]}({config.get("args", {})})"""))
-                except KeyError:
-                    pass
+                except KeyError as e:
+                    print("Error could not find function:", e, "\n\n\n The globals are :", globals())
         elif isinstance(config, Iterable):
             for conf in config:
                 funcs += self.getFuncsList(conf, prefixToFunc)

@@ -30,8 +30,6 @@ def parseKeyConfig(conf : Union[Dict[str, str], List[Dict[str, str]]]) -> Union[
 
 def updateConfig():
 
-    
-
     with open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "hotkeysJson", "config.json"), "r") as file:
         conf = json.load(file)
 
@@ -42,6 +40,11 @@ def updateConfig():
 
         common.toRemap = [key["remap"].lower() for key in conf["keys"]]
         common.appToKeys["Untoggled"] = [key["baseLayer"] for key in conf["keys"]]
+        
+        common.appToKeys["ToggleKey"] = {
+                                         "tap"   : parseKeyConfig(conf["ToggleActions"]["tap"]),
+                                         "longPress" : parseKeyConfig(conf["ToggleActions"]["longPress"]),
+                                         }
 
         for val in conf["actions"]:
             prefix = val["prefix"]

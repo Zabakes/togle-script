@@ -55,8 +55,18 @@
     "layout" : "Layouts\\keyboard-layout-4.json",
 
 
-    "tapToggleAction":{
-
+    "ToggleActions":{
+        "tap" : {
+                    "press": "."
+                },
+        "longPress" : {
+           "press" : { 
+                "function" : "run",
+                "args" : {
+                    "s" : "C:\\Users\\zeusa\\OneDrive\\Documents\\Code\\AHK Scripts\\togle-script\\tilingManagerTest.exe"
+                }
+            }
+        }
     },
 
     "actions" : [

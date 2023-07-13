@@ -22,7 +22,7 @@ def toggleFunc(key):
     if common.keyReleaseEvents[key].wait(timeout=.15):
         if not hotKeyUsed:
             common.toggle = False
-            keyboard.send(".")
+            processCmd(common.getCmd("tap", "ToggleKey"))
             common.toggleThread.release()
             hideGUI()
             return
@@ -37,7 +37,7 @@ def toggleFunc(key):
     common.toggleThread.release()
 
     if (not hotKeyUsed) and (not common.isEditing):
-        run("C:\\Users\\zeusa\\OneDrive\\Documents\\Code\\AHK Scripts\\togle-script\\tilingManagerTest.exe")
+        processCmd(common.getCmd("longPress", "ToggleKey"))
 
     return
 
