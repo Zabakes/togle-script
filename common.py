@@ -21,6 +21,7 @@ WIDGET_HEIGHT = 0
 WIDGET_WIDTH = 0
 doRemapping = True
 redrawGui = False
+disableGUI = False
 
 windowTitle = ""
 if system() == 'Windows':

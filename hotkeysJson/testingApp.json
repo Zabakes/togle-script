@@ -42,7 +42,13 @@
         ],
         [
             {
-                "press": "{!{\"type\":\"set\",\"val\":2\\\\}}",
+                "press": {
+                    "function" : "setLayer",
+                    "args" : {
+                        "type" :"set",
+                        "val": 2
+                        }
+                    },
                 "description": "fruits  commands"
             },
             {

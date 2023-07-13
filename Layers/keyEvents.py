@@ -1,8 +1,9 @@
 import common
-from GUI.hideGUI import hideGUI
+from GUI.guiVisibility import hideGUI, showGUI
 from customFuncs import *
 import keyboard
 from threading import Event, Thread
+from time import sleep
 
 
 def toggleFunc(key):
@@ -12,7 +13,7 @@ def toggleFunc(key):
         return
     
     common.windowTitle = common.getWindowName()
-    common.showGUI.set()
+    showGUI()
     common.keyReleaseEvents[key].clear()
 
     hotKeyUsed = False
@@ -70,7 +71,8 @@ def keyPress(key):
         common.redrawGui = True
 
     if common.toggleThread.locked():
-        common.showGUI.set()
+        sleep(.01)
+        showGUI()
 
 def triggerKeyReleaseEvent(key):
     if event := common.keyReleaseEvents.get(key, None):

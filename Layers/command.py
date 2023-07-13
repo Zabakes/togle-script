@@ -3,13 +3,16 @@ import common
 import keyboard
 from time import sleep
 import json
+from collections.abc import Iterable
 
-def setLayer(s):
+def setLayer(s=None, *args, **kwargs):
     
     if common.isEditing:
         return
 
-    kwargs = json.loads(s)
+    if not kwargs:
+        kwargs = json.loads(s)
+
     print(kwargs)
     if kwargs["type"] == "inc":
         common.layer += 1
@@ -36,12 +39,12 @@ class command():
     def __init__(self, press, prefixToFunc={}, release="", description = None, imgPath = None) -> None:
         self.description = description
         self.imgPath = imgPath
-        self.pressS = press
-        self.releaseS = release
+        self.pressS = str(press)
+        self.releaseS = str(release)
         self.waitForRel =  False
         self.hideGUIBeforeRun = False
-        self.runFuncs = self.getFuncsListFromString(press, prefixToFunc)
-        self.releaseFuncs = self.getFuncsListFromString(release, prefixToFunc)
+        self.runFuncs = self.getFuncsList(press, prefixToFunc)
+        self.releaseFuncs = self.getFuncsList(release, prefixToFunc)
 
         if self.description is None:
             self.description = self.__str__()
@@ -52,30 +55,41 @@ class command():
     def __repr__(self) -> str:
         return self.__str__()
 
-    def getFuncsListFromString(self, s, prefixToFunc={}):
+    def getFuncsList(self, config, prefixToFunc={}):
         funcs = []
-        for match in re.finditer(self.fmtString, s):
-            if sendStr := match.group("str"):
-                self.hideGUIBeforeRun = True
-                funcs.append(self.sendStrFactory(sendStr))
-            elif cmd := match.group("cmd"):
-                cmd = re.sub(r"\\+({|})", r"\g<1>", cmd)
-                if cmd[0] in prefixToFunc.keys():
-                    #print(f"{prefixToFunc[cmd[0]].__name__}({cmd[1:]})")
-                    if prefixToFunc[cmd[0]] != setLayer:
-                        self.hideGUIBeforeRun = True
-
-                    funcs.append((lambda : prefixToFunc[cmd[0]](cmd[1:]),  f"{prefixToFunc[cmd[0]].__name__}({cmd[1:]})"))
-                else:
+        if type(config) is str:
+            for match in re.finditer(self.fmtString, config):
+                if sendStr := match.group("str"):
                     self.hideGUIBeforeRun = True
-                    if match.group("down"):
-                        funcs.append((wrapFunc(keyboard.press, cmd), f"down {cmd}"))
+                    funcs.append(self.sendStrFactory(sendStr))
+                elif cmd := match.group("cmd"):
+                    cmd = re.sub(r"\\+({|})", r"\g<1>", cmd)
+                    if cmd[0] in prefixToFunc.keys():
+                        #print(f"{prefixToFunc[cmd[0]].__name__}({cmd[1:]})")
+                        if prefixToFunc[cmd[0]] != setLayer:
+                            self.hideGUIBeforeRun = True
 
-                    elif match.group("up"):
-                        funcs.append((wrapFunc(keyboard.release, cmd), f"up {cmd}"))
-
+                        funcs.append((lambda : prefixToFunc[cmd[0]](cmd[1:]),  f"{prefixToFunc[cmd[0]].__name__}({cmd[1:]})"))
                     else:
-                        funcs.append(self.sendStrFactory(cmd))
+                        self.hideGUIBeforeRun = True
+                        if match.group("down"):
+                            funcs.append((wrapFunc(keyboard.press, cmd), f"down {cmd}"))
+
+                        elif match.group("up"):
+                            funcs.append((wrapFunc(keyboard.release, cmd), f"up {cmd}"))
+
+                        else:
+                            funcs.append(self.sendStrFactory(cmd))
+        elif type(config) is dict:
+            if "function" in config.keys():
+                try:
+                    funcs.append((wrapFunc(globals()[config["function"]], **config.get("args", {})), f"""{config["function"]}({config.get("args", {})})"""))
+                except KeyError:
+                    pass
+        elif isinstance(config, Iterable):
+            for conf in config:
+                funcs += self.getFuncsList(conf, prefixToFunc)
+
         return funcs
 
     @staticmethod

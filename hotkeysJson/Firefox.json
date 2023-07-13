@@ -1,53 +1,53 @@
 {
     "appName": "Mozilla Firefox",
     "hks": [
-         {
+        {
             "press": "{~\"C:\\Users\\zeusa\\OneDrive\\Documents\\Code\\AHK Scripts\\togle-script\\runAhk.ahk\" \"{XButton1\\}\"}",
-            "description" : "Previous page"
-        },
-         {
-            "press": "{f5}",
-            "description" : "refresh"
-        },
-         {
-            "press": "{~\"C:\\Users\\zeusa\\OneDrive\\Documents\\Code\\AHK Scripts\\togle-script\\runAhk.ahk\" \"{XButton2\\}\"}",
-            "description" : "Next page"
-        },
-         {
-            "press": "Control+page up",
-            "description" : "Next tab"
-        },
-         {
-            "press": "Control+t",
-            "description" : "New tab"
-         },
-         {
-            "press": "Control+page down",
-            "description" : "Previous tab"
-        },
-         {
-            "press": "{Control+t} drive.google.com {enter}",
-            "description" : "google drive"
+            "description": "Previous page"
         },
         {
-           "press": "{Control+w}",
-           "description" : "close tab"
+            "press": "{f5}",
+            "description": "refresh"
         },
-         {
-            "press": "{Control+} gmail.com {enter}",
-            "description" : "Gmail"
+        {
+            "press": "{~\"C:\\Users\\zeusa\\OneDrive\\Documents\\Code\\AHK Scripts\\togle-script\\runAhk.ahk\" \"{XButton2\\}\"}",
+            "description": "Next page"
         },
-         {
+        {
+            "press": "Control+page up",
+            "description": "Next tab"
+        },
+        {
+            "press": "Control+t",
+            "description": "New tab"
+        },
+        {
+            "press": "Control+page down",
+            "description": "Previous tab"
+        },
+        {
+            "press": "{Control+t} drive.google.com {enter}",
+            "description": "google drive"
+        },
+        {
+            "press": "{Control+w}",
+            "description": "close tab"
+        },
+        {
+            "press": "{Control+t} gmail.com {enter}",
+            "description": "Gmail"
+        },
+        {
             "press": "{Control down}{f}{Control up}",
-            "description" : "find"
+            "description": "find"
         },
-         {
+        {
             "press": "{Control down}{p}{Control up}",
-            "description" : "print"
+            "description": "print"
         },
-         {
+        {
             "press": "{Enter}",
-            "description" : "enter"
+            "description": "enter"
         }
     ]
 }

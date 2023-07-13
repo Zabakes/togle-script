@@ -4,19 +4,18 @@ from PIL import Image
 from Layers.configure import updateConfig
 import common
 from GUI.createGUI import makeWidget
+from GUI.guiVisibility import showGUI
 
 updateConfig()
-t = Thread(target=makeWidget)
+t = Thread(target=makeWidget,
+           args=[common.layout])
 t.start()
 
 import pystray
 
-from PIL import Image
-
 def quit():
-    
     common.kill = True
-    common.showGUI.set()
+    showGUI()
     icon.stop()
 
 # In order for the icon to be displayed, you must provide an icon

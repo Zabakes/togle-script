@@ -52,6 +52,12 @@
 
     "toggleKey" : "Home",
     "doRemaping" : true,
+    "layout" : "Layouts\\keyboard-layout-4.json",
+
+
+    "tapToggleAction":{
+
+    },
 
     "actions" : [
         {
