@@ -7,6 +7,7 @@ import pyautogui
 from time import sleep
 from PIL import ImageTk, ImageGrab, ImageFilter, ImageEnhance
 from math import floor
+from Layers.runTimeConfig import getCmd
 
 class layerPreview(tk.Canvas):
     
@@ -55,7 +56,7 @@ class layerPreview(tk.Canvas):
         collSize = (common.WIDGET_WIDTH-10)//collCount
         rowSize = (common.WIDGET_HEIGHT-10)//rowCount
         
-        self.keysToGUI = {}
+        self.keysToGUI = []
         
         rNum = 0
         for row in layoutInfo:
@@ -67,12 +68,13 @@ class layerPreview(tk.Canvas):
                 collOffset = key.get("x", 0)
                 rowOffset = key.get("y", 0)
 
-                self.keysToGUI[key["legend"]] = keyBox(x=floor((cNum+collOffset)*collSize)+5,
-                                                       y=floor((rNum+rowOffset)*rowSize)+5,
-                                                       master=self, 
-                                                       key=key["legend"], 
-                                                       width=floor(collSpan*collSize), 
-                                                       height=floor(rowSpan*rowSize))
+                # This being a map means that duplicate legends leads to hidden keys TODO fix that
+                self.keysToGUI.append((key["legend"], keyBox(   x=floor((cNum+collOffset)*collSize)+5,
+                                                                y=floor((rNum+rowOffset)*rowSize)+5,
+                                                                master=self, 
+                                                                key=key["legend"], 
+                                                                width=floor(collSpan*collSize), 
+                                                                height=floor(rowSpan*rowSize))))
                 cNum += collOffset+collSpan
                 rNum += rowOffset
             rNum += 1
@@ -108,8 +110,26 @@ class layerPreview(tk.Canvas):
         common.isEditing = True
         w.updateConfigFile(event)
 
-def makeWidget(layoutFile):
+def updateBG(imgHandle, abs_coord_x, abs_coord_y, pview, root):
+    global img
+    if not common.showGUI.isSet():
+        return
 
+    #root.withdraw()
+    img = ImageGrab.grab([abs_coord_x, abs_coord_y, abs_coord_x+common.WIDGET_WIDTH, abs_coord_y+common.WIDGET_HEIGHT])
+    #root.deiconify()
+    
+    img = img.filter(ImageFilter.GaussianBlur(radius=5))
+    enhancer = ImageEnhance.Brightness(img)
+    img = enhancer.enhance(0.625)
+    img = ImageTk.PhotoImage(img)
+    pview.itemconfig(imgHandle, image=img)
+    pview.tag_lower(imgHandle)
+    #if common.updateBGInterval > 0:
+        #pview.after(int(common.updateBGInterval*1000), lambda : updateBG(imgHandle, abs_coord_x, abs_coord_y, pview, root))
+
+def makeWidget(layoutFile):
+    global img
     root = tk.Tk(className="ZMAC_OVERLAY", baseName="ZMAC_POP_UP")
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
@@ -119,8 +139,6 @@ def makeWidget(layoutFile):
     root.overrideredirect(True)
     abs_coord_x, abs_coord_y = pyautogui.position()
     root.geometry(f"{common.WIDGET_WIDTH}x{common.WIDGET_HEIGHT}+{abs_coord_x}+{abs_coord_y}")
-
-    buttonElements = []
 
     pview = layerPreview(root, layoutFile=layoutFile, background="lightblue", highlightthickness=0)
     pview.grid(row = 0, column = 0, sticky="NSEW")
@@ -137,22 +155,30 @@ def makeWidget(layoutFile):
     imgHandle = pview.create_image(0,0, image=img, anchor=tk.NW)
     while True:
 
+        common.showGUI.wait()
+
+        abs_coord_x, abs_coord_y = pyautogui.position()
         if(common.WIDGET_WIDTH+abs_coord_x > screen_width):
             abs_coord_x = screen_width-common.WIDGET_WIDTH
         
         if(common.WIDGET_HEIGHT+abs_coord_y > screen_height):
             abs_coord_y = screen_height-common.WIDGET_HEIGHT
 
+        updateBG(imgHandle, abs_coord_x, abs_coord_y, pview, root)
+
+        root.deiconify()
+
         root.geometry(f"{common.WIDGET_WIDTH}x{common.WIDGET_HEIGHT}+{abs_coord_x}+{abs_coord_y}")
 
         common.redrawGui = True
 
         titleMatch = common.getTitleMatch()
+
         while common.showGUI.isSet() and not common.kill:
             if common.redrawGui:
                 pview.tag_raise(imgHandle)
-                for i, (key, element) in enumerate(pview.keysToGUI.items()):
-                    cmd = common.getCmd(key, titleMatch)
+                for i, (key, element) in enumerate(pview.keysToGUI):
+                    cmd = getCmd(key, titleMatch)
                     element.key = key
                     element.titleMatch = titleMatch
                     element.updateKeyBox(cmd)
@@ -174,21 +200,8 @@ def makeWidget(layoutFile):
 
         root.withdraw()
 
-        common.showGUI.wait()
-        
         if common.kill:
             root.destroy()
             return
-        common.isEditing = False
 
-        sleep(.125)
-        if common.showGUI.isSet():
-            abs_coord_x, abs_coord_y = pyautogui.position()
-            img = ImageGrab.grab([abs_coord_x, abs_coord_y, abs_coord_x+common.WIDGET_WIDTH, abs_coord_y+common.WIDGET_HEIGHT])
-            img = img.filter(ImageFilter.GaussianBlur(radius=5))
-            enhancer = ImageEnhance.Brightness(img)
-            img = enhancer.enhance(0.625)
-            img = ImageTk.PhotoImage(img)
-            pview.itemconfig(imgHandle, image=img)
-            pview.tag_lower(imgHandle)
-            root.deiconify()
+        common.isEditing = False

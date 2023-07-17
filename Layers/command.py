@@ -90,6 +90,9 @@ class command():
         elif isinstance(config, Iterable):
             for conf in config:
                 funcs += self.getFuncsList(conf, prefixToFunc)
+        elif type(config) is int:
+            self.hideGUIBeforeRun = True
+            funcs.append(self.sendStrFactory(config))
 
         return funcs
 

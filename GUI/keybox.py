@@ -4,7 +4,7 @@ import common
 import json
 import os
 from GUI.tootlip import ToolTip
-from Layers.configure import parseKeyConfig
+from Layers.InitConfig import parseKeyConfig
 from GUI.guiVisibility import hideGUI
 from PIL import Image, ImageTk, ImageOps
 import re
@@ -42,7 +42,7 @@ class keyBox():
 
         self.master = master
         self.textWidg = master.create_text( x+self.width/2, 
-                                            y+25,
+                                            y+30,
                                             width=width-20,
                                             fill="White", 
                                             font=('Helvetica 10 bold'),
@@ -57,7 +57,7 @@ class keyBox():
                 self.index = i
 
         self.keyIndexLabel = master.create_text(self.x+self.width/2, 
-                                                self.y+15,
+                                                self.y+20,
                                                 text=self.key, 
                                                 fill="White", 
                                                 font=('Helvetica 10 bold'),

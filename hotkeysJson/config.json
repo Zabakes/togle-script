@@ -2,56 +2,80 @@
     "keys":[
         {
             "remap": "F13", 
-            "baseLayer" : "1"
+            "baseLayer" : {
+                "press" : "1"
+            }
         },
         {
             "remap": "F14", 
-            "baseLayer" : "2"
+            "baseLayer" : {
+                "press" : "2"
+            }
         },
         {
             "remap": "F15", 
-            "baseLayer" : "3"
+            "baseLayer" : {
+                "press" : "3"
+            }
         },
         {
             "remap": "F16", 
-            "baseLayer" : "4"
+            "baseLayer" : {
+                "press" : "4"
+            }
         },
         {
             "remap": "F17", 
-            "baseLayer" : "5"
+            "baseLayer" : {
+                "press" : "5"
+            }
         },
         {
             "remap": "F18", 
-            "baseLayer" : "6"
+            "baseLayer" : {
+                "press" : "6"
+            }
         },
         {
             "remap": "F19", 
-            "baseLayer" : "7"
+            "baseLayer" : {
+                "press" : "7"
+            }
         },
         {
             "remap": "F20", 
-            "baseLayer" : "8"
+            "baseLayer" : {
+                "press" : "8"
+            }
         },
         {
             "remap": "F21", 
-            "baseLayer" : "9"
+            "baseLayer" : {
+                "press" : "9"
+            }
         },
         {
             "remap": "F22", 
-            "baseLayer" : "0"
+            "baseLayer" : {
+                "press" : "0"
+            }
         },
         {
             "remap": "F23", 
-            "baseLayer" : "-"
+            "baseLayer" : {
+                "press" : "-"
+            }
         },
         {
             "remap": "F24", 
-            "baseLayer" : "{BS}"
+            "baseLayer" : {
+                "press" : 14
+            }
         }
     ],
 
     "toggleKey" : "Home",
-    "doRemaping" : true,
+    "doRemapping" : true,
     "layout" : "Layouts\\keyboard-layout-4.json",
 
 

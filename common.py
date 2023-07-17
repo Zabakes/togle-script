@@ -1,8 +1,9 @@
 from platform import system
 from threading import Event, Lock, Thread
+import json
 import re
 
-appToKeys = {}
+toggleActions = {}
 regexToAppName = {}
 keyReleaseEvents = {}
 titleMatchToConfigFile = {}
@@ -22,6 +23,8 @@ WIDGET_WIDTH = 0
 doRemapping = True
 redrawGui = False
 disableGUI = False
+updateBGInterval = 0
+layout = None
 
 windowTitle = ""
 if system() == 'Windows':
@@ -40,7 +43,7 @@ def getTitleMatch():
     titleMatch = None
     appName = re.split(winTitleSplitter, winName).pop().strip()
     
-    if not appName in appToKeys:
+    if not appName in titleMatchToConfigFile:
         p = None
         for ptrn, (title, pr) in regexToAppName.items():
             if re.search(ptrn, winName) and (p is None or p < pr):
@@ -54,24 +57,6 @@ def getTitleMatch():
             titleMatch = "Default"
 
     return titleMatch
-
-
-def getCmd(key, titleMatch = None):
-
-    if titleMatch is None:
-        titleMatch = getTitleMatch()
-    
-    toSend = appToKeys.get(titleMatch, None)
-    if not(cmd := toSend.get(key, None)):
-        cmd = appToKeys["Default"].get(key)
-
-    if type(cmd) is list:
-        l = min(len(cmd)-1, getLayer())
-        cmd = cmd[l]
-        if cmd is None:
-            cmd = appToKeys["Default"].get(key)
-
-    return cmd
 
 def getLayer(titleMatch = None):
     global layer, layerApp

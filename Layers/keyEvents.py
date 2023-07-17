@@ -4,6 +4,7 @@ from customFuncs import *
 import keyboard
 from threading import Event, Thread
 from time import sleep
+from Layers.runTimeConfig import getCmd
 
 
 def toggleFunc(key):
@@ -22,7 +23,7 @@ def toggleFunc(key):
     if common.keyReleaseEvents[key].wait(timeout=.15):
         if not hotKeyUsed:
             common.toggle = False
-            processCmd(common.getCmd("tap", "ToggleKey"))
+            processCmd(common.toggleActions.get("tap", None))
             common.toggleThread.release()
             hideGUI()
             return
@@ -37,13 +38,14 @@ def toggleFunc(key):
     common.toggleThread.release()
 
     if (not hotKeyUsed) and (not common.isEditing):
-        processCmd(common.getCmd("longPress", "ToggleKey"))
+        processCmd(common.toggleActions.get("longPress", None))
 
     return
 
 def keyPress(key):
     global hotKeyUsed
 
+    print(key)
     if key in common.keyReleaseEvents:
         return
 
@@ -54,12 +56,13 @@ def keyPress(key):
 
     if common.toggle and not common.isEditing:
         hotKeyUsed = True
-        c = common.getCmd(key)
+        c = getCmd(key)
 
     else:
-        c = common.getCmd(key, "Untoggled")
+        c = common.untoggled.get(key, None)
+        print(common.untoggled)
 
-    if c.hideGUIBeforeRun:
+    if c is not None and c.hideGUIBeforeRun:
         hideGUI()
 
     processCmd(c, keyRelEvent)
@@ -86,10 +89,8 @@ def processCmd(c, event=None):
             c.release()
 
 def on_press(key):
-    
-    if not common.doRemapping:
-        return
-    elif key == common.toggleKey:
+
+    if key == common.toggleKey:
         t = Thread(target=toggleFunc, args=[key])
     elif key in common.toRemap:
         t = Thread(target=keyPress, args=[key])

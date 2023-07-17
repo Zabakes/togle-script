@@ -22,8 +22,6 @@ def run(s):
         runReal([cmd, *args])
     except:
         pass
-    
-    print("Done")
 
 def MsgBox(s):
     print(s)
