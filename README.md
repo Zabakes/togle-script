@@ -89,7 +89,8 @@ These are the prefixes for use in [actions](#actions--obj) using these prefixes 
 This is the prefix for the function action beginning with this character will be mapped to the ... 
 
 #### function : str
-This is the name of the python function to be called. The argument to this function is whatever follows th 
+This is the name of the python function to be called. The argument to this function is whatever follows the prefix in the [command](#command--str)
+
 --- end function attributes ---
 
 ## Application specific configs
