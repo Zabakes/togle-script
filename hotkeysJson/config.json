@@ -77,7 +77,7 @@
     "toggleKey" : "Home",
     "doRemapping" : true,
     "drawGUI" : true,
-    "layout" : "Layouts\\keyboard-layout-4.json",
+    "layout" : "Layouts\\keyboard-layout-6.json",
 
 
     "ToggleActions":{
@@ -88,7 +88,7 @@
            "press" : { 
                 "function" : "run",
                 "args" : {
-                    "s" : "C:\\Users\\zeusa\\OneDrive\\Documents\\Code\\AHK Scripts\\togle-script\\tilingManagerTest.exe"
+                    "s" : "tilingManagerTest.exe"
                 }
             }
         }

@@ -12,7 +12,7 @@ This script currently only works on windows. This isn't ideal but none of this c
 # Use
 
 By default pressing the toggle key is brings up a window like this ![GUI example](Images\GUI_example.png)  
-You can change where the keys go with the [layout](#layout--path)
+You can change where the keys go with the [layout](#layout--path) for a keyboard like the ergodex this would look like ![GUI example](Images\AltLayout.png)  
 
 Right clicking on a key allows you to edit the json associated with that key. You can then click escape to discard the changes or ctrl+s to save the changes. 
 ![GUI example edit](Images\GUI_edit.png) 
@@ -177,3 +177,13 @@ Example :
 
 This presses shift when the key is pressed and releases it when the associated key is released
 
+# My use case
+I use this software in conjunction with a MMO gaming mouse and not a keyboard. That's why I have my keymaps set up the way I do.
+
+# WIP 
+
+- Replace tkinter with a more modern GUI framework
+  - Create the windowed glass effect more seamlessly
+- Validate jsons before parsing them
+- Add support for non-windows oses 
+- Get closer to the kernel and communicate directly with usb devices
