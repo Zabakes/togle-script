@@ -77,7 +77,7 @@
     "toggleKey" : "Home",
     "doRemapping" : true,
     "drawGUI" : true,
-    "layout" : "Layouts\\keyboard-layout-6.json",
+    "layout" : "Layouts\\keyboard-layout-4.json",
 
 
     "ToggleActions":{
@@ -107,5 +107,9 @@
             "prefix" : "!",
             "function" : "setLayer"
         }
+    ],
+
+    "DisableGUIIn" : [
+        
     ]
 }

@@ -18,6 +18,7 @@ kill = False
 isEditing = False
 toggleKey = None
 toRemap = []
+disabledApps = []
 WIDGET_HEIGHT = 0
 WIDGET_WIDTH = 0
 doRemapping = True

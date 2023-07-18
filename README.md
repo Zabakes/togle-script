@@ -9,6 +9,14 @@ This program does 2 things:
 
 This script currently only works on windows. This isn't ideal but none of this code is "ideal". It's quick and dirty and it evolved from a much simpler script. To be robust and ready for non-technical users the code will probably need to be re-factored. I'm releasing this to see if it's features are something other people like. If so I'll work on increasing the code quality and supporting other features. 
 
+# Installation
+
+This project is currently python based running it requires python 3.
+
+The dependencies for this project are in requirements.txt use pip to install them. Then run HotkeyLayers.py.
+
+`pip install  -r requirements.txt`
+
 # Use
 
 By default pressing the toggle key is brings up a window like this ![GUI example](Images/GUI_example.png)  

@@ -20,6 +20,7 @@ def updateConfig():
         common.layout = conf.get("layout", common.layout)
         common.drawGUI = conf.get("drawGUI", common.drawGUI)
         common.updateBGInterval = conf.get("updateBGInterval", common.updateBGInterval)
+        common.disabledApps = conf.get("DisableGUIIn", common.disabledApps)
 
         common.toggleKey = conf["toggleKey"].lower()
         common.toRemap = [key["remap"].lower() for key in conf["keys"]]

@@ -1,10 +1,8 @@
 import tkinter as tk
-from tkinterweb import HtmlFrame
 import common
 import json
 import os
-from GUI.tootlip import ToolTip
-from Layers.runTimeConfig import parseKeyConfig, getAppCmds
+from Layers.runTimeConfig import getAppCmds
 
 from GUI.guiVisibility import hideGUI
 from PIL import Image, ImageTk, ImageOps

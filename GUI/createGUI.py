@@ -2,7 +2,6 @@ import common
 import tkinter as tk
 import json
 from GUI.keybox import keyBox
-from GUI.tootlip import ToolTip
 import pyautogui
 from time import sleep
 from PIL import ImageTk, ImageGrab, ImageFilter, ImageEnhance
@@ -207,17 +206,17 @@ def makeWidget(layoutFile):
                     pview.tag_raise(element.keyIndexLabel)
                     common.redrawGui = False
             #root.lift()
-            for tt in ToolTip.liveToolTips:
+            #for tt in ToolTip.liveToolTips:
                 #print("raise tt", ToolTip.liveToolTips)
-                tt.lift()
+                #tt.lift()
             root.update_idletasks()
             root.update()
             sleep(.005)
 
-        for tt in ToolTip.liveToolTips:
-            tt.on_leave(discard=False)
+        #for tt in ToolTip.liveToolTips:
+        #    tt.on_leave(discard=False)
 
-        ToolTip.liveToolTips = set()
+        #ToolTip.liveToolTips = set()
 
         root.withdraw()
 
