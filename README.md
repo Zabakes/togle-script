@@ -11,11 +11,11 @@ This script currently only works on windows. This isn't ideal but none of this c
 
 # Use
 
-By default pressing the toggle key is brings up a window like this ![GUI example](Images\GUI_example.png)  
-You can change where the keys go with the [layout](#layout--path) for a keyboard like the ergodex this would look like ![GUI example](Images\AltLayout.png)  
+By default pressing the toggle key is brings up a window like this ![GUI example](Images/GUI_example.png)  
+You can change where the keys go with the [layout](#layout--path) for a keyboard like the ergodex this would look like ![GUI example](Images/AltLayout.png)  
 
 Right clicking on a key allows you to edit the json associated with that key. You can then click escape to discard the changes or ctrl+s to save the changes. 
-![GUI example edit](Images\GUI_edit.png) 
+![GUI example edit](Images/GUI_edit.png) 
 # Configuration
 
 The script is designed to be highly configurable. There are 3 configurable parts of the script.
@@ -66,7 +66,7 @@ Default - true
 ### layout : path
 This is the path the keyboard layout json. This does not support rotation. The layout can be generated/downloaded from [here](http://www.keyboard-layout-editor.com/#/) (This is not my work but it's cool so I used the same format). The legends in this layout should match the [remap](#remap--str) name.
 
-Default - "Layouts\keyboard-layout-4.json"
+Default - "Layouts/keyboard-layout-4.json"
 
 ### ToggleActions : obj
 It would be a shame to waste a key. ToggleActions allows actions to be configured for when the toggle key is pressed without pressing an action key.  
@@ -159,7 +159,7 @@ Example :
 
 ### Command : str
 A command to send when it is parsed using the regex :  
-`(?<!\\){(?P<cmd>.*?)((?P<down> down)|(?P<up> up))?(?<!\\)}|(?P<str>[^\{]+)`
+`(?<!//){(?P<cmd>.*?)((?P<down> down)|(?P<up> up))?(?<!//)}|(?P<str>[^/{]+)`
 
 For each match in the command. 
 -If the string group matches send that string.
