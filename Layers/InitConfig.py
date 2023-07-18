@@ -7,28 +7,30 @@ import keyboard
 from threading import Event
 import re
 from customFuncs import *
-from Layers.runTimeConfig import parseKeyConfig
+from Layers.runTimeConfig import parseKeyConfig, getAppCmds
 
 def updateConfig():
+    
+    getAppCmds.cache_clear()
 
     with open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "hotkeysJson", "config.json"), "r") as file:
         conf = json.load(file)
 
         common.doRemapping = conf.get("doRemapping", common.doRemapping )
         common.layout = conf.get("layout", common.layout)
-
+        common.drawGUI = conf.get("drawGUI", common.drawGUI)
         common.updateBGInterval = conf.get("updateBGInterval", common.updateBGInterval)
-        common.toggleKey = conf["toggleKey"].lower()
 
+        common.toggleKey = conf["toggleKey"].lower()
         common.toRemap = [key["remap"].lower() for key in conf["keys"]]
         common.untoggled = {key["remap"].lower():parseKeyConfig(key["baseLayer"]) for key in conf["keys"]}
         
         common.toggleActions = {
-                                         "tap"   : parseKeyConfig(conf["ToggleActions"]["tap"]),
-                                         "longPress" : parseKeyConfig(conf["ToggleActions"]["longPress"]),
-                                         }
+                                "tap"   : parseKeyConfig(conf["ToggleActions"]["tap"]),
+                                "longPress" : parseKeyConfig(conf["ToggleActions"]["longPress"]),
+                                }
 
-        for val in conf["actions"]:
+        for val in conf["Funcs"]:
             prefix = val["prefix"]
             cmd = val["function"]
             common.prefixToFunc[prefix] = globals()[cmd]

@@ -50,11 +50,10 @@ class layerPreview(tk.Canvas):
             rowCount = max(rowCount, (rNum+rowOffset)+rowSpan)
             rNum += 1
 
-        print(collCount, rowCount)
         common.WIDGET_WIDTH = int(common.WIDGET_HEIGHT*collCount/rowCount)
         
         collSize = (common.WIDGET_WIDTH-10)//collCount
-        rowSize = (common.WIDGET_HEIGHT-10)//rowCount
+        rowSize = (common.WIDGET_HEIGHT-50)//rowCount
         
         self.keysToGUI = []
         
@@ -70,7 +69,7 @@ class layerPreview(tk.Canvas):
 
                 # This being a map means that duplicate legends leads to hidden keys TODO fix that
                 self.keysToGUI.append((key["legend"], keyBox(   x=floor((cNum+collOffset)*collSize)+5,
-                                                                y=floor((rNum+rowOffset)*rowSize)+5,
+                                                                y=floor((rNum+rowOffset)*rowSize)+50,
                                                                 master=self, 
                                                                 key=key["legend"], 
                                                                 width=floor(collSpan*collSize), 
@@ -80,7 +79,7 @@ class layerPreview(tk.Canvas):
             rNum += 1
 
     def getKeyboxByPosition(self, x, y):
-        for key in self.keysToGUI.values():
+        for idx, key in self.keysToGUI:
             if x >= key.x and y >= key.y and x <= key.x+key.width and y <= key.y+key.height:
                 return key
 
@@ -119,17 +118,23 @@ def updateBG(imgHandle, abs_coord_x, abs_coord_y, pview, root):
     img = ImageGrab.grab([abs_coord_x, abs_coord_y, abs_coord_x+common.WIDGET_WIDTH, abs_coord_y+common.WIDGET_HEIGHT])
     #root.deiconify()
     
-    img = img.filter(ImageFilter.GaussianBlur(radius=5))
+    img = img.filter(ImageFilter.GaussianBlur(radius=10))
     enhancer = ImageEnhance.Brightness(img)
-    img = enhancer.enhance(0.625)
+    img = enhancer.enhance(0.5)
     img = ImageTk.PhotoImage(img)
     pview.itemconfig(imgHandle, image=img)
     pview.tag_lower(imgHandle)
     #if common.updateBGInterval > 0:
         #pview.after(int(common.updateBGInterval*1000), lambda : updateBG(imgHandle, abs_coord_x, abs_coord_y, pview, root))
+HWND = 0
+import win32gui
+def winEnumHandler( hwndT, ctx ):
+    global HWND
+    if win32gui.GetWindowText( hwndT ) == "zMAC_OVERLAY":
+        HWND = hwndT
 
 def makeWidget(layoutFile):
-    global img
+    global img, HWND
     root = tk.Tk(className="ZMAC_OVERLAY", baseName="ZMAC_POP_UP")
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
@@ -139,9 +144,24 @@ def makeWidget(layoutFile):
     root.overrideredirect(True)
     abs_coord_x, abs_coord_y = pyautogui.position()
     root.geometry(f"{common.WIDGET_WIDTH}x{common.WIDGET_HEIGHT}+{abs_coord_x}+{abs_coord_y}")
+    #root.update()
+    #win32gui.EnumWindows( winEnumHandler, None )
+    #print(HWND, root.winfo_id())
+    #GlobalBlur(HWND, Dark=True, hexColor="ffffff00")
+    #root.withdraw()
 
-    pview = layerPreview(root, layoutFile=layoutFile, background="lightblue", highlightthickness=0)
+    pview = layerPreview(root, layoutFile=layoutFile, background="black", highlightthickness=0)
     pview.grid(row = 0, column = 0, sticky="NSEW")
+    
+    winTitleText = pview.create_text(common.WIDGET_WIDTH//2,
+                      20,
+                      text="", 
+                      fill="White", 
+                      font=('Helvetica 10 bold'),
+                      anchor=tk.N,
+                      justify='center',
+                      tags="elements")
+ 
     tk.Grid.rowconfigure(root,0,weight=1)
     tk.Grid.columnconfigure(root,0,weight=1)
 
@@ -167,7 +187,6 @@ def makeWidget(layoutFile):
         updateBG(imgHandle, abs_coord_x, abs_coord_y, pview, root)
 
         root.deiconify()
-
         root.geometry(f"{common.WIDGET_WIDTH}x{common.WIDGET_HEIGHT}+{abs_coord_x}+{abs_coord_y}")
 
         common.redrawGui = True
@@ -178,10 +197,12 @@ def makeWidget(layoutFile):
             if common.redrawGui:
                 pview.tag_raise(imgHandle)
                 for i, (key, element) in enumerate(pview.keysToGUI):
+                    pview.itemconfig(winTitleText, text=common.getAppName())
                     cmd = getCmd(key, titleMatch)
                     element.key = key
                     element.titleMatch = titleMatch
                     element.updateKeyBox(cmd)
+                    pview.tag_raise(winTitleText)
                     pview.tag_raise(element.rectangleTag)
                     pview.tag_raise(element.keyIndexLabel)
                     common.redrawGui = False

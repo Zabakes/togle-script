@@ -14,7 +14,6 @@ def setLayer(s=None, *args, **kwargs):
     if not kwargs:
         kwargs = json.loads(s)
 
-    print(kwargs)
     if kwargs["type"] == "inc":
         common.layer += 1
         if "max" in kwargs and common.layer > kwargs["max"]:
@@ -29,7 +28,6 @@ def setLayer(s=None, *args, **kwargs):
 
 def wrapFunc(f, *args, **kwargs):
     def func():
-        print(locals())
         f(*args, **kwargs)
     return func
 
@@ -66,7 +64,6 @@ class command():
                 elif cmd := match.group("cmd"):
                     cmd = re.sub(r"\\+({|})", r"\g<1>", cmd)
                     if cmd[0] in prefixToFunc.keys():
-                        #print(f"{prefixToFunc[cmd[0]].__name__}({cmd[1:]})")
                         if prefixToFunc[cmd[0]] != setLayer:
                             self.hideGUIBeforeRun = True
 
@@ -106,13 +103,13 @@ class command():
 
     def press(self):
         for f in self.runFuncs:
-            print(f[1], f[0])
+            #print(f[1], f[0])
             f[0]()
             sleep(.001)
 
     def release(self):
         for f in self.releaseFuncs:
-            print(f[1])
+            #print(f[1], f[0])
             f[0]()
             sleep(.001)
 

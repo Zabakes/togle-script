@@ -2,7 +2,7 @@
     "appName": "Mozilla Firefox",
     "hks": [
         {
-            "press": "{~\"C:\\Users\\zeusa\\OneDrive\\Documents\\Code\\AHK Scripts\\togle-script\\runAhk.ahk\" \"{XButton1\\}\"}",
+            "press": "{~runAhk.ahk\" \"{XButton1\\}\"}",
             "description": "Previous page"
         },
         {
@@ -10,7 +10,7 @@
             "description": "refresh"
         },
         {
-            "press": "{~\"C:\\Users\\zeusa\\OneDrive\\Documents\\Code\\AHK Scripts\\togle-script\\runAhk.ahk\" \"{XButton2\\}\"}",
+            "press": "{~runAhk.ahk\" \"{XButton2\\}\"}",
             "description": "Next page"
         },
         {

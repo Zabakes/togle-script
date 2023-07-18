@@ -22,12 +22,15 @@ def refreshConfigs():
         t.join(timeout=.5)
         hideGUI()
     common.kill = False
-    t = Thread(target=makeWidget,
-           args=[common.layout])
-    t.start()
+    if common.drawGUI:
+        t = Thread(target=makeWidget,
+            args=[common.layout])
+        t.start()
 
 # In order for the icon to be displayed, you must provide an icon
-menu = pystray.Menu(pystray.MenuItem("Quit", quit), pystray.MenuItem("Refresh configs", refreshConfigs))
+menu = pystray.Menu(pystray.MenuItem("Quit", quit),
+                    pystray.MenuItem("Refresh configs", refreshConfigs), 
+                    )
 
 icon = pystray.Icon(
     'ToggleScript',

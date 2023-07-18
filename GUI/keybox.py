@@ -4,7 +4,8 @@ import common
 import json
 import os
 from GUI.tootlip import ToolTip
-from Layers.InitConfig import parseKeyConfig
+from Layers.runTimeConfig import parseKeyConfig, getAppCmds
+
 from GUI.guiVisibility import hideGUI
 from PIL import Image, ImageTk, ImageOps
 import re
@@ -35,10 +36,8 @@ class keyBox():
         self.index = None
         
         self.textBox = tk.Text(master.master, width=width, wrap=tk.WORD)
-        self.textBox.place(x = self.x,
-                           y=  self.y, 
-                           width=self.width,
-                           height=self.height)
+
+        self.textBox.place_forget()
 
         self.master = master
         self.textWidg = master.create_text( x+self.width/2, 
@@ -75,9 +74,14 @@ class keyBox():
 
 
     def showText(self):
+        self.textBox.place(x = self.x,
+            y =  self.y, 
+            width=self.width,
+            height=self.height)
         self.textBox.tkraise()
 
     def showDescription(self):
+        self.textBox.place_forget()
         self.master.tk.call('raise', self.master._w)
         if self.img:
             self.master.tag_raise(self.imgHandle)
@@ -103,7 +107,6 @@ class keyBox():
         self.textBox.delete("1.0",tk.END)
         self.textBox.insert("1.0",json.dumps(rawConfData, indent=4))
         self.showText()
-        #print(json.dumps(rawConfData))
 
     def makeNewFile(self, pfix, fileNameEntry, winTitle, input):
         fileName = fileNameEntry.get()
@@ -145,7 +148,7 @@ class keyBox():
                 eFileName.grid(row=0, column=0, columnspan=2, sticky="ew")
                 bYes.grid(row=2, column=0, sticky="ew")
                 bNo.grid(row=2, column=1, sticky="ew")
-                return
+                return False
 
         if input is None:
             input = self.textBox.get("1.0",tk.END)
@@ -154,13 +157,15 @@ class keyBox():
             self.conf["hks"][self.index] = json.loads(input)
             target = json.loads(input)
 
-            common.appToKeys[self.titleMatch][self.key] = parseKeyConfig(target)
+            getAppCmds.cache_clear()
 
             with open(fname, "w") as f:
                 f.write(json.dumps(self.conf, indent=4))
 
         except json.JSONDecodeError:
-            pass
+            self.textBox.configure(bg="red")
+            self.textBox.after(1000, lambda : self.textBox.configure(bg="white"))
+            return False
 
         self.allBeingEdited.discard(self)
         
@@ -168,11 +173,14 @@ class keyBox():
             other = self.allBeingEdited.pop()
             with open(fname, "r") as f:
                 other.conf = json.load(f)
-            other.saveConfig(e, fname=fname)
+            if not other.saveConfig(e, fname=fname):
+                self.allBeingEdited.add(other)
+                return False
         
         self.master.tk.call('raise', self.master._w)
         common.isEditing = False
         hideGUI()
+        return True
 
     def discardConfig(self, e):
         if self.newWindow:

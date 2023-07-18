@@ -25,6 +25,7 @@ redrawGui = False
 disableGUI = False
 updateBGInterval = 0
 layout = None
+drawGUI = True
 
 windowTitle = ""
 if system() == 'Windows':
@@ -37,6 +38,11 @@ elif system() == 'Linux':
     def getWindowName() -> str:
         print("TODO IMPLEMENT LINUX")
 
+def getAppName():
+    winName = getWindowName()
+    win32gui.GetDesktopWindow
+    return re.split(winTitleSplitter, winName).pop().strip()
+
 def getTitleMatch():
     winName = getWindowName()
 
@@ -44,12 +50,11 @@ def getTitleMatch():
     appName = re.split(winTitleSplitter, winName).pop().strip()
     
     if not appName in titleMatchToConfigFile:
-        p = None
-        for ptrn, (title, pr) in regexToAppName.items():
-            if re.search(ptrn, winName) and (p is None or p < pr):
-                print("This", winName, ptrn, title, pr, p)
+        maxPriority = None
+        for ptrn, (title, priority) in regexToAppName.items():
+            if re.search(ptrn, winName) and (maxPriority is None or maxPriority < priority):
                 titleMatch = title
-                p = pr
+                maxPriority = priority
     else:
         titleMatch = appName
 

@@ -45,7 +45,6 @@ def toggleFunc(key):
 def keyPress(key):
     global hotKeyUsed
 
-    print(key)
     if key in common.keyReleaseEvents:
         return
 
@@ -60,7 +59,6 @@ def keyPress(key):
 
     else:
         c = common.untoggled.get(key, None)
-        print(common.untoggled)
 
     if c is not None and c.hideGUIBeforeRun:
         hideGUI()

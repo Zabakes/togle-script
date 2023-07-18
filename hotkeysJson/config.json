@@ -76,6 +76,7 @@
 
     "toggleKey" : "Home",
     "doRemapping" : true,
+    "drawGUI" : true,
     "layout" : "Layouts\\keyboard-layout-4.json",
 
 
@@ -93,7 +94,7 @@
         }
     },
 
-    "actions" : [
+    "Funcs" : [
         {
             "prefix" : "~",
             "function" : "run"
