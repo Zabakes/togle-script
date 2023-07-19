@@ -29,7 +29,9 @@ Right clicking on a key allows you to edit the json associated with that key. Yo
 ![GUI example edit](Images/GUI_edit.png) 
 # Configuration
 
-The script is designed to be highly configurable. There are 3 configurable parts of the script.
+The script is designed to be highly configurable. There are 3 configurable parts of the script. 
+
+Config.json and Application specific configs are in the hotkeysJson directory.
 
 ## Configuring the keys being re-mapped (Config.json)
 The keys that are used by the script are configured in config.json. If an option does not have a default it is required.

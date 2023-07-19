@@ -5,3 +5,6 @@ AHKprofile .jmk
 .vs/VSWorkspaceState.json
 .vs/togle-script/v16/.suo
 *.pyc
+dist/**
+build/**
+*.spec
