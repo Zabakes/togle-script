@@ -1,0 +1,52 @@
+{
+    "appName": "Default",
+    "hks": [
+        {
+            "press": "left ctrl+alt+Tab",
+            "description": "change windows"
+        },
+        {
+            "press": "left ctrl+s",
+            "description": "save"
+        },
+        {
+            "press": "win+ctrl+left",
+            "description": "next desktop"
+        },
+        {
+            "press": "Volume Down",
+            "description": "Volume down"
+        },
+        {
+            "press": ""
+        },
+        {
+            "press": "Volume Up",
+            "description": "Volume up"
+        },
+        {
+            "press": "{~\"C:\\Program Files (x86)\\iRotate\\irotate.exe\" /2:rotate=90 /exit}",
+            "description": "rotate display left"
+        },
+        {
+            "press": "{~\"C:\\Program Files\\ShareX\\ShareX.exe\" -RectangleRegion -s}",
+            "description": "screenshot"
+        },
+        {
+            "press": "{~\"C:\\Program Files (x86)\\iRotate\\irotate.exe\" /2:rotate=0 /exit}",
+            "description": "rotate display right"
+        },
+        {
+            "press": "left ctrl+f",
+            "description": "find"
+        },
+        {
+            "press": "left ctrl+p",
+            "description": "print"
+        },
+        {
+            "press": "Enter",
+            "description": "enter"
+        }
+    ]
+}

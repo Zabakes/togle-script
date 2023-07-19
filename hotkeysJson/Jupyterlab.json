@@ -1,0 +1,55 @@
+{
+    "appName": "JupyterLab",
+    "hks": [
+         {
+            "press": "{Escape}b",
+            "description" : "new cell"
+        },
+         {
+            "press": "{Control down}{s}{Control up}",
+            "description" : "save"
+        },
+         {
+            "press": "{~runAhk.ahk\" \"(\"}",
+            "description" : "()"
+        },
+         {
+            "press": "=",
+            "description" : "="
+        },
+         {
+            "press": "+",
+            "description" : "+"
+        },
+         {
+            "press": "*",
+            "description" : "*"
+        },
+         {
+            "press": "{Control down}{Shift down}{-}{Shift up}{Control up}",
+            "description" : "Zoom out?"
+        },
+         {
+            "press": "{/}",
+            "description" : "/"
+        },
+         {
+            "press": "**",
+            "description" : "**"
+        },
+         {
+            "press": "{Control down}{f}{Control up}",
+            "description" : "find"
+        },
+         {
+            "press": "sp.sqrt(",
+            "description" : "sp.sqrt("
+        },
+         {
+            "press": "{Control down}{Enter}{Control up}",
+            "description" : "run cell"
+        }
+    ],
+    "regex": ".*\\.ipynb.*",
+    "priority": 0
+}

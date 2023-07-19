@@ -1,35 +1,198 @@
 # toggle-script
 
+# What is this script
+This program does 2 things:
 
-## What is this script
-This application uses ahk to implement dynamic keyboard layers. I call them dynamic keyboard layers because using this script you configure specific keys to be remapped based on the application you're using on your computer. An example of this is having F14 mapped to change tabs in Chrome and FireFox but mapped to QuickFix in VScode on your dynamic layer. You activate these dynamic layers by holding a toggle key. 
+- One of the things it does is add a layer behind a "toggle key" to a set of keys that can be configured based on the active application.
 
-It was built for use with an mmo gaming mouse using the "fire" key as the toggle key with the side buttons mapped to the toggle keys.
-Like the image below. ![Image](Images/Diagram.png)
+- The other thing the script does is create a pop-up to show what a key will do when the toggle is being held. 
+
+This script currently only works on windows. This isn't ideal but none of this code is "ideal". It's quick and dirty and it evolved from a much simpler script. To be robust and ready for non-technical users the code will probably need to be re-factored. I'm releasing this to see if it's features are something other people like. If so I'll work on increasing the code quality and supporting other features. 
+
+# Installation
+
+This project is currently python based running it requires python 3.
+
+The dependencies for this project are in requirements.txt use pip to install them. Then run HotkeyLayers.py.
+
+`pip install  -r requirements.txt`
+
+# Use
+
+By default pressing the toggle key is brings up a window like this ![GUI example](Images/GUI_example.png)  
+You can change where the keys go with the [layout](#layout--path) for a keyboard like the ergodex this would look like ![GUI example](Images/AltLayout.png)  
+
+Right clicking on a key allows you to edit the json associated with that key. You can then click escape to discard the changes or ctrl+s to save the changes. 
+![GUI example edit](Images/GUI_edit.png) 
+# Configuration
+
+The script is designed to be highly configurable. There are 3 configurable parts of the script.
+
+## Configuring the keys being re-mapped (Config.json)
+The keys that are used by the script are configured in config.json. If an option does not have a default it is required.
+
+The attributes in config.json are as follows:
+
+### Keys : list[Key]
+This is a list of all the keys to be re-mapped. The order of the list should match the order of the [hks](#hks--listaction--listlistaction) Each key has the following attributes.  
+
+--- Start Key obj attributes ---
+#### remap : str
+This is the key to re-map.
+
+#### baseLayer : [action](#actions--obj)
+This is an [action](#actions--obj) to take when the key is pressed without the toggle key.
+
+Example :
+
+    "keys":[
+        {
+            "remap": "foo",   
+            "baseLayer" : {  
+                "press" : "bar"  
+            }  
+        },
+        ...
+    ],
+This makes it so that when 'foo' is pressed 'bar' is sent.  
+
+--- End key obj attributes---
+
+### toggleKey : str
+This is the key that activates the GUI and the application specific keymap.
+
+### doRemapping : bool
+Should the script re-map the keys listed in keys based on an application. The toggle key is still modified.
+
+Default - true
+
+### drawGUI : bool
+Should the script show use resources to show a GUI when the toggle key is held. 
+
+Default - true
+
+### layout : path
+This is the path the keyboard layout json. This does not support rotation. The layout can be generated/downloaded from [here](http://www.keyboard-layout-editor.com/#/) (This is not my work but it's cool so I used the same format). The legends in this layout should match the [remap](#remap--str) name.
+
+Default - "Layouts/keyboard-layout-4.json"
+
+### ToggleActions : obj
+It would be a shame to waste a key. ToggleActions allows actions to be configured for when the toggle key is pressed without pressing an action key.  
+
+--- Start ToggleActions attributes  ---
+#### tap : [action](#actions--obj)
+This is the action to take when the toggle key is tapped and released without pressing another key.
+
+#### tap : [action](#actions--obj)
+This is the action to take when the toggle key is held and then released without pressing another key.  
+   
+--- End ToggleActions attributes  --- 
+
+### Funcs : List[obj]
+
+These are the prefixes for use in [actions](#actions--obj) using these prefixes actions can invoke pyhton functions defined in the customFuncs module. each object should contain :  
+
+--- start function attributes ---
+#### prefix : char
+This is the prefix for the function action beginning with this character will be mapped to the ... 
+
+#### function : str
+This is the name of the python function to be called. The argument to this function is whatever follows the prefix in the [command](#command--str)
+
+--- end function attributes ---
+
+## Application specific configs
+
+### appName : str
+
+This is the name of the application that this config applies to. This takes priority over the [regex](#regex--str). 
+
+### regex : str
+Regex to match with the full window title.
+
+### priority : int
+This is the priority for the regex. This is the priority for the regex match. If multiple regex patterns match the map with the higher priority will be applied.  
 
 
-## Configuration
-The script is completely configurable. Everything is stored in config files in the hotkeys folder. These configs can be set using hotkeysetter.exe or AHK. I can walk you through the GUI now.
+### hks : list[[action](#actions--obj)] | list[list[[action](#actions--obj)]]
+This is a list of actions to map to the keys to the keys specified in [Keys](#keys--listkey), this is done based on index. If a list of actions is used instead of an action those actions will be added to layers. The default layer is the first entry. 
 
-The GUI has 2 modes toggled by the checkbox in thew upper left of the GUI. In both modes you can load configs with the load button and save configs with the save button.
+You can create an action to set/change the current layer by invoking the [setLayer](#setLayer) [function](#Function--obj).
 
-### Config mode
-Config mode for setting your Toggle-key and Dynamic hotkeys as well as their defaults like below. You use the top box to input the key that should be toggled while you use the other box to set what this key should send by default.![Image](Images/LabeledConfig.jpg)
+default : Use the actions in the map with the name "default"
 
-### Keymap Mode
-The other mode is used more regularly It allows you to set hotkeys for a specific application. You use the top box to input the key that should be sent when the corresponding toggle key is pressed down while you use the other box to set what should be done when the key is released. Being able to send events on key presses and key releases lets you do things like press and hold a key (See index 6 in the image below for an example of this). ![Image](Images/Fusion_Labeles.jpg)
+## Common configs
 
-### Wild cards and special Cases
-There are a few special cases when configuring your keymaps. Setting you window tittle to "Default" lets you set your hotkeys to be used in applications without their own keymap. You can also use a "~" modifier to run a program from the command line. To do this enter ~"\<path to executable\>". You can also include command line arguments. See the image below for an example. This modifier translates directly to the AHK run command so see that documentation for more information. ![Image](Images/Default_Labeles.jpg)
+## Actions : obj 
+Actions are the object that define what a key will do. Actions have the following attributes.
 
-## Other Notes
-Taping the toggle key is currently set to send a period this is hard coded but if requested can be changed pretty easily. Tapping and holding the toggle key without pressing a hotkey runs the tilling manager described below. You can also peek at window titles by holding F3 see the status of the script by double tapping F3 and suspend/enable the script by triple tapping F3. You can also set hotkeys for websites by checking their names with F3 and inserting what's befor the "-" as the window title.
+--- Start actions attributes  --- 
 
+### Press : [Function](#Function--obj) | [command](#command--str)
+This is what happens when the key is pressed. It can be either a function or a command.
 
-# Tiling manager
+default : Nothing
 
-## Use
-This tilling manager is very similar to winDivy. The program in designed to be run on a keypress. When the program starts a black box appears, this is one corner of the area that the application will fill. Left clicking and holding <\b>locks this in place<\b> and allows you to select the other corner of the area for your application to fill releasing left click resizes the window and closes the application. Basically you click and drag to select a target area. ![Image](Images/TilingManagerExample.gif)
+### Rel : [Function](#Function--obj) | [command](#command--str)
+This is what happens when the key is released. It can be either a function or a command.
 
-## Secondary mode
-Right clicking with the script running brings up a list of all the applications currently running and allows you to repetitively resize windows. by selecting them from teh dropdown then resizing normally. Left clicking away from the list or hitting escape closes the script.![Image](Images/Tiling_manger_re.gif)
+default : Nothing
+
+### icon path
+This is an image to be displayed on the GUI when this layer is active. This will be displayed if it present otherwise use the description.
+
+default : No image use the description
+
+### description : str
+This is a description to be displayed on the GUI when this layer is active. This will only be displayed if no icon is specified.
+
+default : Raw json for the actions
+
+--- End actions attributes  --- 
+
+### Function : obj
+
+This is a function call to a python function with named arguments.
+
+Example :
+
+    {
+    "function" : "foo",
+    "args" : {
+        "type" :"set",
+        "val": 2
+        }
+    }
+
+    is equivalent to a call foo(type="set", val=2)
+
+### Command : str
+A command to send when it is parsed using the regex :  
+`(?<!//){(?P<cmd>.*?)((?P<down> down)|(?P<up> up))?(?<!//)}|(?P<str>[^/{]+)`
+
+For each match in the command. 
+-If the string group matches send that string.
+-If the cmd group matches check for a prefix from [Funcs](#funcs--listobj) if it is present strip it and pass the rest of the command to the function as a string.
+    -If the down group matches press and hold the specified key until it is released with an up group
+    -If the up group matches release the specified key
+
+Example :
+
+    {
+        "press": "{Shift down}",
+        "rel": "{Shift up}",
+        "description": "rotate camera"
+    }
+
+This presses shift when the key is pressed and releases it when the associated key is released
+
+# My use case
+I use this software in conjunction with a MMO gaming mouse and not a keyboard. That's why I have my keymaps set up the way I do.
+
+# WIP 
+
+- Replace tkinter with a more modern GUI framework
+  - Create the windowed glass effect more seamlessly
+- Validate jsons before parsing them
+- Add support for non-windows oses 
+- Get closer to the kernel and communicate directly with usb devices

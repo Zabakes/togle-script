@@ -1,0 +1,41 @@
+{
+    "appName": "Vivado 2018.3",
+    "hks": [
+         {
+            "press": "^!{Tab}"
+        },
+         {
+            "press": "{Control down}{s}{Control up}"
+        },
+         {
+            "press": "{LWin down}{Tab}{LWin up}"
+        },
+         {
+            "press": "{Volume_Down}"
+        },
+         {
+            "press": "set_property library xil_defaultlib [get_files *.vhd]"
+        },
+         {
+            "press": "{Volume_Up}"
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": "{Control down}{f}{Control up}"
+        },
+         {
+            "press": "{Control down}{p}{Control up}"
+        },
+         {
+            "press": "{Enter}"
+        }
+    ]
+}
