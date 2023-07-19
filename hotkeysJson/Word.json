@@ -1,0 +1,42 @@
+{
+    "appName": "Word",
+    "hks": [
+         {
+            "press": "{Control downb}{b}{Control up}"
+        },
+         {
+            "press": "{Control down}{s}{Control up}"
+        },
+         {
+            "press": "{Control down}{u}{Control up}"
+        },
+         {
+            "press": "{Control down}{left}{Control up}"
+        },
+         {
+            "press": "{Control down}{n}{Control up}"
+        },
+         {
+            "press": "{Control down}{right}{Control up}",
+            "rel": "{Shift up}{Mbutton up}"
+        },
+         {
+            "press": "{Control down}{z}{Control up}"
+        },
+         {
+            "press": "{Alt down}{Shift down}{D}{Alt up}{shift up}"
+        },
+         {
+            "press": "{Control down}{y}{Control up}"
+        },
+         {
+            "press": "{Control down}{f}{Control up}"
+        },
+         {
+            "press": "{Control down}{p}{Control up}"
+        },
+         {
+            "press": "{Enter}"
+        }
+    ]
+}

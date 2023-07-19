@@ -1,0 +1,44 @@
+{
+    "appName": "PCB Editor",
+    "hks": [
+         {
+            "press": ""
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": "+",
+            "description" : "Layer up"
+        },
+         {
+            "press": "u",
+            "description" : "Expand selection"
+        },
+         {
+            "press": "-",
+            "description" : "Layer down"
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": ""
+        }
+    ]
+}

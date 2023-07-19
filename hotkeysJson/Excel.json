@@ -1,0 +1,41 @@
+{
+    "appName": "Excel",
+    "hks": [
+         {
+            "press": "F4"
+        },
+         {
+            "press": "{Control down}{s}{Control up}"
+        },
+         {
+            "press": "{=}"
+        },
+         {
+            "press": "{Left}"
+        },
+         {
+            "press": "{Up}"
+        },
+         {
+            "press": "{Right}"
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": "{Down}"
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": "{Control down}{f}{Control up}"
+        },
+         {
+            "press": "{Control down}{p}{Control up}"
+        },
+         {
+            "press": "{Enter}"
+        }
+    ]
+}

@@ -1,2 +1,7 @@
 Hotkeys/*
 !Hotkeys/README.md
+AHKprofile .jmk
+.vs/slnx.sqlite
+.vs/VSWorkspaceState.json
+.vs/togle-script/v16/.suo
+*.pyc

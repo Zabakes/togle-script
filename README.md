@@ -1,26 +1,23 @@
 # toggle-script
 
+# What is this script
+This program does 2 things:
 
-## What is this script
-This application uses ahk to implement dynamic keyboard layers. I call them dynamic keyboard layers because using this script you configure specific keys to be remapped based on the application you're using on your computer. An example of this is having F14 mapped to change tabs in Chrome and FireFox but mapped to QuickFix in VScode on your dynamic layer. You activate these dynamic layers by holding a toggle key. 
+- One of the things it does is add a layer behind a "toggle key" to a set of keys that can be configured based on the active application.
 
-It was built for use with an mmo gaming mouse using the "fire" key as the toggle key with the side buttons mapped to the toggle keys.
-Like the image below. ![Image](Images/Diagram.png)
+- The other thing the script does is create a pop-up to show what a key will do when the toggle is being held. 
 
+This script currently only works on windows. This isn't ideal but none of this code is "ideal". It's quick and dirty and it evolved from a much simpler script. To be robust and ready for non-technical users the code will probably need to be re-factored. I'm releasing this to see if it's features are something other people like. If so I'll work on increasing the code quality and supporting other features. 
 
-## Configuration
-The script is completely configurable. Everything is stored in config files in the hotkeys folder. These configs can be set using hotkeysetter.exe or AHK. I can walk you through the GUI now.
+# Installation
 
-The GUI has 2 modes toggled by the checkbox in thew upper left of the GUI. In both modes you can load configs with the load button and save configs with the save button.
+This project is currently python based running it requires python 3.
 
-### Config mode
-Config mode for setting your Toggle-key and Dynamic hotkeys as well as their defaults like below. You use the top box to input the key that should be toggled while you use the other box to set what this key should send by default.![Image](Images/LabeledConfig.jpg)
+The dependencies for this project are in requirements.txt use pip to install them. Then run HotkeyLayers.py.
 
-### Keymap Mode
-The other mode is used more regularly It allows you to set hotkeys for a specific application. You use the top box to input the key that should be sent when the corresponding toggle key is pressed down while you use the other box to set what should be done when the key is released. Being able to send events on key presses and key releases lets you do things like press and hold a key (See index 6 in the image below for an example of this). ![Image](Images/Fusion_Labeles.jpg)
+`pip install  -r requirements.txt`
 
-### Wild cards and special Cases
-There are a few special cases when configuring your keymaps. Setting you window tittle to "Default" lets you set your hotkeys to be used in applications without their own keymap. You can also use a "~" modifier to run a program from the command line. To do this enter ~"\<path to executable\>". You can also include command line arguments. See the image below for an example. This modifier translates directly to the AHK run command so see that documentation for more information. ![Image](Images/Default_Labeles.jpg)
+# Use
 
 By default pressing the toggle key is brings up a window like this  
 ![GUI example](Images/GUI_example.png)  
@@ -32,10 +29,10 @@ Right clicking on a key allows you to edit the json associated with that key. Yo
 ![GUI example edit](Images/GUI_edit.png) 
 # Configuration
 
-# Tiling manager
+The script is designed to be highly configurable. There are 3 configurable parts of the script.
 
-## Use
-This tilling manager is very similar to winDivy. The program in designed to be run on a keypress. When the program starts a black box appears, this is one corner of the area that the application will fill. Left clicking and holding <\b>locks this in place<\b> and allows you to select the other corner of the area for your application to fill releasing left click resizes the window and closes the application. Basically you click and drag to select a target area. ![Image](Images/TilingManagerExample.gif)
+## Configuring the keys being re-mapped (Config.json)
+The keys that are used by the script are configured in config.json. If an option does not have a default it is required.
 
 The attributes in config.json are as follows:
 

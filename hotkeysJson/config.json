@@ -1,0 +1,115 @@
+{
+    "keys":[
+        {
+            "remap": "F13", 
+            "baseLayer" : {
+                "press" : "1"
+            }
+        },
+        {
+            "remap": "F14", 
+            "baseLayer" : {
+                "press" : "2"
+            }
+        },
+        {
+            "remap": "F15", 
+            "baseLayer" : {
+                "press" : "3"
+            }
+        },
+        {
+            "remap": "F16", 
+            "baseLayer" : {
+                "press" : "4"
+            }
+        },
+        {
+            "remap": "F17", 
+            "baseLayer" : {
+                "press" : "5"
+            }
+        },
+        {
+            "remap": "F18", 
+            "baseLayer" : {
+                "press" : "6"
+            }
+        },
+        {
+            "remap": "F19", 
+            "baseLayer" : {
+                "press" : "7"
+            }
+        },
+        {
+            "remap": "F20", 
+            "baseLayer" : {
+                "press" : "8"
+            }
+        },
+        {
+            "remap": "F21", 
+            "baseLayer" : {
+                "press" : "9"
+            }
+        },
+        {
+            "remap": "F22", 
+            "baseLayer" : {
+                "press" : "0"
+            }
+        },
+        {
+            "remap": "F23", 
+            "baseLayer" : {
+                "press" : "-"
+            }
+        },
+        {
+            "remap": "F24", 
+            "baseLayer" : {
+                "press" : 14
+            }
+        }
+    ],
+
+    "toggleKey" : "Home",
+    "doRemapping" : true,
+    "drawGUI" : true,
+    "layout" : "Layouts\\keyboard-layout-4.json",
+
+
+    "ToggleActions":{
+        "tap" : {
+                    "press": "."
+                },
+        "longPress" : {
+           "press" : { 
+                "function" : "run",
+                "args" : {
+                    "s" : "tilingManagerTest.exe"
+                }
+            }
+        }
+    },
+
+    "Funcs" : [
+        {
+            "prefix" : "~",
+            "function" : "run"
+        },
+        {
+            "prefix" : "#",
+            "function" : "MsgBox"
+        },
+        {
+            "prefix" : "!",
+            "function" : "setLayer"
+        }
+    ],
+
+    "DisableGUIIn" : [
+        
+    ]
+}

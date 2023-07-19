@@ -1,0 +1,56 @@
+{
+    "appName": "Fusion 360",
+    "hks": [
+         {
+            "press": "e",
+            "description" : "extrude"
+        },
+         {
+            "press": "l",
+            "description":"line"
+        },
+         {
+            "press": "d",
+            "description" : "dimension"
+        },
+         {
+            "press": "c",
+            "description":"circle"
+        },
+         {
+            "press": "r",
+            "description":"rectangle"
+        },
+         {
+            "press": "{~runAhk.ahk\" \"{Shift down}{MButton down}\"}",
+            "rel": "{~runAhk.ahk\" \"{Shift up}{Mbutton up}\"}",
+            "description": "rotate camera"
+        },
+         {
+            "press": "p",
+            "description" : "project geometry"
+        },
+         {
+            "press": "i",
+            "description" : "measure"
+        },
+         {
+            "press": "x",
+            "description":"toggle construction"
+        },
+         {
+            "press": "j",
+            "description" : "joint"
+        },
+         {
+            "press": "v",
+            "description" : "toggle visibility"
+        },
+         {
+            "press": "{Enter}",
+            "description" : "enter"
+        }
+    ],
+    "regex": "Fusion.*360",
+    "priority": 0
+}
