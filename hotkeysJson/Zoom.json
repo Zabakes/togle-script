@@ -1,0 +1,42 @@
+{
+    "appName": "Zoom Meeting",
+    "hks": [
+         {
+            "press": "{space down}",
+            "rel": "{space up}"
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": ""
+        },
+         {
+            "press": "{enter}"
+        }
+    ]
+}
