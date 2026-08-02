@@ -1,4 +1,4 @@
 
-SendInput, %1%
+SendInput A_Args[1]
 
-ExitApp, 0
+ExitApp 0

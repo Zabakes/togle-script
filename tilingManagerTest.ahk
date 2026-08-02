@@ -6,9 +6,14 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 Menu, Tray, Icon, toggleScriptRed.ico
 
 
-
-vertCells := 2
-horCells := 6
+if A_Args.Length() > 1
+{
+	vertCells := A_Args[1]
+	horCells := A_Args[2]
+}else{
+	vertCells := 2
+	horCells := "600p"
+}
 
 CoordMode, Mouse, Screen
 
@@ -28,7 +33,14 @@ start:
 	monSizeX := monRight - monLeft
 	monSizeY := monBottom - monTop
 
-	cellSizeX := floor(monSizeX/horCells)
+	if InStr(horCells, "p") {
+		StringTrimRight, pixelCount, horCells, 1
+		horCellCount := Ceil(monSizeX/pixelCount/6)*6
+	} else {
+		horCellCount := horCells
+	}
+
+	cellSizeX := floor(monSizeX/horCellCount)
 	cellSizeY := floor(monSizeY/vertCells)
 
 	Gui Color, Black
@@ -119,8 +131,7 @@ GetMonitorMouse(){
 			}
 		i++
 		}
-	MsgBox,16,,Your mouse isn't on a monitor???????? quiting, 2
-	ExitApp
+		i := 0
 	}
 
 getWinTitle(){
@@ -181,9 +192,9 @@ $RButton::
 			WinGet, Path, ProcessPath, ahk_id %id%
 			Menu, Windows, Add, %title%, Activate_Window
 			Try 
-				Menu, Windows, Icon, %title%, %Path%,, 0
+				Menu, Windows, Icon, %title%, %Path%,, 20
 			Catch 
-				Menu, Windows, Icon, %title%, %A_WinDir%\System32\SHELL32.dll, 3, 0
+				Menu, Windows, Icon, %title%, %A_WinDir%\System32\SHELL32.dll, 3, 20
 		}
 		Done := 1
 	}Else{
