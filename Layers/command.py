@@ -1,6 +1,14 @@
 import re
 import common
-import keyboard
+try:
+    import keyboard
+except ImportError:
+    keyboard = None
+
+try:
+    from evdev import UInput, ecodes
+except ImportError:
+    evdev = None
 from time import sleep
 import json
 from collections.abc import Iterable
@@ -26,14 +34,17 @@ def setLayer(s=None, *args, **kwargs):
 
     common.redrawGui = True
 
-def wrapFunc(f, *args, **kwargs):
+def wrapFunc(f, callback=None, *args, **kwargs):
     def func():
         f(*args, **kwargs)
+        if callback:
+            callback()
     return func
 
 class command():
     
     fmtString = re.compile(r"(?<!\\){(?P<cmd>.*?)((?P<down> down)|(?P<up> up))?(?<!\\)}|(?P<str>[^\{]+)")
+    ui = UInput()
     
     def __init__(self, press, prefixToFunc={}, release="", description = None, imgPath = None) -> None:
         self.description = description
@@ -71,11 +82,17 @@ class command():
                     else:
                         self.hideGUIBeforeRun = True
                         if match.group("down"):
-                            funcs.append((wrapFunc(keyboard.press, cmd), f"down {cmd}"))
-
+                            if keyboard:
+                                funcs.append((wrapFunc(keyboard.press, cmd), f"down {cmd}"))
+                            else:
+                                if key := ecodes.ecodes.get(f'KEY_{cmd}', None):
+                                    funcs.append((wrapFunc(self.ui.write, self.ui.syn, ecodes.EV_KEY, key, 1), f"down {cmd}"))
                         elif match.group("up"):
-                            funcs.append((wrapFunc(keyboard.release, cmd), f"up {cmd}"))
-
+                            if keyboard:
+                                funcs.append((wrapFunc(keyboard.release, cmd), f"up {cmd}"))
+                            else:
+                                if key := ecodes.ecodes.get(f'KEY_{cmd}', None):
+                                    funcs.append((wrapFunc(self.ui.write, self.ui.syn, ecodes.EV_KEY, key, 0), f"down {cmd}"))
                         else:
                             funcs.append(self.sendStrFactory(cmd))
         elif type(config) is dict:
@@ -93,25 +110,43 @@ class command():
 
         return funcs
 
-    @staticmethod
-    def sendStrFactory(sendStr):
-        try:
-            keyboard.parse_hotkey(sendStr)
-            return (lambda : keyboard.send(sendStr), f"send {sendStr}")
-        except ValueError:
-            return (lambda : keyboard.write(sendStr), f"write {sendStr}")
+
+    def sendStrFactory(self, sendStr):
+        if keyboard:
+            try:
+                keyboard.parse_hotkey(sendStr)
+                return (lambda : keyboard.send(sendStr), f"send {sendStr}")
+            except ValueError:
+                return (lambda : keyboard.write(sendStr), f"write {sendStr}")
+        else:
+            def f():
+
+                print(sendStr)
+                if(type(sendStr) is int):
+                    key = sendStr
+                else:
+                    key = ecodes.ecodes.get(f'KEY_{sendStr.upper()}', None)
+
+                if key:
+                    self.ui.write(ecodes.EV_KEY, key, 1)  # KEY_A down
+
+                    self.ui.write(ecodes.EV_KEY, key, 0)  # KEY_A up
+                    self.ui.syn()
+
+
+            return (f, f"write {sendStr}")
 
     def press(self):
         for f in self.runFuncs:
-            #print(f[1], f[0])
+            print(f[1], f[0])
             f[0]()
-            sleep(.001)
+            sleep(.005)
 
     def release(self):
         for f in self.releaseFuncs:
-            #print(f[1], f[0])
+            print(f[1], f[0])
             f[0]()
-            sleep(.001)
+            sleep(.005)
 
     def getDescription(self):
         return self.description

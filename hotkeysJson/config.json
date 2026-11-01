@@ -63,7 +63,7 @@
         {
             "remap": "F23", 
             "baseLayer" : {
-                "press" : "-"
+                "press" : "KPMINUS"
             }
         },
         {
@@ -77,12 +77,12 @@
     "toggleKey" : "Home",
     "doRemapping" : true,
     "drawGUI" : true,
-    "layout" : "Layouts\\keyboard-layout-4.json",
+    "layout" : "Layouts/keyboard-layout-4.json",
 
 
     "ToggleActions":{
         "tap" : {
-                    "press": "."
+                    "press": "DOT"
                 },
         "longPress" : {
            "press" : { 

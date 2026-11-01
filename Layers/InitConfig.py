@@ -3,8 +3,17 @@ from Layers.command import setLayer
 from Layers.keyEvents import hook
 import os
 import json
-import keyboard
-from threading import Event
+try:
+    import keyboard
+except ImportError:
+    keyboard = None
+
+try:
+    import evdev
+except ImportError:
+    evdev = None
+
+from threading import Event, Thread
 import re
 from customFuncs import *
 from Layers.runTimeConfig import parseKeyConfig, getAppCmds
@@ -55,11 +64,24 @@ def updateConfig():
                     regex = conf["regex"]
                     common.regexToAppName[re.compile(regex)] = (appName, int(priority))
     
-    keyboard.unhook_all()
 
-    keyboard.hook_key(common.toggleKey, hook, suppress=True)
     common.keyReleaseEvents[common.toggleKey] = Event()
+    if keyboard:
+        keyboard.unhook_all()
 
-    if common.doRemapping:
-        for key in common.toRemap:
-            keyboard.hook_key(key, hook, suppress=True)
+        keyboard.hook_key(common.toggleKey, hook, suppress=True)
+
+        if common.doRemapping:
+            for key in common.toRemap:
+                keyboard.hook_key(key, hook, suppress=True)
+    elif evdev:
+        def keyHooks():
+            device = evdev.InputDevice("/dev/input/event25")
+            device.grab()
+
+            for event in device.read_loop():
+                hook(event)
+
+        
+        t = Thread(target=keyHooks)
+        t.start()

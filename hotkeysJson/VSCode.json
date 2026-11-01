@@ -1,12 +1,12 @@
 {
-    "appName": "VsCode",
+    "appName": "code",
     "hks": [
         {
-            "press": "{Control down}{.}{Control up}",
+            "press": "{LEFTCTRL down}{.}{LEFTCTRL up}",
             "description": "Quick fix"
         },
         {
-            "press": "{Control down}{s}{Control up}",
+            "press": "{LEFTCTRL down}{s}{LEFTCTRL up}",
             "description": "Save"
         },
         {
@@ -18,7 +18,7 @@
             "description": "Select left"
         },
         {
-            "press": "{Control down}{l}{Control up}",
+            "press": "{LEFTCTRL down}{l}{LEFTCTRL up}",
             "description": "select line"
         },
         {
@@ -38,11 +38,11 @@
             "description": "move line down"
         },
         {
-            "press": "{Control down}{f}{Control up}",
+            "press": "{LEFTCTRL down}{f}{LEFTCTRL up}",
             "description": "find"
         },
         {
-            "press": "{Control down}{p}{Control up}",
+            "press": "{LEFTCTRL down}{p}{LEFTCTRL up}",
             "description": "print"
         },
         {

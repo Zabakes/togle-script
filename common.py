@@ -12,7 +12,7 @@ toggle = False
 layer = 0
 toggleThread = Lock()
 showGUI = Event()
-winTitleSplitter =  re.compile(u'[\u2014\-\*]')
+winTitleSplitter =  re.compile(r'[-*]')
 layerApp = ""
 kill = False
 isEditing = False
@@ -28,27 +28,34 @@ updateBGInterval = 0
 layout = None
 drawGUI = True
 
+import pywinctl as pwc
+
 windowTitle = ""
 if system() == 'Windows':
     import win32gui
     def getWindowName() -> str:
         if showGUI.isSet():
             return windowTitle
-        return win32gui.GetWindowText(win32gui.GetForegroundWindow())
+        return pwc.getActiveWindowTitle()
 elif system() == 'Linux':
     def getWindowName() -> str:
-        print("TODO IMPLEMENT LINUX")
+        # Initialize screen
+        active_window = pwc.getActiveWindow()
+        if showGUI.is_set():
+            return windowTitle
+        if active_window is not None:
+            return active_window.getAppName()
+        return ""
 
 def getAppName():
     winName = getWindowName()
-    win32gui.GetDesktopWindow
     return re.split(winTitleSplitter, winName).pop().strip()
 
 def getTitleMatch():
     winName = getWindowName()
 
     titleMatch = None
-    appName = re.split(winTitleSplitter, winName).pop().strip()
+    appName = getAppName()
     
     if not appName in titleMatchToConfigFile:
         maxPriority = None

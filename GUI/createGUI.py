@@ -20,7 +20,7 @@ class layerPreview(tk.Canvas):
                         **kwargs)
 
         if layoutFile is None:
-            layoutFile = "Layouts\keyboard-layout-4.json"
+            layoutFile = "/home/zac/togle-script/Layouts/keyboard-layout-4.json"
             
         with open(layoutFile, 'r') as layout:
             layoutInfo = json.load(layout)
@@ -125,12 +125,15 @@ def updateBG(imgHandle, abs_coord_x, abs_coord_y, pview, root):
     pview.tag_lower(imgHandle)
     #if common.updateBGInterval > 0:
         #pview.after(int(common.updateBGInterval*1000), lambda : updateBG(imgHandle, abs_coord_x, abs_coord_y, pview, root))
-HWND = 0
-import win32gui
-def winEnumHandler( hwndT, ctx ):
-    global HWND
-    if win32gui.GetWindowText( hwndT ) == "zMAC_OVERLAY":
-        HWND = hwndT
+
+from platform import system
+if system() == 'Windows':
+    HWND = 0
+    import win32gui
+    def winEnumHandler( hwndT, ctx ):
+        global HWND
+        if win32gui.GetWindowText( hwndT ) == "zMAC_OVERLAY":
+            HWND = hwndT
 
 def makeWidget(layoutFile):
     global img, HWND
@@ -165,13 +168,18 @@ def makeWidget(layoutFile):
     tk.Grid.columnconfigure(root,0,weight=1)
 
     root.bind("<Button-3>", pview.findWidgetAndUpdateConf)
-    
-    img = ImageGrab.grab([abs_coord_x, abs_coord_y, abs_coord_x+common.WIDGET_WIDTH, abs_coord_y+common.WIDGET_HEIGHT])
-    img = img.filter(ImageFilter.GaussianBlur(radius=10))
-    enhancer = ImageEnhance.Brightness(img)
-    img = enhancer.enhance(0.75)
-    img = ImageTk.PhotoImage(img)
-    imgHandle = pview.create_image(0,0, image=img, anchor=tk.NW)
+
+    try:
+        img = ImageGrab.grab([abs_coord_x, abs_coord_y, abs_coord_x+common.WIDGET_WIDTH, abs_coord_y+common.WIDGET_HEIGHT])
+    except OSError:
+        img = None
+    if img:
+        img = img.filter(ImageFilter.GaussianBlur(radius=10))
+        enhancer = ImageEnhance.Brightness(img)
+        img = enhancer.enhance(0.75)
+        img = ImageTk.PhotoImage(img)
+        imgHandle = pview.create_image(0,0, image=img, anchor=tk.NW)
+
     while True:
 
         common.showGUI.wait()
@@ -183,7 +191,8 @@ def makeWidget(layoutFile):
         if(common.WIDGET_HEIGHT+abs_coord_y > screen_height):
             abs_coord_y = screen_height-common.WIDGET_HEIGHT
 
-        updateBG(imgHandle, abs_coord_x, abs_coord_y, pview, root)
+        if img:
+            updateBG(imgHandle, abs_coord_x, abs_coord_y, pview, root)
 
         root.deiconify()
         root.geometry(f"{common.WIDGET_WIDTH}x{common.WIDGET_HEIGHT}+{abs_coord_x}+{abs_coord_y}")
@@ -194,7 +203,8 @@ def makeWidget(layoutFile):
 
         while common.showGUI.isSet() and not common.kill:
             if common.redrawGui:
-                pview.tag_raise(imgHandle)
+                if img:
+                    pview.tag_raise(imgHandle)
                 for i, (key, element) in enumerate(pview.keysToGUI):
                     pview.itemconfig(winTitleText, text=common.getAppName())
                     cmd = getCmd(key, titleMatch)

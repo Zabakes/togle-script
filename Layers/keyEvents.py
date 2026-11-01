@@ -1,7 +1,15 @@
 import common
 from GUI.guiVisibility import hideGUI, showGUI
 from customFuncs import *
-import keyboard
+try:
+    import keyboard
+except ImportError:
+    keyboard = None
+
+try:
+    import evdev
+except ImportError:
+    evdev = None
 from threading import Event, Thread
 from time import sleep
 from Layers.runTimeConfig import getCmd
@@ -102,13 +110,28 @@ def on_release(key):
         t = Thread(target=triggerKeyReleaseEvent, args=[key])
         t.start()
 
-def hook(event):
-    
-    key = event.name
+if keyboard:
+    def hook(event):
+        
+        key = event.name
 
-    if keyboard.is_pressed(key):
-        on_press(key)
-    else:
-        on_release(key)
-    
-    return False
+        if keyboard.is_pressed(key):
+            on_press(key)
+        else:
+            on_release(key)
+        
+        return False
+else:
+    def hook(event):
+
+        evt = evdev.events.KeyEvent(event)
+
+        if evt.scancode != 0:
+            key = evt.keycode[4:].lower()
+            if evt.keystate == 1:
+                on_press(key)
+                pass
+            elif  event.value == 0:
+                on_release(key)
+                pass
+        

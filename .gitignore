@@ -8,3 +8,4 @@ AHKprofile .jmk
 dist/**
 build/**
 *.spec
+**.venv**
